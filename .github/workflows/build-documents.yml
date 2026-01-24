@@ -62,7 +62,7 @@ jobs:
           # echo "CODE_DIR=AISVS" >> $GITHUB_ENV
           # test bed
           echo "CODE_REPO=tetsuoseto" >> $GITHUB_ENV
-          echo "CODE_DIR=AISVS" >> $GITHUB_ENV
+          echo "CODE_DIR=Tenzing-AISVS" >> $GITHUB_ENV
           #-------------------------
           # default tool location; will be updated if self-servable
           echo "TOOL_REPO=tetsuoseto" >> $GITHUB_ENV
