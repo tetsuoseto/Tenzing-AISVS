@@ -1,4 +1,4 @@
-# 11 Privacy Protection & Personal Data Management
+# C11 Privacy Protection & Personal Data Management
 
 ## Control Objective
 
@@ -6,7 +6,7 @@ Maintain rigorous privacy assurances across the entire AI lifecycle—collection
 
 ---
 
-## 11.1 Anonymization & Data Minimization
+## C11.1 Anonymization & Data Minimization
 
 | # | Description | Level | Role |
 |:--------:|---------------------------------------------------------------------------------------------------------------------|:---:|:---:|
@@ -17,7 +17,7 @@ Maintain rigorous privacy assurances across the entire AI lifecycle—collection
 
 ---
 
-## 11.2 Right-to-be-Forgotten & Deletion Enforcement
+## C11.2 Right-to-be-Forgotten & Deletion Enforcement
 
 | # | Description | Level | Role |
 |:--------:|---------------------------------------------------------------------------------------------------------------------|:---:|:---:|
@@ -28,7 +28,7 @@ Maintain rigorous privacy assurances across the entire AI lifecycle—collection
 
 ---
 
-## 11.3 Differential-Privacy Safeguards
+## C11.3 Differential-Privacy Safeguards
 
 | # | Description | Level | Role |
 |:--------:|---------------------------------------------------------------------------------------------------------------------|:---:|:---:|
@@ -38,7 +38,7 @@ Maintain rigorous privacy assurances across the entire AI lifecycle—collection
 
 ---
 
-## 11.4 Purpose-Limitation & Scope-Creep Protection
+## C11.4 Purpose-Limitation & Scope-Creep Protection
 
 | # | Description | Level | Role |
 |:--------:|---------------------------------------------------------------------------------------------------------------------|:---:|:---:|
@@ -49,7 +49,7 @@ Maintain rigorous privacy assurances across the entire AI lifecycle—collection
 
 ---
 
-## 11.5 Consent Management & Lawful-Basis Tracking
+## C11.5 Consent Management & Lawful-Basis Tracking
 
 | # | Description | Level | Role |
 |:--------:|---------------------------------------------------------------------------------------------------------------------|:---:|:---:|
@@ -59,7 +59,7 @@ Maintain rigorous privacy assurances across the entire AI lifecycle—collection
 
 ---
 
-## 11.6 Federated Learning with Privacy Controls
+## C11.6 Federated Learning with Privacy Controls
 
 | # | Description | Level | Role |
 |:--------:|---------------------------------------------------------------------------------------------------------------------|:---:|:---:|

@@ -81,7 +81,7 @@ Ensure the application sends the right signals for security teams to watch.
 
 ---
 
-## 7.7 Generative Media Safeguards
+## C7.7 Generative Media Safeguards
 
 Prevent the creation of illegal or fake media.
 

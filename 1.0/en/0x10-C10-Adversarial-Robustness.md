@@ -1,4 +1,4 @@
-# 10 Adversarial Robustness & Privacy Defense
+# C10 Adversarial Robustness & Privacy Defense
 
 ## Control Objective
 
@@ -6,7 +6,7 @@ Ensure that AI models remain reliable, privacy-preserving, and abuse-resistant w
 
 ---
 
-## 10.1 Model Alignment & Safety
+## C10.1 Model Alignment & Safety
 
 Guard against harmful or policy-breaking outputs.
 
@@ -20,7 +20,7 @@ Guard against harmful or policy-breaking outputs.
 
 ---
 
-## 10.2 Adversarial-Example Hardening
+## C10.2 Adversarial-Example Hardening
 
 Increase resilience to manipulated inputs. Robust adversarial-training and benchmark scoring are the current best practice.
 
@@ -33,7 +33,7 @@ Increase resilience to manipulated inputs. Robust adversarial-training and bench
 
 ---
 
-## 10.3 Membership-Inference Mitigation
+## C10.3 Membership-Inference Mitigation
 
 Limit the ability to decide whether a record was in training data. Differential privacy and confidence-score masking remain the most effective known defenses.
 
@@ -45,7 +45,7 @@ Limit the ability to decide whether a record was in training data. Differential 
 
 ---
 
-## 10.4 Model-Inversion Resistance
+## C10.4 Model-Inversion Resistance
 
 Prevent reconstruction of private attributes. Recent surveys emphasize output truncation and DP guarantees as practical defenses.
 
@@ -57,7 +57,7 @@ Prevent reconstruction of private attributes. Recent surveys emphasize output tr
 
 ---
 
-## 10.5 Model-Extraction Defense
+## C10.5 Model-Extraction Defense
 
 Detect and deter unauthorized cloning. Watermarking and query-pattern analysis are recommended.
 
@@ -71,7 +71,7 @@ Detect and deter unauthorized cloning. Watermarking and query-pattern analysis a
 
 ---
 
-## 10.6 Inference-Time Poisoned-Data Detection
+## C10.6 Inference-Time Poisoned-Data Detection
 
 Identify and neutralize backdoored or poisoned inputs.
 
@@ -85,7 +85,7 @@ Identify and neutralize backdoored or poisoned inputs.
 
 ---
 
-## 10.7 Dynamic Security Policy Adaptation
+## C10.7 Dynamic Security Policy Adaptation
 
 Real-time security policy updates based on threat intelligence and behavioral analysis.
 
@@ -99,7 +99,7 @@ Real-time security policy updates based on threat intelligence and behavioral an
 
 ---
 
-## 10.8 Reflection-Based Security Analysis
+## C10.8 Reflection-Based Security Analysis
 
 Security validation through agent self-reflection and meta-cognitive analysis.
 
@@ -113,7 +113,7 @@ Security validation through agent self-reflection and meta-cognitive analysis.
 
 ---
 
-## 10.9 Evolution & Self-Improvement Security
+## C10.9 Evolution & Self-Improvement Security
 
 Security controls for agent systems capable of self-modification and evolution.
 

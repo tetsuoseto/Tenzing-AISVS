@@ -1,4 +1,4 @@
-# 9 Autonomous Orchestration & Agentic Action Security
+# C9 Autonomous Orchestration & Agentic Action Security
 
 ## Control Objective
 
@@ -6,7 +6,7 @@ Ensure that autonomous or multi-agent AI systems can **only** execute actions th
 
 ---
 
-## 9.1 Agent Task-Planning & Recursion Budgets
+## C9.1 Agent Task-Planning & Recursion Budgets
 
 Throttle recursive plans and force human checkpoints for privileged actions.
 
@@ -21,7 +21,7 @@ Throttle recursive plans and force human checkpoints for privileged actions.
 
 ---
 
-## 9.2 Tool Plugin Sandboxing
+## C9.2 Tool Plugin Sandboxing
 
 Isolate tool interactions to prevent unauthorized system access or code execution.
 
@@ -36,7 +36,7 @@ Isolate tool interactions to prevent unauthorized system access or code executio
 
 ---
 
-## 9.3 Autonomous Loop & Cost Bounding
+## C9.3 Autonomous Loop & Cost Bounding
 
 Detect and stop uncontrolled agent-to-agent recursion and cost explosions.
 
@@ -50,7 +50,7 @@ Detect and stop uncontrolled agent-to-agent recursion and cost explosions.
 
 ---
 
-## 9.4 Protocol-Level Misuse Protection
+## C9.4 Protocol-Level Misuse Protection
 
 Secure communication channels between agents and external systems to prevent hijacking or manipulation.
 
@@ -64,7 +64,7 @@ Secure communication channels between agents and external systems to prevent hij
 
 ---
 
-## 9.5 Agent Identity & Tamper-Evidence
+## C9.5 Agent Identity & Tamper-Evidence
 
 Ensure actions are attributable and modifications detectable.
 
@@ -78,7 +78,7 @@ Ensure actions are attributable and modifications detectable.
 
 ---
 
-## 9.6 Multi-Agent Swarm Risk Reduction
+## C9.6 Multi-Agent Swarm Risk Reduction
 
 Mitigate collective-behavior hazards through isolation and formal safety modeling.
 
@@ -90,7 +90,7 @@ Mitigate collective-behavior hazards through isolation and formal safety modelin
 
 ---
 
-## 9.7 User & Tool Authentication / Authorization
+## C9.7 User & Tool Authentication / Authorization
 
 Implement robust access controls for every agent-triggered action.
 
@@ -103,7 +103,7 @@ Implement robust access controls for every agent-triggered action.
 
 ---
 
-## 9.8 Agent-to-Agent Communication Security
+## C9.8 Agent-to-Agent Communication Security
 
 Encrypt and integrity-protect all inter-agent messages to thwart eavesdropping and tampering.
 
@@ -116,7 +116,7 @@ Encrypt and integrity-protect all inter-agent messages to thwart eavesdropping a
 
 ---
 
-## 9.9 Intent Verification & Constraint Enforcement
+## C9.9 Intent Verification & Constraint Enforcement
 
 Validate that agent actions align with the user's stated intent and system constraints.
 
@@ -130,7 +130,7 @@ Validate that agent actions align with the user's stated intent and system const
 
 ---
 
-## 9.10 Agent Reasoning Strategy Security
+## C9.10 Agent Reasoning Strategy Security
 
 Secure selection and execution of different reasoning strategies including ReAct, Chain-of-Thought, and Tree-of-Thoughts approaches.
 
@@ -147,7 +147,7 @@ Secure selection and execution of different reasoning strategies including ReAct
 
 ---
 
-## 9.11 Agent Lifecycle State Management & Security
+## C9.11 Agent Lifecycle State Management & Security
 
 Secure agent initialization, state transitions, and termination with cryptographic audit trails and defined recovery procedures.
 
@@ -161,7 +161,7 @@ Secure agent initialization, state transitions, and termination with cryptograph
 
 ---
 
-## 9.12 Tool Integration Security Framework
+## C9.12 Tool Integration Security Framework
 
 Security controls for dynamic tool loading, execution, and result validation with defined risk assessment and approval processes.
 
