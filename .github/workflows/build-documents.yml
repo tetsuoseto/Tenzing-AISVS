@@ -68,8 +68,8 @@ jobs:
           echo "TOOL_REPO=tetsuoseto" >> $GITHUB_ENV
           echo "TOOL_DIR=Tenzing" >> $GITHUB_ENV
 
-      # STEP 2: Define LANG, MT_X, owasp_pdf parameters
-      - name: Read owasp_pdf parameters
+      # STEP 2: Define LANG, MT_X, tenzing parameters
+      - name: Read tenzing parameters
         if: ${{ startsWith(github.event.issue.title, 'Document Build Request') }}
         env:
           EVENT_COMMENT_BODY: ${{ github.event.comment.body }}
@@ -181,7 +181,7 @@ jobs:
             cd UNZIPPED/${{ env.TOOL_DIR }}-main;
           fi
           unzip linux.zip
-          cp -f linux/owasp_pdf ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
+          cp -f linux/tenzing ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
           if ${{ env.TOOL_SELF_SERVABLE == 'no' }}; then
             cd BldEnv20241124;
             cp -rf owasp_pdf_data_${{ env.PROJ_CODE }} ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
@@ -197,30 +197,30 @@ jobs:
           ls -la
 
       # STEP 7: Build
-      - name: Call ./owasp_pdf with ${{ env.LANG }}
+      - name: Call ./tenzing with ${{ env.LANG }}
         if: ${{ env.LANG != '' && env.BRANCH_EXISTS == 'no' && env.MT_X == '' }}
         run: |
           cd ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
-          ./owasp_pdf -s -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }} --hdr '${{ github.sha }}'
-      - name: Call ./owasp_pdf with ${{ env.LANG }} and 'mt'
+          ./tenzing -s -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }} --hdr '${{ github.sha }}'
+      - name: Call ./tenzing with ${{ env.LANG }} and 'mt'
         env:
           TRANSLATE_ACCESS_KEY: ${{ secrets.TRANSLATE_ACCESS_KEY }}
         if: ${{ env.LANG != '' && env.BRANCH_EXISTS == 'no' && env.MT_X == 'mt' }}
         run: |
           cd ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
-          ./owasp_pdf -s --mt gpt-4.1-mini -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }} --hdr '${{ github.sha }} MACHINE TRANSLATED'
-      - name: Call ./owasp_pdf with ${{ env.LANG }} and 'x'
+          ./tenzing -s --mt gpt-4.1-mini -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }} --hdr '${{ github.sha }} MACHINE TRANSLATED'
+      - name: Call ./tenzing with ${{ env.LANG }} and 'x'
         if: ${{ env.LANG != '' && env.BRANCH_EXISTS == 'no' && env.MT_X == 'x' }}
         run: |
           cd ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
-          ./owasp_pdf -s -x -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }} --hdr '${{ github.sha }} MACHINE TRANSLATED'
-      - name: Call ./owasp_pdf with ${{ env.LANG }} and 'b'
+          ./tenzing -s -x -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }} --hdr '${{ github.sha }} MACHINE TRANSLATED'
+      - name: Call ./tenzing with ${{ env.LANG }} and 'b'
         env:
           WATERMARK_SECRET_KEY: ${{ secrets.WATERMARK_SECRET_KEY }}
         if: ${{ env.LANG != '' && env.BRANCH_EXISTS == 'no' && env.MT_X == 'b' }}
         run: |
           cd ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
-          ./owasp_pdf -s -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }}
+          ./tenzing -s -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }}
 
       # STEP 8: Clean up
       - name: Clean up
@@ -229,7 +229,7 @@ jobs:
           rm -rf UNZIPPED
           rm  -f main.zip
           cd ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
-          rm  -f owasp_pdf
+          rm  -f tenzing
           rm -rf ${{ env.PROJ_DIR }}/en-ZZ
           rm -rf ${{ env.PROJ_DIR }}/${{ env.LANG }}/baseline/${{ env.PROJ_CODE }}All_${{ env.LANG }}.md
           if ${{ env.TOOL_SELF_SERVABLE == 'no' }}; then
