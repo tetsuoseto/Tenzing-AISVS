@@ -57,10 +57,6 @@ jobs:
           echo "PROJ_DIR=asv" >> $GITHUB_ENV
           echo "PROJ_CODE=ASV" >> $GITHUB_ENV
           #-------------------------
-          # production
-          # echo "CODE_REPO=OWASP" >> $GITHUB_ENV
-          # echo "CODE_DIR=AISVS" >> $GITHUB_ENV
-          # test bed
           echo "CODE_REPO=tetsuoseto" >> $GITHUB_ENV
           echo "CODE_DIR=Tenzing-AISVS" >> $GITHUB_ENV
           #-------------------------
@@ -184,8 +180,8 @@ jobs:
           cp -f linux/tenzing ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
           if ${{ env.TOOL_SELF_SERVABLE == 'no' }}; then
             cd BldEnv20241124;
-            cp -rf owasp_pdf_data_${{ env.PROJ_CODE }} ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
-            cp  -f owasp_pdf_register_${{ env.PROJ_CODE }}_plugin.py ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
+            cp -rf tenzing_data_${{ env.PROJ_CODE }} ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
+            cp  -f tenzing_register_${{ env.PROJ_CODE }}_plugin.py ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
           fi
           cd ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
           echo '-----------------------'
@@ -233,8 +229,8 @@ jobs:
           rm -rf ${{ env.PROJ_DIR }}/en-ZZ
           rm -rf ${{ env.PROJ_DIR }}/${{ env.LANG }}/baseline/${{ env.PROJ_CODE }}All_${{ env.LANG }}.md
           if ${{ env.TOOL_SELF_SERVABLE == 'no' }}; then
-            rm -rf owasp_pdf_data_${{ env.PROJ_CODE }}
-            rm  -f owasp_pdf_register_${{ env.PROJ_CODE }}_plugin.py
+            rm -rf tenzing_data_${{ env.PROJ_CODE }}
+            rm  -f tenzing_register_${{ env.PROJ_CODE }}_plugin.py
           fi
 
       # STEP 9: Commit and PR
