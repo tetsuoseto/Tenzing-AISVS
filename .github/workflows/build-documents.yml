@@ -174,12 +174,12 @@ jobs:
           if ${{ env.TOOL_SELF_SERVABLE == 'yes' }}; then
             cd UNZIPPED/${{ env.TOOL_DIR }}-main/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }};
           else
-            cd UNZIPPED/${{ env.TOOL_DIR }}-main;
+            cd UNZIPPED/${{ env.TOOL_DIR }}-main/zip;
           fi
           unzip linux.zip
           cp -f linux/tenzing ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
           if ${{ env.TOOL_SELF_SERVABLE == 'no' }}; then
-            cd BldEnv20241124;
+            cd ../${{ env.BUILD_DIR }};
             cp -rf tenzing_data_${{ env.PROJ_CODE }} ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
             cp  -f tenzing_register_${{ env.PROJ_CODE }}_plugin.py ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
           fi
