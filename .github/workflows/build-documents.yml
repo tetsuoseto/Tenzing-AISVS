@@ -204,7 +204,7 @@ jobs:
         if: ${{ env.LANG != '' && env.BRANCH_EXISTS == 'no' && env.MT_X == 'mt' }}
         run: |
           cd ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
-          ./tenzing -s --mt gpt-4.1-mini -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }} --hdr '${{ github.sha }} MACHINE TRANSLATED'
+          ./tenzing -s --mt gpt-5.4-nano -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }} --hdr '${{ github.sha }} MACHINE TRANSLATED'
       - name: Call ./tenzing with ${{ env.LANG }} and 'x'
         if: ${{ env.LANG != '' && env.BRANCH_EXISTS == 'no' && env.MT_X == 'x' }}
         run: |
