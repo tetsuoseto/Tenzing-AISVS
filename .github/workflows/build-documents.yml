@@ -245,12 +245,12 @@ jobs:
           git add .
           git commit -m "PDF created for ${{ env.LANG }} with the commit ${{ github.sha }}"
           git push --set-upstream origin '${{ env.TARGET_BRANCH_NAME }}'
-      - name: Create Pull Request with the generated PDF
+      - name: Create Pull Request
         if: ${{ env.LANG != '' && env.BRANCH_EXISTS == 'no' }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run:  |
-          gh pr create --base 'main' --head '${{ env.TARGET_BRANCH_NAME }}' --title 'Automated PR with ${{ env.TARGET_BRANCH_NAME }}' --body 'PDF generated for ${{ env.LANG }} with the commit ${{ github.sha }}'
+          gh pr create --base 'main' --head '${{ env.TARGET_BRANCH_NAME }}' --title 'Automated PR with ${{ env.TARGET_BRANCH_NAME }}' --body 'Build succeeded for ${{ env.LANG }} with the commit ${{ github.sha }}'
 
       # STEP 10: Show message in case build skipped because env.BRANCH_EXISTS == 'yes'
       - name: Show message in case build skipped
