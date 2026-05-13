@@ -197,26 +197,26 @@ jobs:
         if: ${{ env.LANG != '' && env.BRANCH_EXISTS == 'no' && env.MT_X == '' }}
         run: |
           cd ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
-          ./tenzing -s -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }} --hdr '${{ github.sha }}'
+          ./tenzing -f -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }} --hdr '${{ github.sha }}'
       - name: Call ./tenzing with ${{ env.LANG }} and 'mt'
         env:
           TRANSLATE_ACCESS_KEY: ${{ secrets.TRANSLATE_ACCESS_KEY }}
         if: ${{ env.LANG != '' && env.BRANCH_EXISTS == 'no' && env.MT_X == 'mt' }}
         run: |
           cd ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
-          ./tenzing -s --mt gpt-5.4-nano -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }} --hdr '${{ github.sha }} MACHINE TRANSLATED'
+          ./tenzing -f --mt gpt-5.4-nano -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }} --hdr '${{ github.sha }} MACHINE TRANSLATED'
       - name: Call ./tenzing with ${{ env.LANG }} and 'x'
         if: ${{ env.LANG != '' && env.BRANCH_EXISTS == 'no' && env.MT_X == 'x' }}
         run: |
           cd ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
-          ./tenzing -s -x -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }} --hdr '${{ github.sha }} MACHINE TRANSLATED'
+          ./tenzing -f -x -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }} --hdr '${{ github.sha }} MACHINE TRANSLATED'
       - name: Call ./tenzing with ${{ env.LANG }} and 'b'
         env:
           WATERMARK_SECRET_KEY: ${{ secrets.WATERMARK_SECRET_KEY }}
         if: ${{ env.LANG != '' && env.BRANCH_EXISTS == 'no' && env.MT_X == 'b' }}
         run: |
           cd ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
-          ./tenzing -s -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }}
+          ./tenzing -f -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }}
 
       # STEP 8: Clean up
       - name: Clean up
