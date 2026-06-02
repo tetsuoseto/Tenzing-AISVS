@@ -125,7 +125,7 @@ jobs:
       # STEP 3: Check out the repository code; we'll commit the result and submit a pull-request
       - name: Check out repository code
         if: ${{ env.LANG != '' }}
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: ${{ env.CODE_REPO }}/${{ env.CODE_DIR }}
           ref: main
