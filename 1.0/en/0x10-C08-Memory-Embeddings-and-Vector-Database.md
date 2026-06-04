@@ -4,8 +4,6 @@
 
 Embeddings and vector stores act as semi-persistent and persistent "memory" for AI systems via Retrieval-Augmented Generation (RAG). This memory can become a high-risk data sink and data exfiltration path. This control family hardens memory pipelines and vector databases so that access is least-privilege, data is sanitized before vectorization, retention is explicit, and systems are resilient to embedding inversion, membership inference, and cross-tenant leakage.
 
-> **Scope note:** General authorization (RBAC/ABAC, scoped tokens, cross-tenant controls), data-at-rest cryptography and key management, generic data-retention and secure-deletion, generic input validation, and session lifecycle management are out of scope and are covered by OWASP ASVS v5 chapters V8, V11, V13, V14, V2, and V7. End-user authorization context propagation through RAG retrieval is covered by AISVS C5.3. Personal-data deletion propagation across AI artifacts (including embeddings) is covered by AISVS C12.2. Per-agent memory namespace isolation in multi-agent systems is covered by AISVS C9.8.3. This chapter focuses on AI-specific concerns: scope enforcement at the vector-engine layer, AI-specific data lineage (embedding model version, ingestion provenance), embedding-pipeline poisoning resistance, retrieval-time anomaly detection, RAG-specific deletion propagation windows, and embedding inversion / membership-inference resistance.
-
 ---
 
 ## C8.1 Access Controls on Memory & RAG Indices
@@ -18,7 +16,9 @@ Enforce fine-grained access controls and query-time scope enforcement for every 
 | **8.1.2** | **Verify that** every ingested document is tagged at write time with source, writer identity (authenticated user or system principal), timestamp, batch ID, and embedding model version. | 2 |
 | **8.1.3** | **Verify that** document metadata tags applied at ingestion are immutable after initial write and cannot be modified by subsequent pipeline stages or user operations. | 2 |
 | **8.1.4** | **Verify that** RAG pipeline retrieval events log the query issued, the documents or chunks retrieved, similarity scores, the knowledge source, and whether retrieved content passed prompt injection scanning before being incorporated into model context. | 2 |
-| **8.1.5** | **Verify that** retrieval anomaly detection identifies embedding density outliers, repeated dominance of specific documents in similarity results, and sudden shifts in retrieval bias distribution that may indicate vector database poisoning. | 3 |
+| **8.1.5** | **Verify that** restricted retrieval indices include uniquely marked canary records that contain no real sensitive content, with markers that survive retrieval, embedding, and context-assembly pipelines. | 2 |
+| **8.1.6** | **Verify that** a high-severity security alert is generated whenever a canary record is selected by retrieval, matched by similarity search, or passed to the model as context. | 2 |
+| **8.1.7** | **Verify that** retrieval anomaly detection identifies embedding density outliers, repeated dominance of specific documents in similarity results, and sudden shifts in retrieval bias distribution that may indicate vector database poisoning. | 3 |
 
 ---
 
@@ -28,10 +28,10 @@ Pre-screen content before vectorization; treat memory writes as untrusted inputs
 
 | # | Description | Level |
 | :--: | --- | :---: |
-| **8.2.1** | **Verify that** regulated data and sensitive fields are detected prior to embedding and are masked, tokenized, transformed, or dropped based on policy, recognising that data once embedded cannot be reliably redacted from the resulting index. | 1 |
+| **8.2.1** | **Verify that** regulated data and sensitive fields are detected prior to embedding and are masked, tokenized, transformed, or dropped based on policy, recognizing that data once embedded cannot be reliably redacted from the resulting index. | 1 |
 | **8.2.2** | **Verify that** content intended to poison retrieval (e.g., text crafted to project to attacker-chosen embedding neighborhoods, hidden instructions intended for downstream model context, or steganographic payloads in non-text inputs) is detected and rejected or quarantined before vectorization. | 1 |
 | **8.2.3** | **Verify that** vectors that fall outside normal clustering patterns are flagged and quarantined before entering production indices. | 2 |
-| **8.2.4** | **Verify that** an agent's own outputs are not automatically written back into its trusted memory without explicit validation (such as content-origin checks or write-authorization controls that verify the content's source before committing writes). | 2 |
+| **8.2.4** | **Verify that** agent outputs, tool outputs, and orchestration results are not automatically written to trusted agent memory without explicit source validation (e.g., content-origin checks or write-authorization controls that verify the content's source before committing writes). | 2 |
 | **8.2.5** | **Verify that** new content written to memory is checked for contradictions with what is already stored and that conflicts trigger alerts. | 3 |
 
 ---

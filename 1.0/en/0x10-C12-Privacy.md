@@ -2,7 +2,7 @@
 
 ## Control Objective
 
-Maintain rigorous privacy assurances across the entire AI lifecycle (collection, training, inference, and incident response) so that personal data is only processed with clear consent, minimum necessary scope, provable erasure, and formal privacy guarantees.
+Maintain rigorous privacy assurances across the entire AI lifecycle (collection, training, inference, and incident response) so that personal data is only processed with clear consent, minimum necessary scope, provable erasure, and formal privacy guarantees. This chapter focuses on AI-specific privacy concerns: privacy properties of training data and derived model artifacts, deletion and unlearning across ML artifacts, differential privacy budget management for training, purpose binding for datasets and models, consent-aware inference gating, and federated-learning privacy controls.
 
 ---
 
@@ -12,10 +12,10 @@ Remove or transform personal identifiers before training to prevent re-identific
 
 | # | Description | Level |
 | :--------: | --------------------------------------------------------------------------------------------------------------------- | :---: |
-| **12.1.1** | **Verify that** direct and quasi-identifiers are removed, hashed. | 1 |
-| **12.1.2** | **Verify that** automated audits measure k-anonymity/l-diversity and alert when thresholds drop below policy. | 2 |
-| **12.1.3** | **Verify that** model feature-importance reports prove no identifier leakage beyond ε = 0.01 mutual information. | 2 |
-| **12.1.4** | **Verify that** formal proofs or synthetic-data certification show re-identification risk ≤ 0.05 even under linkage attacks. | 3 |
+| **12.1.1** | **Verify that** direct and quasi-identifiers in training and fine-tuning datasets are removed, hashed, or generalized before the data is used to fit or update a model. | 1 |
+| **12.1.2** | **Verify that** automated audits measure k-anonymity or l-diversity on training datasets and alert when thresholds drop below policy. | 2 |
+| **12.1.3** | **Verify that** model feature-importance or attribution analyses are run on trained models to confirm that no removed identifier or quasi-identifier has been reconstructed as a high-importance feature. | 2 |
+| **12.1.4** | **Verify that** formal proofs or synthetic-data certification show re-identification risk against trained models remains below a documented policy threshold even under linkage attacks. | 3 |
 
 ---
 
@@ -25,10 +25,9 @@ Ensure data-subject deletion requests propagate across all AI artifacts and that
 
 | # | Description | Level |
 | :--------: | --------------------------------------------------------------------------------------------------------------------- | :---: |
-| **12.2.1** | **Verify that** data-subject deletion requests propagate to raw datasets, checkpoints, embeddings, logs, and backups within service level agreements of less than 30 days. | 1 |
-| **12.2.2** | **Verify that** "machine-unlearning" routines physically re-train or approximate removal using certified unlearning algorithms. | 2 |
-| **12.2.3** | **Verify that** shadow-model evaluation proves forgotten records influence less than 1% of outputs after unlearning. | 2 |
-| **12.2.4** | **Verify that** deletion events are immutably logged and auditable for regulators. | 3 |
+| **12.2.1** | **Verify that** data-subject deletion requests propagate to AI-derived artifacts including training and fine-tuning datasets, model checkpoints, evaluation sets, derived caches, and feature stores within a service level agreement of less than 30 days. Embedding and RAG index propagation is governed by C8.3. | 1 |
+| **12.2.2** | **Verify that** shadow-model or membership-inference evaluation demonstrates that forgotten records influence less than a documented policy threshold of model outputs after unlearning. | 2 |
+| **12.2.3** | **Verify that** machine-unlearning routines, when claimed, either physically retrain the affected model on the retained data or apply a certified unlearning algorithm with documented (ε, δ) guarantees. | 3 |
 
 ---
 
@@ -38,11 +37,9 @@ Track and enforce privacy budgets to provide formal guarantees against individua
 
 | # | Description | Level |
 | :--------: | --------------------------------------------------------------------------------------------------------------------- | :---: |
-| **12.3.1** | **Verify that** differential privacy budget consumption (both ε and δ values) is tracked and recorded per training round. | 2 |
-| **12.3.5** | **Verify that** cumulative differential privacy budget dashboards alert when ε exceeds defined policy thresholds. | 2 |
-| **12.3.2** | **Verify that** black-box privacy audits estimate ε̂ within 10% of declared value. | 2 |
-| **12.3.3** | **Verify that** formal proofs cover all post-training fine-tunes and embeddings. | 3 |
-| **12.3.4** | **Verify that** federated learning systems implement canary-based privacy auditing to empirically bound privacy leakage, with audit results logged and reviewed per training cycle. | 3 |
+| **12.3.1** | **Verify that** differential privacy budget consumption (both ε and δ values) is tracked and recorded per training round, and that cumulative consumption triggers an alert when ε exceeds defined policy thresholds. | 2 |
+| **12.3.2** | **Verify that** black-box privacy audits empirically estimate ε̂ as a lower bound at a stated confidence level (e.g., Clopper-Pearson or f-DP confidence intervals), and that the estimate is consistent with the declared budget within documented tolerance. | 2 |
+| **12.3.3** | **Verify that** formal privacy proofs cover all post-training fine-tunes and embedding generation steps that consume the same source data. | 3 |
 
 ---
 
@@ -52,9 +49,8 @@ Prevent models and datasets from being used beyond their originally consented pu
 
 | # | Description | Level |
 | :--------: | --------------------------------------------------------------------------------------------------------------------- | :---: |
-| **12.4.1** | **Verify that** every dataset and model checkpoint carries a machine-readable purpose tag aligned to the original consent. | 1 |
-| **12.4.2** | **Verify that** runtime monitors detect queries inconsistent with the declared purpose of the dataset or model. | 1 |
-| **12.4.5** | **Verify that** queries detected as inconsistent with declared purpose trigger a soft refusal or are blocked pending review. | 1 |
+| **12.4.1** | **Verify that** every dataset and model checkpoint carries a machine-readable purpose tag aligned to the original consent and lawful basis under which the source data was collected. | 1 |
+| **12.4.2** | **Verify that** runtime monitors detect queries inconsistent with the declared purpose of the dataset or model, and that detected queries trigger a soft refusal or are blocked pending review. | 1 |
 | **12.4.3** | **Verify that** policy-as-code gates block redeployment of models to new domains without DPIA review. | 3 |
 | **12.4.4** | **Verify that** formal traceability proofs show every personal data lifecycle remains within consented scope. | 3 |
 
@@ -62,27 +58,26 @@ Prevent models and datasets from being used beyond their originally consented pu
 
 ## C12.5 Consent Management & Lawful-Basis Tracking
 
-Record, enforce, and revoke consent across AI processing pipelines.
+Enforce consent at AI-specific decision points (training data ingestion, inference) and propagate withdrawal across AI artifacts.
 
 | # | Description | Level |
 | :--------: | --------------------------------------------------------------------------------------------------------------------- | :---: |
-| **12.5.1** | **Verify that** a Consent-Management Platform (CMP) records opt-in status, purpose, and retention period per data-subject. | 1 |
-| **12.5.2** | **Verify that** APIs expose consent tokens that encode the data subject's opt-in status, purpose, and retention period. | 2 |
-| **12.5.4** | **Verify that** models validate consent token scope before inference and refuse processing when the token is absent, invalid, or does not cover the requested operation. | 2 |
-| **12.5.3** | **Verify that** denied or withdrawn consent halts processing pipelines within 24 hours. | 2 |
+| **12.5.1** | **Verify that** model inference validates consent scope before processing, covering both the requested operation and the data subjects whose data materially influences the response. | 2 |
+| **12.5.2** | **Verify that** when validated consent scope does not cover the requested operation or the data subjects whose data materially influences the response, the system refuses or downgrades the response before serving it to the caller. | 2 |
+| **12.5.3** | **Verify that** withdrawal of consent triggers the same AI-artifact propagation pipeline as a deletion request (see 12.2.1), and that inference paths relying on the withdrawn data are disabled within the same SLA. | 2 |
 
 ---
 
 ## C12.6 Federated Learning with Privacy Controls
 
-Apply differential privacy and poisoning-resistant aggregation to federated learning to protect individual participant data.
+Apply differential privacy and privacy auditing to federated learning to protect individual participant data.
 
 | # | Description | Level |
 | :--------: | --------------------------------------------------------------------------------------------------------------------- | :---: |
-| **12.6.1** | **Verify that** client updates employ local differential privacy noise addition before aggregation. | 1 |
-| **12.6.2** | **Verify that** training metrics are differentially private and never reveal single-client loss. | 2 |
-| **12.6.3** | **Verify that** poisoning-resistant aggregation (e.g., Krum/Trimmed-Mean) is enabled. | 2 |
-| **12.6.4** | **Verify that** formal proofs demonstrate overall ε budget with less than 5 utility loss. | 3 |
+| **12.6.1** | **Verify that** client updates apply local differential privacy noise addition before aggregation, or that a documented central differential privacy mechanism is enforced at the aggregator. | 1 |
+| **12.6.2** | **Verify that** training metrics shared with the aggregator or with clients are differentially private and never reveal single-client loss or single-client gradients. | 2 |
+| **12.6.3** | **Verify that** federated learning systems implement canary-based privacy auditing to empirically bound privacy leakage, with audit results logged and reviewed per training cycle. | 3 |
+| **12.6.4** | **Verify that** formal proofs document the overall ε budget and the corresponding utility loss against a declared baseline. | 3 |
 
 ---
 
