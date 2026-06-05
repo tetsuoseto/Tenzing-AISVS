@@ -14,7 +14,7 @@
 
 The **Artificial Intelligence Security Verification Standard (AISVS)** is a community-driven catalogue of testable security requirements for AI-enabled systems. It gives data scientists, MLOps engineers, software architects, developers, testers, security professionals, tool vendors, regulators, and consumers a common language for specifying security controls across the AI lifecycle, from data collection and model development to deployment, monitoring, and retirement, so that organizations can measure and improve the resilience, privacy, and safety of their AI solutions.
 
-Every requirement in AISVS has been developed from the ground up to reflect the AI threat landscape. While AISVS draws inspiration from broader security best practices, it is purpose-built for artificial intelligence systems and complements (rather than duplicates) governance frameworks such as NIST AI RMF and ISO/IEC 42001.
+Every requirement in AISVS has been developed from the ground up to reflect the AI threat landscape. While AISVS draws inspiration from broader security best practices (including the [OWASP ASVS](https://owasp.org/www-project-application-security-verification-standard/)), it is purpose-built for artificial intelligence systems and complements (rather than duplicates) governance frameworks such as NIST AI RMF and ISO/IEC 42001.
 
 ## Copyright and License
 
@@ -35,25 +35,6 @@ For any reuse or distribution, you must clearly communicate the license terms of
 
 ## Contributors and Reviewers
 
-The following individuals have contributed to the AISVS through requirements authoring, review, or technical feedback:
+We have included a list of contributors and reviewers in [Appendix E](0x94-Appendix-E_Contributors.md).
 
-* [Josh Beck](https://github.com/Josh-Beck)
-* [Blake Gatto](https://github.com/BlakeGatto)
-* [Khalid Walid Alamri](https://github.com/khalidwalidalamri)
-* [Tetsuo Seto](https://github.com/tetsuoseto)
-* [Jim Schwoebel](https://github.com/jim-schwoebel)
-* [Vineeth Sai](https://github.com/vineethsai)
-* [Almog](https://github.com/almogbhl)
-* [Deepak Pandey](https://github.com/deepakrpandey12)
-* [Tametomo](https://github.com/Tametomo)
-* [Hari Mukundhan](https://github.com/harimukundhan)
-* [Jerry Hoff](https://github.com/jerryhoff)
-* [RogueValley](https://github.com/RogueValley)
-* [Mamicidal](https://github.com/mamicidal)
-* [Stu Small](https://github.com/stusmall)
-* [Wiljav](https://github.com/wiljav)
-* [Hackwither](https://github.com/hackwither)
-* [Kattn](https://github.com/kattn)
-* [mbhatt1](https://github.com/mbhatt1)
-* [cciprofm](https://github.com/cciprofm)
-* [thornshadow99](https://github.com/thornshadow99)
+If a credit is missing, please open an issue or pull request on GitHub to be recognized in future updates.

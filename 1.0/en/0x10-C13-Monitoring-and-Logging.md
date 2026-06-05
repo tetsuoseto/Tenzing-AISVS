@@ -2,39 +2,38 @@
 
 ## Control Objective
 
-This section provides requirements for delivering real-time and forensic visibility into what the model and other AI components see, do, and return, so threats can be detected, triaged, and learned from.
+Deliver real-time and forensic visibility into what the model and other AI components see, do, and return, so AI-specific threats can be detected, triaged, and learned from.
+
+This chapter focuses on controls unique to AI systems for monitoring, logging and anomaly detection: AI-specific log content (model identifier, token usage, safety filter outcomes, prompt/response handling), AI-specific abuse and attack detection (jailbreak, prompt injection, extraction, multi-turn trajectory, covert channels over LLM endpoints), model and data drift detection, AI-specific telemetry signals (token attribution, output/input ratio anomalies), AI incident response, and proactive agent behavior monitoring.
+
+---
 
 ## C13.1 Request & Response Logging
 
 | # | Description | Level |
 | :--------: | ------------------------------------------------------------------------------------------------------------------- | :---: |
-| **13.1.1** | **Verify that** AI interactions are logged with security-relevant metadata (e.g. timestamp, user ID, session ID, model version, token count, input hash, system prompt version, confidence score, safety filter outcome, and safety filter decisions) without logging prompt or response content by default. | 1 |
-| **13.1.2** | **Verify that** logs are stored in secure, access-controlled repositories with appropriate retention policies and backup procedures. | 1 |
-| **13.1.3** | **Verify that** log storage systems implement encryption at rest and in transit to protect sensitive information contained in logs. | 1 |
-| **13.1.4** | **Verify that** sensitive data in prompts and outputs is automatically redacted or masked before logging, with configurable redaction rules for PII, credentials, and proprietary information. | 1 |
-| **13.1.5** | **Verify that** policy decisions and safety filtering actions are logged with sufficient detail to enable audit and debugging of content moderation systems. | 2 |
-| **13.1.6** | **Verify that** log integrity is protected through e.g. cryptographic signatures or write-only storage. | 2 |
-| **13.1.7** | **Verify that** log entries for AI inference events capture a structured, interoperable schema that includes at minimum model identifier, token usage (input and output), provider name, and operation type, to enable consistent AI observability across tools and platforms. | 2 |
-| **13.1.8** | **Verify that** full prompt and response content is logged only when a security-relevant event is detected (e.g., safety filter trigger, prompt injection detection, anomaly flag), or when required by explicit user consent and a documented legal basis. | 2 |
+| **13.1.1** | **Verify that** AI interactions are logged with security-relevant metadata (e.g., timestamp, user ID, session ID, model version, token count, input hash, system prompt version, confidence score, safety filter outcome, and safety filter decisions). | 1 |
+| **13.1.2** | **Verify that** AI interaction logs exclude prompt and response content by default, and that content logging is enabled only on explicit opt-in with documented justification. | 1 |
+| **13.1.3** | **Verify that** policy decisions and safety filtering actions are logged with sufficient detail to enable audit and debugging of content moderation systems. | 2 |
+| **13.1.4** | **Verify that** log entries for AI inference events capture a structured, interoperable schema that includes at minimum model identifier, token usage (input and output), provider name, and operation type, to enable consistent AI observability across tools and platforms. | 2 |
+| **13.1.5** | **Verify that** full prompt and response content is logged only when a security-relevant event is detected (e.g., safety filter trigger, prompt injection detection, anomaly flag), or when required by explicit user consent and a documented legal basis. | 2 |
 
 ---
 
 ## C13.2 Abuse Detection and Alerting
 
-> **Scope note:** Monitoring under C13.2.10 should include token-level metadata access patterns (e.g., high-frequency logprob API requests, systematic enumeration of token probabilities) as a signal for data exfiltration via timing or token-probability side channels. Anomalous logprob access patterns fall within the "structured non-human query patterns" indicator. C4.2.8 covers accelerator-level side-channel telemetry; C13.2.4 covers behavioral anomaly detection for systematic probing.
+Detect AI-specific attack patterns (jailbreak, prompt injection, model extraction, multi-turn trajectory attacks, covert channels over LLM endpoints) and enrich security events with AI-specific context so that downstream detection and response systems can act on them.
 
 | # | Description | Level |
 | :--------: | ------------------------------------------------------------------------------------------------------------------- | :---: |
 | **13.2.1** | **Verify that** the system detects and alerts on known jailbreak patterns, prompt injection attempts, and adversarial inputs using signature-based detection. | 1 |
-| **13.2.2** | **Verify that** the system integrates with existing Security Information and Event Management (SIEM) platforms using standard log formats and protocols. | 1 |
-| **13.2.3** | **Verify that** enriched security events include AI-specific context such as model identifiers, confidence scores, and safety filter decisions. | 2 |
-| **13.2.4** | **Verify that** behavioral anomaly detection identifies unusual conversation patterns, excessive retry attempts, or systematic probing behaviors. | 2 |
-| **13.2.5** | **Verify that** real-time alerting mechanisms notify security teams when potential policy violations or attack attempts are detected. | 2 |
-| **13.2.6** | **Verify that** custom rules are included to detect AI-specific threat patterns including coordinated jailbreak attempts, prompt injection campaigns, and model extraction attacks. | 2 |
-| **13.2.7** | **Verify that** automated incident response workflows can isolate compromised models and block malicious users. | 3 |
-| **13.2.8** | **Verify that** session-level conversation trajectory analysis detects multi-turn jailbreak patterns where no individual turn is overtly malicious in isolation but the aggregate conversation exhibits attack indicators. | 3 |
-| **13.2.9** | **Verify that** per-user and per-session token consumption triggers an alert when consumption exceeds defined thresholds. | 2 |
-| **13.2.10** | **Verify that** LLM API traffic is monitored for covert channel indicators, including Base64-encoded payloads, structured non-human query patterns, and communication signatures consistent with malware command-and-control activity using LLM endpoints. | 3 |
+| **13.2.2** | **Verify that** enriched security events include AI-specific context such as model identifiers, confidence scores, and safety filter decisions. | 2 |
+| **13.2.3** | **Verify that** behavioral anomaly detection identifies unusual conversation patterns, excessive retry attempts, or systematic probing behaviors. | 2 |
+| **13.2.4** | **Verify that** custom rules are included to detect AI-specific threat patterns including coordinated jailbreak attempts, prompt injection campaigns, system prompt extraction attempts, and model extraction attacks. | 2 |
+| **13.2.5** | **Verify that** per-user and per-session token consumption triggers an alert when consumption exceeds defined thresholds. | 2 |
+| **13.2.6** | **Verify that** automated incident response workflows can isolate compromised models and block malicious users. | 3 |
+| **13.2.7** | **Verify that** session-level conversation trajectory analysis detects multi-turn jailbreak patterns where no individual turn is overtly malicious in isolation but the aggregate conversation exhibits attack indicators. | 3 |
+| **13.2.8** | **Verify that** LLM API traffic is monitored for covert channel indicators, including Base64-encoded payloads, structured non-human query patterns, and communication signatures consistent with malware command-and-control activity using LLM endpoints. | 3 |
 
 ---
 
@@ -44,17 +43,18 @@ Monitor and detect drift and degradation across model outputs, input distributio
 
 | # | Description | Level |
 | :--------: | ------------------------------------------------------------------------------------------------------------------- | :---: |
-| **13.3.1** | **Verify that** model performance metrics (accuracy, precision, recall, F1 score, confidence scores, latency, and error rates) are continuously monitored across model versions and time periods and compared against documented baselines. | 1 |
-| **13.3.2** | **Verify that** baseline performance profiles are formally documented and version-controlled, and are reviewed at a defined frequency or after any model or data pipeline change. | 2 |
-| **13.3.3** | **Verify that** automated alerting triggers when performance metrics exceed predefined degradation thresholds or deviate significantly from baselines. | 2 |
-| **13.3.4** | **Verify that** hallucination detection monitors identify and flag instances when model outputs contain factually incorrect, inconsistent, or fabricated information. | 2 |
-| **13.3.5** | **Verify that** data drift detection monitors input distribution changes that may impact model performance, using statistically validated methods appropriate to the data type. | 1 |
+| **13.3.1** | **Verify that** model performance metrics (accuracy, precision, recall, F1 score, confidence scores, latency, and error rates) are continuously monitored across model versions and time periods. | 1 |
+| **13.3.2** | **Verify that** data drift detection monitors input distribution changes that may impact model performance, using statistically validated methods matched to the input data type (e.g., KS test or PSI for tabular numeric features, embedding-distance metrics for text or image). | 1 |
+| **13.3.3** | **Verify that** baseline performance profiles are formally documented and version-controlled, and are reviewed at a defined frequency or after any model or data pipeline change. | 2 |
+| **13.3.4** | **Verify that** automated alerting triggers when performance metrics exceed predefined degradation thresholds or deviate significantly from baselines. | 2 |
+| **13.3.5** | **Verify that** hallucination detection monitors identify and flag instances when model outputs contain factually incorrect, inconsistent, or fabricated information. (For per-response hallucination logging, see C7.2.3.) | 2 |
 | **13.3.6** | **Verify that** schema drift in incoming data (unexpected field additions, removals, type changes, or format variations) is detected and triggers alerting. | 2 |
 | **13.3.7** | **Verify that** concept drift detection identifies changes in the relationship between inputs and expected outputs. | 2 |
-| **13.3.8** | **Verify that** degradation root cause analysis correlates performance drops with data changes, infrastructure issues, or external factors. | 3 |
-| **13.3.9** | **Verify that** sudden unexplained behavioral shifts are distinguished from gradual expected operational drift, with a security escalation path defined for unexplained sudden drift. | 3 |
-| **13.3.10** | **Verify that** performance degradation alerts trigger a defined remediation workflow (e.g., manual review, retraining, or replacement). | 2 |
-| **13.3.11** | **Verify that** hallucination rates are tracked as continuous time-series metrics to enable trend analysis and detection of sustained model degradation. | 2 |
+| **13.3.8** | **Verify that** performance degradation alerts trigger a defined remediation workflow (e.g., manual review, retraining, or replacement). | 2 |
+| **13.3.9** | **Verify that** hallucination rates are tracked as continuous time-series metrics to enable trend analysis and detection of sustained model degradation. | 2 |
+| **13.3.10** | **Verify that** training pipeline instrumentation continuously monitors runtime duration, loss trajectory, and convergence rate against established baselines for equivalent dataset size and model architecture, and that statistically significant deviations (e.g., abnormally prolonged training duration or erratic loss curves) trigger automated alerts and gating of the resulting model artifact pending investigation, as such anomalies may indicate the presence of adversarial poisoning payloads in the training data. | 2 |
+| **13.3.11** | **Verify that** degradation root cause analysis correlates performance drops with data changes, infrastructure issues, or external factors. | 3 |
+| **13.3.12** | **Verify that** sudden unexplained behavioral shifts are distinguished from gradual expected operational drift, with a security escalation path defined for unexplained sudden drift. | 3 |
 
 ---
 
@@ -62,11 +62,8 @@ Monitor and detect drift and degradation across model outputs, input distributio
 
 | # | Description | Level |
 | :--------: | ------------------------------------------------------------------------------------------------------------------- | :---: |
-| **13.4.1** | **Verify that** operational metrics including request latency, token consumption, memory usage, and throughput are continuously collected and monitored. | 1 |
-| **13.4.2** | **Verify that** success and failure rates are tracked with categorization of error types and their root causes. | 1 |
-| **13.4.3** | **Verify that** resource utilization monitoring includes GPU/CPU usage, memory consumption, and storage requirements with alerting on threshold breaches. | 2 |
-| **13.4.4** | **Verify that** token usage is tracked at granular attribution levels including per user, per session, per feature endpoint, and per team or workspace. | 2 |
-| **13.4.5** | **Verify that** output-to-input token ratio anomalies are detected and alerted. | 2 |
+| **13.4.1** | **Verify that** token usage is tracked at granular attribution levels including per user, per session, per feature endpoint, and per team or workspace. | 2 |
+| **13.4.2** | **Verify that** output-to-input token ratio anomalies are detected and alerted. | 2 |
 
 ---
 
@@ -80,33 +77,17 @@ Monitor and detect drift and degradation across model outputs, input distributio
 
 ---
 
-## C13.6 DAG Visualization & Workflow Security
+## C13.6 Proactive Security Behavior Monitoring
 
-Protect workflow visualization systems from information leakage and manipulation attacks.
-
-| # | Description | Level |
-| :--------: | ------------------------------------------------------------------------------------------------------------------- | :---: |
-| **13.6.1** | **Verify that** DAG visualization data is sanitized to remove sensitive information before storage or transmission. | 1 |
-| **13.6.2** | **Verify that** workflow visualization access controls ensure only authorized users can view agent decision paths and reasoning traces. | 1 |
-| **13.6.3** | **Verify that** DAG data integrity is protected through cryptographic signatures and tamper-evident storage mechanisms. | 2 |
-| **13.6.4** | **Verify that** workflow visualization systems implement input validation to prevent injection attacks through crafted node or edge data. | 2 |
-| **13.6.5** | **Verify that** real-time DAG updates are rate-limited and validated to prevent denial-of-service attacks on visualization systems. | 3 |
-
----
-
-## C13.7 Proactive Security Behavior Monitoring
-
-Detection and prevention of security threats through proactive agent behavior analysis.
-
-> **Scope note:** C13.7 addresses monitoring and logging of proactive agent behaviors. 13.7.4 requires audit trail coverage for approval events on security-critical actions. The requirement to obtain approval before executing such actions is governed by C9.2 (runtime execution gate) and C14.2 (oversight policy). Satisfying 13.7.4 requires evidence that approval events are logged with sufficient detail — not merely that approvals occur.
+Detect and prevent security threats arising from proactive (agent-initiated) behavior, including pre-execution validation, behavior pattern analysis, and audit trails for approval of security-critical actions.
 
 | # | Description | Level |
 | :--------: | ------------------------------------------------------------------------------------------------------------------- | :---: |
-| **13.7.1** | **Verify that** proactive agent behaviors are security-validated before execution with risk assessment integration. | 1 |
-| **13.7.2** | **Verify that** autonomous initiative triggers include security context evaluation and threat landscape assessment. | 2 |
-| **13.7.3** | **Verify that** proactive behavior patterns are analyzed for potential security implications and unintended consequences. | 2 |
-| **13.7.4** | **Verify that** audit logs capture the complete approval chain for security-critical proactive actions, including approver identity, timestamp, action parameters, and decision outcome. | 3 |
-| **13.7.5** | **Verify that** behavioral anomaly detection identifies deviations in proactive agent patterns that may indicate compromise. | 3 |
+| **13.6.1** | **Verify that** proactive agent behaviors are security-validated before execution with risk assessment integration. | 1 |
+| **13.6.2** | **Verify that** autonomous initiative triggers include security context evaluation and threat landscape assessment. | 2 |
+| **13.6.3** | **Verify that** proactive behavior patterns are analyzed for potential security implications and unintended consequences. | 2 |
+| **13.6.4** | **Verify that** audit logs capture the complete approval chain for security-critical proactive actions, including approver identity, timestamp, action parameters, and decision outcome. | 3 |
+| **13.6.5** | **Verify that** behavioral anomaly detection identifies deviations in proactive agent patterns that may indicate compromise. | 3 |
 
 ---
 
@@ -114,5 +95,8 @@ Detection and prevention of security threats through proactive agent behavior an
 
 * [OWASP Top 10 for LLM Applications 2025](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
 * [MITRE ATLAS - Adversarial Threat Landscape for AI Systems](https://atlas.mitre.org/)
-* [NIST AI Risk Management Framework (AI RMF 1.0)](https://www.nist.gov/system/files/documents/2023/01/26/AI%20RMF%201.0.pdf)
+* [NIST AI Risk Management Framework (AI RMF 1.0)](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf)
 * [NIST AI 100-1 - Artificial Intelligence Risk Management Framework](https://doi.org/10.6028/NIST.AI.100-1)
+* [OWASP Agentic AI Threats and Mitigations](https://genai.owasp.org/resource/agentic-ai-threats-and-mitigations/)
+* [Microsoft Agent Governance Toolkit](https://github.com/microsoft/agent-governance-toolkit)
+* [NIST SP 800-207 Zero Trust Architecture](https://nvlpubs.nist.gov/nistpubs/specialpublications/NIST.SP.800-207.pdf)

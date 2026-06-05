@@ -2,13 +2,13 @@
 
 ## Control Objective
 
-AI-specific infrastructure components must be hardened against model theft, data leakage, and cross-tenant contamination. This chapter covers AI workload sandboxing, AI accelerator hardware security, and edge/distributed AI deployment security. General infrastructure security controls (container hardening, network segmentation, secrets management, CI/CD pipeline security) are covered by ASVS, CIS Benchmarks, and NIST SP 800-53, and are not repeated here. AI-specific supply chain controls are covered in C6.
+AI-specific infrastructure components must be hardened against model theft, data leakage, and cross-tenant contamination. This chapter covers AI workload sandboxing, AI accelerator hardware security, and edge/distributed AI deployment security.
 
 ---
 
 ## C4.1 AI Workload Sandboxing & Validation
 
-Isolate untrusted AI models in secure sandboxes and protect sensitive AI workloads using trusted execution environments (TEEs) and confidential computing technologies.
+Isolate untrusted AI models in secure sandboxes and protect sensitive AI workloads using trusted execution environments (TEEs) and confidential computing technologies. For tool and plugin execution sandboxing within agentic workflows, see C9.3.
 
 | # | Description | Level |
 | :--------: | ------------------------------------------------------------------------------------------ | :---: |
