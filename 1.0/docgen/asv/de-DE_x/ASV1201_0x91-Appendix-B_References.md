@@ -1,12 +1,12 @@
 # Anhang B: Referenzen
 
-Die folgenden Standards, Frameworks und Veröffentlichungen werden in AISVS durchgehend referenziert.
+Die folgenden Standards, Rahmenwerke und Veröffentlichungen werden in AISVS durchgehend zitiert.
 
-## Standards und Frameworks
+## Standards und Rahmenwerke
 
 * [NIST AI Risk Management Framework 1.0](https://nvlpubs.nist.gov/nistpubs/ai/nist.ai.100-1.pdf)
 * [NIST SP 800-218A: Secure Software Development Practices for Generative AI](https://csrc.nist.gov/pubs/sp/800/218/a/final)
-* [ISO/IEC 42001:2023: AI Management Systems Requirements](https://www.iso.org/standard/81230.html)
+* [ISO/IEC 42001:2023: AI Management Systems Requirements](https://www.iso.org/standard/42001)
 * [OWASP Application Security Verification Standard (ASVS)](https://owasp.org/www-project-application-security-verification-standard/)
 * [OWASP Top 10 for Large Language Model Applications](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
 * [OWASP Secure Coding Practices: Quick Reference Guide](https://owasp.org/www-project-secure-coding-practices-quick-reference-guide/)
@@ -25,13 +25,13 @@ Die folgenden Standards, Frameworks und Veröffentlichungen werden in AISVS durc
 * [FIPS 140-3: Security Requirements for Cryptographic Modules](https://csrc.nist.gov/publications/detail/fips/140/3/final)
 * [NIST Post-Quantum Cryptography Standards](https://csrc.nist.gov/projects/post-quantum-cryptography)
 
-## Datenschutz und Datensicherung
+## Datenschutz und Datensicherheit
 
 * [General Data Protection Regulation (GDPR)](https://gdpr-info.eu/)
 * [EU Artificial Intelligence Act](https://artificialintelligenceact.eu/)
 * [California Consumer Privacy Act (CCPA)](https://oag.ca.gov/privacy/ccpa)
 
-## Richtlinien-Engines
+## Policy-Engines
 
 * [Open Policy Agent (OPA)](https://www.openpolicyagent.org/)
 * [Cedar Policy Language](https://www.cedarpolicy.com/)
