@@ -2,91 +2,86 @@
 
 ## Kontrollziel
 
-Behalten Sie strenge Datenschutzzusicherungen über den gesamten AI-Lebenszyklus hinweg bei (Sammlung, Training, Inferenz und Incident Response), sodass personenbezogene Daten nur mit klarer Einwilligung, minimal erforderlichem Umfang, nachweisbarer Löschung und formalen Datenschutzgarantien verarbeitet werden.
+Wahren Sie strenge Datenschutzzusicherungen über den gesamten KI-Lebenszyklus hinweg (Datenbeschaffung, Training, Inferenz und Incident Response), sodass personenbezogene Daten nur mit eindeutiger Einwilligung, im minimal notwendigen Umfang, mit nachweisbarer Löschung (Erasure) und mit formellen Datenschutzgarantien verarbeitet werden. Dieses Kapitel konzentriert sich auf KI-spezifische Datenschutzbedenken: Datenschutz-Eigenschaften von Trainingsdaten und daraus abgeleiteten Modellartefakten, Löschung und Unlearning über ML-Artefakte hinweg, Differential Privacy-Budgetverwaltung für das Training, Purpose Binding für Datensätze und Modelle, consent-aware Inferenz-Gating sowie datenschutzbezogene Kontrollmechanismen für Federated Learning.
 
 ---
 
 ## C12.1 Anonymisierung & Datenminimierung
 
-Entfernen Sie persönliche Identifikatoren vor dem Training oder wandeln Sie sie um, um eine Re-Identifizierung zu verhindern und die Datenschutzbelastung zu minimieren.
+Entfernen oder transformieren Sie persönliche Kennungen vor dem Training, um eine Re-Identifizierung zu verhindern und die Privatsphäreexposition zu minimieren.
 
-|   #    | Beschreibung                                                                                                                                                              | Ebene |
-| :----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
-| 12.1.1 | Verifizieren Sie, dass direkte und quasi-identifizierende Merkmale entfernt und gehasht werden.                                                                           |   1   |
-| 12.1.2 | Stellen Sie sicher, dass automatisierte Audits k-Anonymität/l-Diversität messen und eine Warnung ausgeben, wenn Schwellenwerte unter die Richtlinie fallen.               |   2   |
-| 12.1.3 | Überprüfen Sie, dass modellbasierte Feature-Importance-Berichte keinen Identifier-Leckage über eine gegenseitige Information von ε = 0.01 hinaus belegen.                 |   2   |
-| 12.1.4 | Stellen Sie sicher, dass formale Beweise oder Zertifizierungen für synthetische Daten das Risiko einer Re-Identifizierung ≤ 0.05 auch unter Verknüpfungsangriffen zeigen. |   3   |
-
----
-
-## C12.2 Recht auf Vergessenwerden & Durchsetzung von Löschung
-
-Stellen Sie sicher, dass Löschanfragen von betroffenen Personen über alle KI-Artefakte hinweg propagiert werden, und dass das Modell-Unlearning verifizierbar ist.
-
-|   #    | Beschreibung                                                                                                                                                                                                     | Ebene |
-| :----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
-| 12.2.1 | Überprüfen Sie, dass Datenschutzlöschanfragen für Betroffene innerhalb von Service Level Agreements von weniger als 30 Tagen in Rohdaten, Checkpoints, Embeddings, Protokollen und Backups weitergegeben werden. |   1   |
-| 12.2.2 | Verifizieren Sie, dass "machine-unlearning"-Routinen physisch neu trainieren oder mithilfe zertifizierter unlearning-Algorithmen Entfernung approximieren.                                                       |   2   |
-| 12.2.3 | Verifizieren Sie, dass die Bewertung des Shadow-Modells beweist, dass vergessene Datensätze nach dem Unlearning einen Einfluss von weniger als 1% auf die Ausgaben haben.                                        |   2   |
-| 12.2.4 | Verifizieren Sie, dass Löschereignisse unveränderlich protokolliert und für Aufsichtsbehörden nachvollziehbar sind.                                                                                              |   3   |
+|   #    | Beschreibung                                                                                                                                                                                                                                             | Ebene |
+| :----: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
+| 12.1.1 | Stellen Sie sicher, dass direkte und quasi-identifizierende Merkmale in Trainings- und Feinabstimmungsdatensätzen entfernt, gehasht oder generalisiert werden, bevor die Daten verwendet werden, um ein Modell zu trainieren oder zu aktualisieren.      |   1   |
+| 12.1.2 | Stellen Sie sicher, dass automatisierte Audits k-Anonymität oder l-Diversität in Trainingsdatensätzen messen und benachrichtigen, wenn die Schwellenwerte unter die Richtlinie fallen.                                                                   |   2   |
+| 12.1.3 | Stellen Sie sicher, dass Modell-Feature-Importance- oder Attributionsanalysen auf trainierten Modellen durchgeführt werden, um zu bestätigen, dass kein entfernter Identifier oder quasi-Identifier als hochwichtige Feature rekonstruiert wurde.        |   2   |
+| 12.1.4 | Stellen Sie sicher, dass formale Beweise oder Zertifizierungen für synthetische Daten zeigen, dass das Risiko einer Re-Identifizierung gegenüber trainierten Modellen unter Verknüpfungsangriffen weiterhin unter einem dokumentierten Richtwert bleibt. |   3   |
 
 ---
 
-## C12.3 Schutzmaßnahmen zur Differential-Privacy
+## C12.2 Recht auf Vergessenwerden & Durchsetzung der Löschung
 
-Verfolgen und Erzwingen von Datenschutzbudgets, um formale Garantien gegen individuelle Daten-Lecks bereitzustellen.
+Stellen Sie sicher, dass Anfragen zur Löschung von betroffenen Personen sich über alle KI-Artefakte hinweg ausbreiten, und dass das Modell-Unlearning verifizierbar ist.
 
-|   #    | Beschreibung                                                                                                                                                                                                                      | Ebene |
-| :----: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
-| 12.3.1 | Überprüfen Sie, dass der Verbrauch des Differential Privacy Budgets (sowohl ε- als auch δ-Werte) pro Trainingsrunde verfolgt und aufgezeichnet wird.                                                                              |   2   |
-| 12.3.5 | Überprüfen Sie, ob Dashboards für den kumulierten Differential Privacy-Budget über Benachrichtigungen verfügen, wenn ε die festgelegten Richtlinien-Schwellenwerte überschreitet.                                                 |   2   |
-| 12.3.2 | Verifizieren Sie, dass Black-Box-Privacy-Audits ε̂ innerhalb von 10% des deklarierten Werts schätzen.                                                                                                                             |   2   |
-| 12.3.3 | Stellen Sie sicher, dass formale Beweise alle Post-Training-Feinabstimmungen und Einbettungen abdecken.                                                                                                                           |   3   |
-| 12.3.4 | Stellen Sie sicher, dass föderierte Lernsysteme Canary-basierte Datenschutzprüfungen implementieren, um den Datenschutzverlust empirisch einzugrenzen; die Prüfergebnisse werden protokolliert und pro Trainingszyklus überprüft. |   3   |
+|   #    | Beschreibung                                                                                                                                                                                                                                                                                                                                                                        | Ebene |
+| :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
+| 12.2.1 | Verifizieren Sie, dass Data-Subject-Löschanfragen auf AI-abgeleitete Artefakte einschließlich Trainings- und Fine-Tuning-Datensätzen, Modell-Checkpoints, Evaluationssets, abgeleiteten Caches und Feature Stores innerhalb einer Service-Level-Vereinbarung von weniger als 30 Tagen propagiert werden. Die Propagation von Einbettungen und RAG-Indexes wird durch C8.3 geregelt. |   1   |
+| 12.2.2 | Verifizieren Sie, dass Shadow-Model- oder Membership-Inference-Evaluierungen zeigen, dass vergessene Datensätze weniger Einfluss auf die Ausgaben des Modells haben als eine dokumentierte Schwellenwert-Policy nach dem Unlearning.                                                                                                                                                |   2   |
+| 12.2.3 | Verifizieren Sie, dass Machine-Unlearning-Routinen, wenn sie behauptet werden, entweder das betroffene Modell physisch auf den zurückbehaltenen Daten neu trainieren oder einen zertifizierten Unlearning-Algorithmus anwenden, mit dokumentierten (ε, δ)-Garantien.                                                                                                                |   3   |
+
+---
+
+## C12.3 Schutzmaßnahmen der Differential Privacy
+
+Verfolgen und erzwingen Sie Datenschutzbudgets, um formale Garantien gegen individuelle Datenlecks bereitzustellen.
+
+|   #    | Beschreibung                                                                                                                                                                                                                                                                               | Ebene |
+| :----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :---: |
+| 12.3.1 | Stellen Sie sicher, dass der Differential-Privacy-Budgetverbrauch (sowohl ε- als auch δ-Werte) pro Trainingsrunde verfolgt und aufgezeichnet wird und dass der kumulative Verbrauch einen Alarm auslöst, wenn ε die festgelegten Richtlinien-Schwellenwerte überschreitet.                 |   2   |
+| 12.3.2 | Verifizieren Sie, dass Black-Box-Privacy-Audits empirisch ε̂ als Untergrenze auf einem angegebenen Konfidenzniveau (z.B. Clopper-Pearson- oder f-DP-Konfidenzintervalle) schätzen und dass die Schätzung mit dem deklarierten Budget innerhalb der dokumentierten Toleranz konsistent ist. |   2   |
+| 12.3.3 | Stellen Sie sicher, dass formale Datenschutzbeweise alle Post-Training-Feinabstimmungen und Embedding-Generierungsschritte abdecken, die dieselben Quelldaten verbrauchen.                                                                                                                 |   3   |
 
 ---
 
 ## C12.4 Zweckbindung & Scope-Creep-Schutz
 
-Verhindern Sie, dass Modelle und Datensätze über ihren ursprünglich vereinbarten Zweck hinaus verwendet werden.
+Verhindern, dass Modelle und Datensätze über ihren ursprünglich zugestimmten Zweck hinaus verwendet werden.
 
-|   #    | Beschreibung                                                                                                                                                           | Ebene |
-| :----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
-| 12.4.1 | Verifizieren Sie, dass jedes Dataset und jeder Model-Checkpoint einen maschinenlesbaren Zweck-Tag trägt, der mit der ursprünglichen Einwilligung übereinstimmt.        |   1   |
-| 12.4.2 | Stellen Sie sicher, dass Laufzeitmonitore Abfragen erkennen, die nicht mit dem deklarierten Zweck des Datensatzes oder Modells übereinstimmen.                         |   1   |
-| 12.4.5 | Überprüfen Sie, dass Abfragen, die als unvereinbar mit dem angegebenen Zweck erkannt wurden, eine sanfte Ablehnung auslösen oder bis zur Überprüfung blockiert werden. |   1   |
-| 12.4.3 | Überprüfen Sie, dass policy-as-code gates die erneute Bereitstellung von Modellen in neue Domains ohne DPIA-Review blockieren.                                         |   3   |
-| 12.4.4 | Überprüfen Sie, dass formale Nachverfolgbarkeitsbeweise sicherstellen, dass jeder Lebenszyklus personenbezogener Daten innerhalb des genehmigten Umfangs bleibt.       |   3   |
+|   #    | Beschreibung                                                                                                                                                                                                                                                                   | Ebene |
+| :----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :---: |
+| 12.4.1 | Stellen Sie sicher, dass jedes Datenset und jeder Modell-Checkpoint über ein maschinenlesbares Zweck-Tag verfügt, das mit der ursprünglichen Einwilligung und der Rechtsgrundlage übereinstimmt, unter der die Quelldaten erhoben wurden.                                      |   1   |
+| 12.4.2 | Stellen Sie sicher, dass Laufzeitmonitore Abfragen erkennen, die nicht mit dem deklarierten Zweck des Datensatzes oder des Modells übereinstimmen, und dass erkannte Abfragen entweder zu einer Soft-Ablehnung führen oder blockiert werden, bis eine Überprüfung erfolgt ist. |   1   |
+| 12.4.3 | Stellen Sie sicher, dass Policy-as-Code-Gates eine erneute Bereitstellung von Modellen in neue Domänen ohne DPIA-Prüfung blockieren.                                                                                                                                           |   3   |
+| 12.4.4 | Überprüfen Sie, dass formale Traceability-Nachweise zeigen, dass jeder Lebenszyklus personenbezogener Daten innerhalb des vereinbarten Zuständigkeitsbereichs bleibt.                                                                                                          |   3   |
 
 ---
 
-## C12.5 Einwilligungsverwaltung & Nachverfolgung der Rechtsgrundlage
+## C12.5 Einwilligungsmanagement & Nachverfolgung der Rechtsgrundlage
 
-Erfasse, erzwinge und widerrufe die Einwilligung über AI-Verarbeitungs-Pipelines hinweg.
+Setzen Sie die Einwilligung bei AI-spezifischen Entscheidungspunkten durch (Training-Datenaufnahme, Inferenz) und propagieren Sie den Widerruf über alle AI-Artefakte hinweg.
 
-|   #    | Beschreibung                                                                                                                                                                                                               | Ebene |
-| :----: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
-| 12.5.1 | Verifizieren Sie, dass eine Consent-Management-Plattform (CMP) den Opt-in-Status, den Zweck und die Aufbewahrungsdauer je betroffener Person erfasst.                                                                      |   1   |
-| 12.5.2 | Verifizieren Sie, dass APIs Consent-Token offenlegen, die den Opt-in-Status der betroffenen Person, den Zweck und die Aufbewahrungsfrist kodieren.                                                                         |   2   |
-| 12.5.4 | Stellen Sie sicher, dass Modelle die Gültigkeit des Zustimmungs-Token-Scopes vor der Inferenz überprüfen und die Verarbeitung verweigern, wenn das Token fehlt, ungültig ist oder den angeforderten Vorgang nicht abdeckt. |   2   |
-| 12.5.3 | Verifizieren Sie, dass abgelehnte oder zurückgezogene Einwilligungen die Verarbeitungspipelines innerhalb von 24 Stunden stoppen.                                                                                          |   2   |
+|   #    | Beschreibung                                                                                                                                                                                                                                                                       | Ebene |
+| :----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
+| 12.5.1 | Prüfen Sie, dass die Modellinferenz den Gültigkeitsbereich der Einwilligung validiert, bevor die Verarbeitung erfolgt, und decken Sie sowohl die angeforderte Operation als auch die betroffenen Personen ab, deren Daten die Antwort maßgeblich beeinflussen.                     |   2   |
+| 12.5.2 | Verifizieren Sie, dass das System die Antwort verweigert oder herabstuft, bevor es sie an den Aufrufer übergibt, wenn der validierte Einwilligungsumfang die angeforderte Operation oder die betroffenen Personen, deren Daten die Antwort wesentlich beeinflussen, nicht abdeckt. |   2   |
+| 12.5.3 | Pruefen Sie, dass der Widerruf der Einwilligung die gleiche AI-Artifact-Propagation-Pipeline ausloest wie eine Loeschanfrage (siehe 12.2.1), und dass Inferenzpfade, die auf die zurueckgezogenen Daten angewiesen sind, innerhalb der gleichen SLA deaktiviert werden.            |   2   |
 
 ---
 
 ## C12.6 Föderiertes Lernen mit Datenschutzkontrollen
 
-Wenden Sie differentielle Privatsphäre und auf Vergiftungsangriffe resilienter Aggregation auf das föderierte Lernen an, um die individuellen Teilnehmerdaten zu schützen.
+Wenden Sie Differential Privacy und Datenschutz-Auditing auf föderiertes Lernen an, um die personenbezogenen Daten einzelner Teilnehmender zu schützen.
 
-|   #    | Beschreibung                                                                                                                     | Ebene |
-| :----: | -------------------------------------------------------------------------------------------------------------------------------- | :---: |
-| 12.6.1 | Überprüfen Sie, dass Client-Updates vor der Aggregation eine lokale Differential-Privacy-Rauschaddition verwenden.               |   1   |
-| 12.6.2 | Stellen Sie sicher, dass Trainingsmetriken differenziell privat sind und niemals den Verlust eines einzelnen Clients offenlegen. |   2   |
-| 12.6.3 | Überprüfen Sie, ob eine poisoning-resistente Aggregation (z.B. Krum/Gekürzter Mittelwert) aktiviert ist.                         |   2   |
-| 12.6.4 | Überprüfen Sie, dass formale Beweise den gesamten ε-Budgetnachweis mit weniger als 5 Nutzungsverlust erbringen.                  |   3   |
+|   #    | Beschreibung                                                                                                                                                                                                                            | Ebene |
+| :----: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
+| 12.6.1 | Überprüfen Sie, dass Client-Updates eine lokale Differential-Privacy-Rauschbeimischung vor der Aggregation anwenden, oder dass ein dokumentierter zentraler Differential-Privacy-Mechanismus am Aggregator durchgesetzt wird.           |   1   |
+| 12.6.2 | Stellen Sie sicher, dass Trainingsmetriken, die an den Aggregator oder an Clients weitergegeben werden, differenziell privat sind und niemals den Verlust eines einzelnen Clients oder einzelne Client-Gradienten offenlegen.           |   2   |
+| 12.6.3 | Stellen Sie sicher, dass föderierte Lernsysteme canary-basierte Datenschutzprüfungen implementieren, um den Datenschutzverlust empirisch zu begrenzen, wobei die Prüfergebnisse protokolliert und pro Trainingszyklus überprüft werden. |   3   |
+| 12.6.4 | Verifizieren Sie, dass formale Beweise das gesamte ε-Budget sowie die entsprechende Nutzenminderung gegenüber einer deklarierten Baseline dokumentieren.                                                                                |   3   |
 
 ---
 
-## References
+## Referenzen
 
 * [OWASP LLM02:2025 Sensitive Information Disclosure](https://genai.owasp.org/llmrisk/llm022025-sensitive-information-disclosure/)
 * [General Data Protection Regulation (GDPR)](https://gdpr-info.eu/)

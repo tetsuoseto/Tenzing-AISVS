@@ -2,78 +2,77 @@
 
 ## Kontrollziel
 
-KI-Lieferkettenangriffe nutzen Drittanbieter-Modelle, -Frameworks oder -Datensätze aus, um Backdoors, Verzerrungen oder ausnutzbaren Code einzubetten. Diese Kontrollen stellen die Nachverfolgbarkeit, Prüfung und Überwachung von KI-spezifischen Lieferkettenartefakten während des gesamten Modell-Lebenszyklus sicher.
-
-Allgemeine Software-Lieferketten-Controls (Dependency-Scanning, Version-Pinning, Lockfile-Durchsetzung, Container-Digest-Pinning, Build-Attestierung, reproduzierbare Builds, SBOM-Generierung, CI/CD-Audit-Logging usw.) werden durch ASVS v5 (V13, V15), OWASP SCVS, SLSA und CIS Controls abgedeckt und hier nicht wiederholt. Dieses Kapitel konzentriert sich auf Lieferkettenrisiken, die für KI einzigartig sind: Integrität von Modellartefakten, Backdoor-Erkennung in vortrainierten Gewichten, Datenvergiftung, AI-spezifische Bills of Materials sowie Vertrauen in den Modellherausgeber.
+KI-Lieferkettenangriffe nutzen Drittanbieter-Modelle, Frameworks oder Datensätze aus, um Hintertüren, Verzerrungen oder ausnutzbaren Code einzubetten. Diese Kontrollen gewährleisten Nachverfolgbarkeit, Prüfung und Überwachung von KI-spezifischen Lieferkettenartefakten während des gesamten Modelllebenszyklus. Dieses Kapitel behandelt die für KI einzigartigen Lieferkettenrisiken: Integrität von Modellartefakten, Erkennung von Hintertüren in vortrainierten Gewichten, Datenvergiftung, KI-spezifische Bills of Materials sowie Vertrauen in den Modell-Publisher.
 
 ---
 
 ## C6.1 Überprüfung vorab trainierter Modelle & Integrität der Herkunft
 
-Bewerten und authentifizieren Sie die Herkunft von Drittanbieter-Modellen und deren versteckte Verhaltensweisen, bevor Sie ein Fine-Tuning oder eine Bereitstellung durchführen.
+Bewerten und verifizieren Sie die Herkunft von Modellen Dritter und deren verborgene Verhaltensweisen, bevor Sie eine Feinabstimmung oder Bereitstellung durchführen.
 
-|   #   | Beschreibung                                                                                                                                                                                                                                                                                                                    | Ebene |
-| :---: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
-| 6.1.1 | Überprüfen Sie, dass jedes Drittanbieter-Modellartefakt eine signierte Ursprungs- und Integritätsaufzeichnung enthält, die seine Quelle, Version und den Integritäts-Checksumme identifiziert.                                                                                                                                  |   1   |
-| 6.1.2 | Stellen Sie sicher, dass Modelle vor dem Import mithilfe automatisierter Tools auf bösartige Layers oder Trojaner-Trigger überprüft werden.                                                                                                                                                                                     |   1   |
-| 6.1.3 | Stellen Sie sicher, dass Hochrisikomodelle (z. B. öffentlich hochgeladene Gewichte, nicht verifizierte Ersteller) in Quarantäne bleiben, bis eine menschliche Überprüfung und Freigabe erfolgt.                                                                                                                                 |   2   |
-| 6.1.4 | Stellen Sie sicher, dass Drittanbieter- oder Open-Source-Modelle eine definierte Verhaltens-Validierungstest-Suite bestehen (die Sicherheit, Ausrichtung und Fähigkeitsgrenzen abdeckt, die für den Bereitstellungskontext relevant sind), bevor sie importiert oder in irgendeine Nicht-Entwicklungsumgebung befördert werden. |   2   |
-| 6.1.5 | Verifizieren Sie, dass Transfer-Learning-Feintuning den adversarialen Test zur Erkennung versteckter Verhaltensweisen besteht.                                                                                                                                                                                                  |   3   |
-
----
-
-## C6.2 Durchsetzung einer vertrauenswürdigen Herkunft für KI-Artefakte
-
-Erlaube KI-Artifact-Downloads nur von unternehmensweit genehmigten Quellen und verifiziere die Identität des Modell-Publishers.
-
-|   #   | Beschreibung                                                                                                                                                                                                                                                                                               | Ebene |
-| :---: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
-| 6.2.1 | Stellen Sie sicher, dass Modellgewichte, Datensätze und Fine-Tuning-Adapter nur von genehmigten Quellen oder internen Registern heruntergeladen werden.                                                                                                                                                    |   1   |
-| 6.2.2 | Überprüfen Sie, dass kryptografische Signaturschlüssel, die zur Authentifizierung von Modellherausgebern verwendet werden, pro Quell-Registry gepinnt sind, und dass Schlüsselrotationsereignisse eine explizite erneute Genehmigung erfordern, bevor aktualisierte Schlüssel als vertrauenswürdig gelten. |   3   |
+|   #   | Beschreibung                                                                                                                                                                                                                                                                                                                                | Ebene |
+| :---: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
+| 6.1.1 | Stellen Sie sicher, dass jedes Drittanbieter-Modell-Artifact einen signierten Herkunfts- und Integritätsnachweis enthält, der seine Quelle, Version und den Integritäts-Checksum identifiziert.                                                                                                                                             |   1   |
+| 6.1.2 | Stellen Sie sicher, dass Modelle vor dem Import mithilfe automatisierter Tools auf bösartige Schichten oder Trojaner-Auslöser überprüft werden.                                                                                                                                                                                             |   1   |
+| 6.1.3 | Stellen Sie sicher, dass Hochrisiko-Modelle (z.B. öffentlich hochgeladene Gewichte, nicht verifizierte Ersteller) unter Quarantäne bleiben, bis eine menschliche Prüfung und die Freigabe erfolgt sind.                                                                                                                                     |   2   |
+| 6.1.4 | Stellen Sie sicher, dass Dritthersteller- oder Open-Source-Modelle eine definierte Verhaltenstestsuite zur Verhaltensakzeptanz bestehen (die Sicherheit, Ausrichtung und Kompetenzgrenzen abdeckt, die für den Bereitstellungskontext relevant sind), bevor sie importiert oder in irgendeine Nicht-Entwicklungsumgebung übernommen werden. |   2   |
+| 6.1.5 | Überprüfen Sie, dass Transfer-Learning-Feinabstimmungen die adversarialen Evaluierungen bestehen, um verborgene Verhaltensweisen zu erkennen.                                                                                                                                                                                               |   3   |
 
 ---
 
-## C6.3 Risikobewertung für Datensätze von Dritten
+## C6.2 Erzwingung vertrauenswürdiger Quellen für KI-Artefakte
 
-Bewerten Sie externe Datensätze auf Vergiftung und rechtliche Compliance und überwachen Sie sie über ihren gesamten Lebenszyklus hinweg.
+Erlaube KI-Artifact-Downloads nur von von der Organisation genehmigten Quellen und überprüfe die Identität des Modell-Publishers.
 
-|   #   | Beschreibung                                                                                                                                                                  | Ebene |
-| :---: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
-| 6.3.1 | Stellen Sie sicher, dass nicht zulässiger Inhalt (z.B. urheberrechtlich geschütztes Material, PII) vor dem Training über automatisiertes Scrubbing erkannt und entfernt wird. |   1   |
-| 6.3.2 | Überprüfen Sie, dass externe Datensätze eine Risikoabschätzung hinsichtlich Vergiftung durchlaufen (z.B. Daten-Fingerprinting, Outlier-Erkennung).                            |   2   |
-| 6.3.3 | Stellen Sie sicher, dass Herkunft, Abstammung und Lizenzbedingungen für Datensätze in AI-BOM-Einträgen erfasst werden.                                                        |   2   |
-| 6.3.4 | Verifizieren Sie, dass regelmäßiges Monitoring Drift oder Beschädigung in gehosteten Datensätzen erkennt.                                                                     |   3   |
+|   #   | Beschreibung                                                                                                                                                                                                                                                                                              | Ebene |
+| :---: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
+| 6.2.1 | Überprüfen Sie, dass Modellgewichte, Datensätze und Fine-Tuning-Adapter nur von genehmigten Quellen oder internen Registries heruntergeladen werden.                                                                                                                                                      |   1   |
+| 6.2.2 | Prüfen Sie, dass kryptografische Signaturschlüssel, die zur Authentifizierung von Modelleanbieter(n) verwendet werden, pro Quell-Registry gepinnt sind, und dass Key-Rotation-Ereignisse eine explizite erneute Freigabe erfordern, bevor aktualisierte Schlüssel als vertrauenswürdig eingestuft werden. |   3   |
+
+---
+
+## C6.3 Risikoanalyse für Datensätze von Drittanbietern
+
+Bewerten Sie externe Datensätze auf Vergiftung und rechtliche Einhaltung und überwachen Sie sie während ihres gesamten Lebenszyklus.
+
+|   #   | Beschreibung                                                                                                                                                                                      | Ebene |
+| :---: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
+| 6.3.1 | Stellen Sie sicher, dass nicht zulässige Inhalte (z.B. urheberrechtlich geschütztes Material, personenbezogene Daten) vor dem Training durch automatisches Scrubbing erkannt und entfernt werden. |   1   |
+| 6.3.2 | Stellen Sie sicher, dass externe Datensätze einer Bewertung des Vergiftungsrisikos unterzogen werden (z.B. Daten-Fingerprinting, Outlier-Erkennung).                                              |   2   |
+| 6.3.3 | Stellen Sie sicher, dass Ursprung, Herkunft und Lizenzbedingungen für Datensätze in AI-BOM-Einträgen erfasst werden.                                                                              |   2   |
+| 6.3.4 | Überprüfen Sie, dass die regelmäßige Überwachung Drift oder Beschädigung in gehosteten Datensätzen erkennt.                                                                                       |   3   |
 
 ---
 
 ## C6.4 Überwachung von Supply-Chain-Angriffen
 
-Erkennen Sie KI-spezifische Supply-Chain-Bedrohungen durch Threat-Intelligence-Anreicherung und Einsatzbereitschaft im Incident Response.
+Erkennen Sie KI-spezifische Supply-Chain-Bedrohungen durch Threat-Intelligence-Anreicherung und Einsatzbereitschaft für Vorfallsreaktionen.
 
-|   #   | Beschreibung                                                                                                                                                                                                                                                                                                     | Ebene |
-| :---: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
-| 6.4.1 | Stellen Sie sicher, dass Incident-Response-Playbooks Verfahren enthalten, die spezifisch für kompromittierte AI-Artefakte sind, wie z.B. das Rollback vergifteter Modelle, die Widerrufung von Modellsignaturen und die erneute Bewertung nachgelagerter Systeme, die die betroffenen Artefakte verwendet haben. |   2   |
-| 6.4.2 | Überprüfen Sie, dass Bedrohungsaufklärungs-Anreicherungs-Tags AI-spezifische Indikatoren (z.B. Indikatoren für Kompromittierung durch Modellvergiftung) im Alert-Triage-Prozess auswerten.                                                                                                                       |   3   |
+|   #   | Beschreibung                                                                                                                                                                                                                                                                                                       | Ebene |
+| :---: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :---: |
+| 6.4.1 | Stellen Sie sicher, dass Incident-Response-Playbooks Verfahren enthalten, die speziell für kompromittierte KI-Artefakte gelten, wie das Zurücksetzen von vergifteten Modellen, die Sperrung von Modellsignaturen und die erneute Bewertung nachgelagerter Systeme, die die betroffenen Artefakte konsumiert haben. |   2   |
+| 6.4.2 | Überprüfen Sie, dass Threat-Intelligence-Enrichment-Tags AI-spezifische Indikatoren (z. B. Indicators of Compromise für Model-Poisoning) im Alert-Triage ergänzen.                                                                                                                                                 |   3   |
 
 ---
 
 ## C6.5 AI BOM für Model Artifacts
 
-Generieren und signieren Sie detaillierte AI-spezifische Stücklisten (AI-BOMs), damit nachgelagerte Verbraucher die Integrität der Komponenten zur Bereitstellungszeit überprüfen können.
+Generieren und signieren Sie detaillierte KI-spezifische Stücklisten (KI-BOMs), damit nachgelagerte Verbraucher die Integrität der Komponenten beim Deployment-Zeitpunkt überprüfen können.
 
-|   #   | Beschreibung                                                                                                                                                                                           | Ebene |
-| :---: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :---: |
-| 6.5.1 | Verifizieren Sie, dass jedes Modellartefakt eine versionierte AI-BOM veröffentlicht, die Datensätze, Gewichte, Hyperparameter, Lizenzen, Exportkontroll-Tags und Aussagen zur Datenherkunft auflistet. |   1   |
-| 6.5.2 | Überprüfen Sie, dass AI-BOMs vor der Bereitstellung kryptografisch signiert sind.                                                                                                                      |   2   |
-| 6.5.3 | Überprüfen Sie, dass die AI-BOM-Vollständigkeitsprüfungen den Build fehlschlagen lassen, wenn für irgendeine Komponente Metadaten (Hash und Lizenz) fehlen.                                            |   2   |
-| 6.5.4 | Stellen Sie sicher, dass nachgelagerte Verbraucher KI-BOMs über eine API abfragen können, um importierte Modelle zur Bereitstellungszeit zu validieren.                                                |   2   |
+|   #   | Beschreibung                                                                                                                                                                                                                                             | Ebene |
+| :---: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
+| 6.5.1 | Stellen Sie sicher, dass jedes Modellartefakt ein versioniertes, maschinenlesbares AI-BOM (z.B. CycloneDX oder SPDX) veröffentlicht, das Datensätze, Gewichte, Hyperparameter, Lizenzen, Exportkontroll-Tags sowie Aussagen zur Datenherkunft auflistet. |   1   |
+| 6.5.2 | Verifizieren Sie, dass AI-BOMs vor der Bereitstellung kryptografisch signiert sind.                                                                                                                                                                      |   2   |
+| 6.5.3 | Überprüfen Sie, dass die AI-BOM-Vollständigkeitsprüfungen den Build fehlschlagen lassen, wenn Metadaten zu einer Komponente fehlen (Hash und Lizenz).                                                                                                    |   2   |
+| 6.5.4 | Stellen Sie sicher, dass nachgelagerte Konsumenten über eine API auf AI BOMs zugreifen können, um importierte Modelle zur Laufzeit der Bereitstellung zu validieren.                                                                                     |   2   |
 
 ---
 
-## References
+## Referenzen
 
 * [OWASP LLM03:2025 Supply Chain](https://genai.owasp.org/llmrisk/llm032025-supply-chain/)
 * [MITRE ATLAS: Supply Chain Compromise](https://atlas.mitre.org/techniques/AML.T0010)
 * [SBOM Overview: CISA](https://www.cisa.gov/sbom)
 * [CycloneDX: Machine Learning Bill of Materials](https://cyclonedx.org/capabilities/mlbom/)
+* [OWASP AIBOM](https://genai.owasp.org/owasp-aibom/)
 

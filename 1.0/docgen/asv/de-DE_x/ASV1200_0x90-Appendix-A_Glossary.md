@@ -1,240 +1,282 @@
 # Anhang A: Glossar
 
-Dieses umfassende Glossar bietet Definitionen wichtiger KI-, ML- und Sicherheitsbegriffe, die im AISVS verwendet werden, um Klarheit und ein gemeinsames Verständnis sicherzustellen.
+Dieses umfassende Glossar bietet Definitionen wichtiger KI-, ML- und Sicherheitsbegriffe, die im Verlauf der AISVS verwendet werden, um Klarheit und ein gemeinsames Verständnis sicherzustellen.
 
-* Adapter – ein leichtgewichtiges Modul (z.B. LoRA, QLoRA), das zu einem vortrainierten Modell hinzugefügt wird, um sein Verhalten für eine bestimmte Aufgabe zu spezialisieren, ohne die ursprünglichen Gewichte zu verändern.
+* Adapter – Ein leichtgewichtiges Modul (z. B. LoRA, QLoRA), das zu einem vortrainierten Modell hinzugefügt wird, um sein Verhalten auf eine spezifische Aufgabe zu spezialisieren, ohne die ursprünglichen Gewichte zu verändern.
 
-* Adversarial Example – Eine Eingabe, die gezielt erstellt wurde, um ein KI-Modell dazu zu bringen, einen Fehler zu machen, oft durch das Hinzufügen subtiler Perturbationen, die für Menschen unbemerkt sind.
+* Beispiel für ein adversarialer Angriff – Eine Eingabe, die absichtlich so gestaltet wurde, dass ein KI-Modell einen Fehler macht, oft durch das Hinzufügen subtiler Perturbationen, die für Menschen nicht wahrnehmbar sind.
 
-* Adversarial Robustness – die Fähigkeit eines Modells, seine Leistung aufrechtzuerhalten und sich dagegen zu wehren, von absichtlich konstruierten, bösartigen Eingaben getäuscht oder manipuliert zu werden, die darauf ausgelegt sind, Fehler zu verursachen.
+* Adversarial Robustheit – die Fähigkeit eines Modells, seine Leistung beizubehalten und sich gegen das Vortäuschen oder Manipulieren durch absichtlich konstruierte, bösartige Eingaben zu wehren, die darauf abzielen, Fehler zu verursachen.
 
-* Adversarial Training – Eine Trainingsmethode, die Trainingsdaten durch adversariale Beispiele ergänzt, um die Robustheit des Modells gegen Störangriffen zu verbessern.
+* Adversarial Training – Eine Trainingsmethode, die Trainingsdaten durch adversariale Beispiele erweitert, um die Robustheit des Modells gegen Perturbationsangriffe zu verbessern.
 
-* Agent – Ein KI-Software-System, das Schlussfolgerungen, Planung und Speicher nutzt, um Ziele zu verfolgen und Aufgaben im Auftrag von Nutzern zu erledigen, mit einem Maß an Autonomie, um Entscheidungen zu treffen, zu lernen und sich anzupassen. Wird auch als Agentic AI bezeichnet.
+* Agent – Ein KI-Software-System, das auf Schlussfolgern, Planen und Speichern setzt, um Ziele zu verfolgen und Aufgaben im Auftrag von Nutzern zu erledigen, mit einem gewissen Maß an Autonomie, um Entscheidungen zu treffen, zu lernen und sich anzupassen. Wird auch als Agentic AI bezeichnet.
 
-* KI-BOM (KI-Bill of Materials) – Ein strukturierter Datensatz aller Komponenten in einem KI-System, einschließlich Modellen, Datensätzen, Gewichten, Hyperparametern, Frameworks und Lizenzen. Kann SPDX- oder CycloneDX-Formate verwenden. Unterscheidet sich von einer herkömmlichen SBOM dadurch, dass sie modellbezogene Artefakte über Software-Abhängigkeiten hinaus abdeckt.
+* KI-BOM (KI-Bill of Materials) – ein strukturierter Datensatz aller Komponenten in einem KI-System, einschließlich Modelle, Datensätze, Gewichte, Hyperparameter, Frameworks und Lizenzen. Kann den Formaten SPDX oder CycloneDX folgen. Unterscheidet sich von einem herkömmlichen SBOM dadurch, dass es model-spezifische Artefakte über Software-Abhängigkeiten hinaus abdeckt. Wird außerdem als AIBOM oder MBOM (Model Bill of Materials) bezeichnet.
 
-* AppArmor – ein Linux-Kernel-Sicherheitsmodul, das Programmfähigkeiten über pro-Programm-Sicherheitsprofile einschränkt und zum Sandboxing von KI-Workloads verwendet wird.
+* AppArmor – Ein Linux-Kernel-Sicherheitsmodul, das Programmfähigkeiten durch pro Programm definierte Sicherheitsprofile einschränkt und zur Isolierung (Sandboxing) von AI-Workloads verwendet wird.
 
-* Aufmerksamkeitskarte – eine Visualisierung, welche Teile einer Eingabe ein Transformer-Modell bei der Erzeugung eines Outputs berücksichtigt, verwendet als Werkzeug für Interpretierbarkeit.
+* Aufmerksamkeitskarte – Eine Visualisierung, auf welche Teile einer Eingabe ein Transformer-Modell achtet, wenn es eine Ausgabe erzeugt; verwendet als Werkzeug für Interpretierbarkeit.
 
-* Attributbasierte Zugriffskontrolle (ABAC) – Ein Zugriffskontrollparadigma, bei dem Autorisierungsentscheidungen auf Attributen des Benutzers, der Ressource, der Aktion und der Umgebung beruhen und zur Abfragezeit ausgewertet werden.
+* Attributbasierte Zugriffskontrolle (ABAC) – Ein Zugriffssteuerungsparadigma, bei dem Autorisierungsentscheidungen auf Attributen des Benutzers, der Ressource, der Aktion und der Umgebung basieren und zur Abfragezeit ausgewertet werden.
 
-* Backdoor-Angriff – Eine Art von Data-Poisoning-Angriff, bei dem das Modell darauf trainiert wird, auf bestimmte Trigger in einer bestimmten Weise zu reagieren, während es sich ansonsten normal verhält.
+* Backdoor-Angriff – Eine Art von Data-Poisoning-Angriff, bei dem das Modell darauf trainiert wird, auf bestimmte Trigger in einer spezifischen Weise zu reagieren, während es ansonsten normal funktioniert.
 
-* Bias – Systematische Fehler in den Ausgaben von KI-Modellen, die zu unfairen oder diskriminierenden Ergebnissen für bestimmte Gruppen oder in bestimmten Kontexten führen können.
+* Voreingenommenheit – Systematische Fehler in den Ausgaben von KI-Modellen, die zu unfairen oder diskriminierenden Ergebnissen für bestimmte Gruppen oder in bestimmten Kontexten führen können.
 
-* Bias-Ausnutzung – Eine Angriffstechnik, die bekannte Verzerrungen (Biases) in KI-Modellen ausnutzt, um Ausgaben oder Ergebnisse zu manipulieren.
+* Bias-Exploitation – Eine Angriffstechnik, die bekannte Verzerrungen in KI-Modellen ausnutzt, um Ausgaben oder Ergebnisse zu manipulieren.
 
-* Blue-Green-Deployment – Eine Deployment-Strategie, die zwei identische Produktionsumgebungen (Blue und Green) betreibt und so einen sofortigen Rollback ermöglicht, indem der Datenverkehr zwischen ihnen umgeschaltet wird.
+* Blue-Green-Deployment – Eine Bereitstellungsstrategie, die zwei identische Produktionsumgebungen (Blue und Green) ausführt und dadurch einen sofortigen Rollback ermöglicht, indem der Datenverkehr zwischen ihnen umgeschaltet wird.
 
-* Byzantinische Fehlertoleranz – die Fähigkeit eines verteilten Systems, Konsens zu erzielen und auch dann korrekt weiter zu funktionieren, wenn einige Knoten ausfallen oder böswillig handeln.
+* Byzantinische Fehlertoleranz – Die Fähigkeit eines verteilten Systems, einen Konsens zu erreichen und den korrekten Betrieb fortzusetzen, auch wenn einige Knoten ausfallen oder sich böswillig verhalten.
 
-* Canary-Deployment – Eine Bereitstellungsstrategie, bei der schrittweise ein kleiner Prozentsatz des Datenverkehrs an eine neue Modellversion weitergeleitet wird, um Probleme zu erkennen, bevor die vollständige Einführung erfolgt.
+* Canary Deployment – Eine Bereitstellungsstrategie, bei der schrittweise ein kleiner Prozentsatz des Traffics an eine neue Modellversion weitergeleitet wird, um Probleme zu erkennen, bevor die vollständige Einführung erfolgt.
 
-* Cedar – eine Open-Source-Richtlinien- und Bewertungs-Engine für präzise Berechtigungen, ursprünglich von Amazon entwickelt. Wird zur Implementierung von ABAC für KI-Systeme verwendet.
+* Cedar – Eine Open-Source-Policy-Sprache und ein Evaluations-Engine für feingranulare Berechtigungen, ursprünglich von Amazon erstellt. Wird bei der Implementierung von ABAC für KI-Systeme verwendet.
 
-* Zertifizierte Robustheit - eine formale mathematische Garantie, dass sich die Vorhersage eines Modells innerhalb einer vorgegebenen Störgrenzen-Umgebung um eine Eingabe nicht ändert, verifiziert durch Techniken wie die Intervall-Grenzen-Propagation.
+* Zertifizierte Robustheit – eine formale mathematische Zusicherung, dass sich die Vorhersage eines Modells innerhalb einer vorgegebenen Störungsgrenze um eine Eingabe nicht ändert, verifiziert durch Techniken wie Intervall-Grenzen-Propagation.
 
-* Chain of Thought – eine Technik zur Verbesserung des Denkens in Sprachmodellen, indem Zwischendenkschritte erzeugt werden, bevor eine endgültige Antwort ausgegeben wird.
+* Ketten-Thought – eine Technik zur Verbesserung des Denkens in Sprachmodellen, indem zwischengeschaltete Gedankenschritte generiert werden, bevor eine endgültige Antwort ausgegeben wird.
 
-* CI/CD (Continuous Integration / Continuous Deployment) – Eine Software-Engineering-Praxis, die das automatische Erstellen, Testen und Bereitstellen von Code-Änderungen steuert und in KI-Systemen für die Bereitstellung von Modellen und Pipelines verwendet wird.
+* CI/CD (Continuous Integration / Continuous Deployment) – Eine Software-Engineering-Praxis, die den automatisierten Build, das Testen und das Bereitstellen von Code-Änderungen steuert, eingesetzt in KI-Systemen für die Bereitstellung von Modellen und Pipelines.
 
-* Schutzschalter – Ein Mechanismus, der den Betrieb eines KI-Systems automatisch stoppt, wenn bestimmte Risikoschwellen überschritten werden, wie z.B. außer Kontrolle geratene Agent-Schleifen oder Budgeterschöpfung.
+* Leistungsschalter – Ein Mechanismus, der die Systemoperationen eines KI-Systems automatisch stoppt, wenn bestimmte Risikoschwellen überschritten werden, z. B. bei Endlosschleifen von Agenten oder einer Erschöpfung des Budgets.
 
-* CMP (Consent Management Platform) – Ein System, das Benutzer-Zustimmungseinstellungen verfolgt, einschließlich Opt-in-Status, Zweck und Aufbewahrungszeitraum, und die Durchsetzung von Zustimmungentscheidungen über Datenverarbeitungs-Pipelines hinweg sicherstellt.
+* CMP (Consent Management Platform) – Ein System, das die Einwilligungseinstellungen der Nutzer verfolgt, einschließlich Opt-in-Status, Zweck und Aufbewahrungsfrist, und Einwilligungsentscheidungen über Data-Processing-Pipelines hinweg durchsetzt.
 
-* Konzeptdrift – eine Änderung der statistischen Beziehung zwischen Modelleingaben und -ausgaben über die Zeit, wodurch Modellvorhersagen weniger genau werden, auch wenn die Eingabeverteilungen stabil bleiben.
+* Concept Drift – eine Veränderung der statistischen Beziehung zwischen Modell-Eingaben und -Ausgaben über die Zeit, wodurch Modellvorhersagen weniger genau werden können, auch wenn die Eingabeverteilungen stabil bleiben.
 
-* Confidential Computing – ein Sicherheitsparadigma, das Daten während der Verarbeitung schützt, indem Berechnungen in hardwaregestützten vertrauenswürdigen Ausführungsumgebungen durchgeführt werden und sichergestellt wird, dass Code und Daten verschlüsselt und vom Host isoliert bleiben.
+* Confidential Computing – ein Sicherheitsparadigma, das Daten bei der Nutzung schützt, indem die Berechnung innerhalb von durch Hardware erzwungenen vertrauenswürdigen Ausführungsumgebungen erfolgt und sichergestellt wird, dass Code und Daten verschlüsselt bleiben und vom Host isoliert sind.
 
-* Vertrauliche Inferenz – Ein Inferenzdienst, der AI-Modelle innerhalb einer vertrauenswürdigen Ausführungsumgebung (TEE) ausführt und sicherstellt, dass Modellgewichte und Inferenzdaten verschlüsselt, versiegelt und vor unbefugtem Zugriff oder Manipulation geschützt bleiben.
+* Vertrauliche Inferenz – ein Inferenzdienst, der KI-Modelle in einer sicheren Ausführungsumgebung (TEE) ausführt und sicherstellt, dass Modellgewichte und Inferenzdaten verschlüsselt, versiegelt und vor unbefugtem Zugriff oder Manipulation geschützt bleiben.
 
-* Gegenfaktische Erklärung – Eine Interpretierbarkeits-Technik, die eine Modellentscheidung erklärt, indem sie die minimalen Änderungen an den Eingabemerkmalen beschreibt, die das Vorhersageergebnis ändern würden.
+* Verfassungs-KI – ein Trainingsansatz, bei dem ein Modell durch eine Reihe schriftlicher Prinzipien (eine „Verfassung“) geleitet wird und darauf trainiert wird, seine eigenen Ausgaben zu kritisieren und zu überarbeiten, um die Richtlinienkonformität sicherzustellen, wobei ein Selbstkritikprozess als Alternative oder Ergänzung zu menschlichem Feedback verwendet wird. Siehe auch: RLHF.
 
-* Covert Channel – ein unbeabsichtigter Kommunikationspfad, der ausgenutzt werden kann, um Informationen unter Verstoß gegen die Sicherheitsrichtlinie zu übertragen, z.B. durch Zeitverhalten- oder Ressourcen-Nutzungsmuster in gemeinsam genutzter KI-Infrastruktur.
+* Kontextfenster – Die maximale Menge an Text (gemessen in Tokens), die ein Sprachmodell in einem einzelnen Inferenzaufruf verarbeiten kann, einschließlich Systemprompt, Verlauf der Unterhaltung, abgerufener Dokumente und Tool-Ausgaben. Das Kontextfenster definiert, welche Informationen dem Modell zur Inferenzzeit zur Verfügung stehen, und ist eine endliche Ressource, die erschöpft oder durch prägende (adversariale) Eingaben manipuliert werden kann.
 
-* CycloneDX – Ein offener Standard für Software- und KI-Bill-of-Materials, der die Erfassung von Komponentenbeständen, das Tracking von Schwachstellen und die Einhaltung von Lizenzen unterstützt.
+* Gegenfaktische Erklärung – Eine Interpretierbarkeits-Technik, die eine Modellentscheidung erklärt, indem sie die minimalen Änderungen an den Eingabe-Features beschreibt, die die Vorhersage ändern würden.
 
-* DAG (gerichteter azyklischer Graph) – eine Graphstruktur mit gerichteten Kanten und ohne Zyklen, die in KI-Systemen verwendet wird, um Agenten-Entscheidungspfade, Schlussfolgerungsspuren und Workflow-Abhängigkeiten darzustellen.
+* Covert Channel – Ein unbeabsichtigter Kommunikationspfad, der ausgenutzt werden kann, um Informationen unter Verstoß gegen die Sicherheitsrichtlinie zu übertragen, zum Beispiel durch Timing- oder Ressourcen-Nutzungsmuster in gemeinsam genutzter AI-Infrastruktur.
 
-* Datenaugmentation – Eine Technik, die modifizierte Kopien der Trainingsdaten erstellt (z. B. durch Rotation, Rauschen oder Paraphrasierung), um die Vielfalt des Datensatzes zu erhöhen und die Robustheit des Modells zu verbessern.
+* CycloneDX – Ein offener Standard für Software- und KI-Produkt-Assets (Bill of Materials), der die Verwaltung von Komponentenbeständen, das Nachverfolgen von Schwachstellen und die Lizenz-Compliance unterstützt.
 
-* Data Drift – eine Veränderung der statistischen Verteilung der Modell-Eingabedaten im Zeitverlauf im Vergleich zu den Daten, auf denen das Modell trainiert wurde, die potenziell die Qualität von Vorhersagen verschlechtern kann.
+* DAG (gerichteter azyklischer Graph) – eine Graphstruktur mit gerichteten Kanten und ohne Zyklen, die in KI-Systemen verwendet wird, um Agenten-Entscheidungspfade, Schlussfolgerungsspurenn und Workflow-Abhängigkeiten darzustellen.
 
-* Datenleckage – Unbeabsichtigte Offenlegung sensibler Informationen durch AI-Modellausgaben oder -verhalten.
+* Datenaugmentation – Eine Technik, die modifizierte Kopien von Trainingsdaten erstellt (z.B. durch Rotation, Rauschhinzufügung oder Umschreiben), um die Datenvielfalt des Datensatzes zu erhöhen und die Robustheit des Modells zu verbessern.
 
-* Datenvergiftung – die gezielte Manipulation von Trainingsdaten, um die Integrität des Modells zu beeinträchtigen, häufig um Hintertüren zu installieren oder die Leistung zu verschlechtern.
+* Data Drift – eine Veränderung der statistischen Verteilung der Modell-Eingabedaten über die Zeit im Vergleich zu den Daten, auf denen das Modell trainiert wurde, die möglicherweise die Qualität der Vorhersagen beeinträchtigt.
 
-* Defense-in-Depth – Eine Sicherheitsstrategie, die mehrere unabhängige Schutzmaßnahmen in Schichten kombiniert, sodass, wenn eine Schutzebene ausfällt, die anderen weiterhin Schutz bieten.
+* Datenleckage – Unbeabsichtigte Offenlegung sensibler Informationen durch KI-Modellausgaben oder -verhalten.
 
-* Defensive Distillation – Eine Trainingsmethode, bei der ein Modell anhand der weichen Wahrscheinlichkeitsausgaben eines anderen Modells trainiert wird, um Entscheidungsgrenzen zu glätten und die Anfälligkeit gegenüber adversarialen Störungen zu reduzieren.
+* Datenherkunft – die dokumentierte Kette der Herkunft, Transformation und Bewegung von Daten durch den Lebenszyklus eines KI-Systems, von der Erfassung über Vorverarbeitung, Training, Feinabstimmung, Einbettung und Inferenz. Die Herkunftsaufzeichnungen erfassen die Quellidentität, Transformationen, Zeitstempel und verantwortliche Parteien und ermöglichen Nachvollziehbarkeit sowie das Entfernen von Daten, deren Herkunft nicht verifiziert werden kann.
 
-* Differential Privacy – Ein mathematisch rigoroser Rahmen zum Veröffentlichen statistischer Informationen über Datensätze unter gleichzeitiger Wahrung der Privatsphäre einzelner Datensubjekte, quantifiziert durch ein Privacy-Budget von epsilon (ε).
+* Datenminimierung - Das Prinzip, nur die für einen definierten und dokumentierten Zweck erforderlichen Mindestdaten zu erheben, zu verarbeiten und aufzubewahren. In KI-Systemen erstreckt sich dies auf die Auswahl der Trainingsdaten, das Feature Engineering, den Aufbau des Kontextfensters, die Einbeziehung von Retrieval-Chunks sowie auf Richtlinien zur Speicherung von Speicher- und Embedding-Daten.
+
+* Datenvergiftung – Die absichtliche Manipulation von Trainingsdaten, um die Integrität des Modells zu beeinträchtigen, oft um Hintertüren zu installieren oder die Leistung zu verschlechtern.
+
+* Defense-in-Depth – Eine Sicherheitsstrategie, die mehrere unabhängige Sicherheitskontrollen in Schichten kombiniert, sodass, wenn eine Ebene fehlschlägt, die anderen weiterhin Schutz bieten.
+
+* Defensive Distillation – eine Trainingsmethode, bei der ein Modell auf den weichen Wahrscheinlichkeitsausgaben eines anderen Modells trainiert wird, um Entscheidungsgrenzen zu glätten und die Anfälligkeit für adversarielle Störungen zu verringern.
+
+* Differential Privacy – ein mathematisch präziser Rahmen zur Bereitstellung statistischer Informationen über Datensätze unter dem Schutz der Privatsphäre einzelner Datenpersonen, quantifiziert durch ein Privacy-Budget epsilon (ε).
 
 * DoS (Denial of Service) – Ein Angriff, der versucht, ein System unzugänglich zu machen, indem es mit Anfragen überflutet oder seine Ressourcen erschöpft werden.
 
-* DPIA (Datenschutz-Folgenabschätzung) – Eine formale Bewertung, die gemäß Vorschriften wie der DSGVO erforderlich ist, um Risiken für personenbezogene Daten zu bewerten und zu mindern, bevor die Verarbeitung beginnt.
+* Herabstufung (Antwort) – Zurückgeben einer Modellantwort, die weniger spezifisch, weniger personalisiert oder anderweitig in ihrem Umfang reduziert ist, wenn eine vollständige Verarbeitung eine Autorisierungs- oder Einwilligungsgrenze überschreiten würde. Beispiele hierfür sind das Filtern von Abruf-Teilen, die aus nicht-einwilligenden betroffenen Personen stammen, das Unterdrücken personalisierter Felder oder das Zurückgeben einer generischen Antwort anstelle einer Antwort, die in materieller Weise auf eingeschränkten Daten beruht. Verweigerung ist stets eine zulässige Herabstufung. Zulässige Herabstufungsverhaltensweisen sollten pro Inferenzpfad dokumentiert werden.
 
-* DP-SGD (Differenziell Private Stochastic Gradient Descent) – Ein Trainingsalgorithmus, der kalibriertes Rauschen zu Gradientenaktualisierungen während des Modelltrainings hinzufügt, um formale Garantien für differenzielle Privatsphäre bereitzustellen.
+* DPIA (Datenschutz-Folgenabschätzung) – Eine formale Bewertung, die gemäß Vorschriften wie der DSGVO erforderlich ist, um Risiken für personenbezogene Daten vor Beginn der Verarbeitung zu bewerten und zu mindern.
 
-* DRTM (Dynamic Root of Trust for Measurement) – ein Hardware-Mechanismus, der zur Laufzeit einen vertrauenswürdigen Ausführungseinstiegspunkt herstellt und damit die Integritätsprüfung von KI-Beschleuniger-Workloads ermöglicht.
+* DP-SGD (Differentially Private Stochastic Gradient Descent) – Ein Trainingsalgorithmus, der während des Modelltrainings kalibriertes Rauschen zu Gradientenaktualisierungen hinzufügt, um formale Differential Privacy-Garantien bereitzustellen.
 
-* Einbettungen – Dichte Vektor-Darstellungen von Daten (Text, Bilder usw.), die in einem hochdimensionalen Raum semantische Bedeutung erfassen.
+* DRTM (Dynamic Root of Trust for Measurement) – Ein Hardware-Mechanismus, der einen vertrauenswürdigen Ausführungseinstieg zur Laufzeit herstellt und dadurch eine Integritätsprüfung von KI-Beschleuniger-Workloads ermöglicht.
 
-* Erklärbarkeit – Die Fähigkeit eines KI-Systems, mithilfe von Techniken wie SHAP, LIME, Aufmerksamkeitskarten (attention maps) und Gegenfaktoren-Erklärungen (counterfactual explanations) menschlich verständliche Gründe für seine Entscheidungen und Vorhersagen bereitzustellen. Wird auch als Explainable AI (XAI) bezeichnet.
+* Einbettungen - Dichte Vektorrepräsentationen von Daten (Text, Bilder usw.), die semantische Bedeutung in einem hochdimensionalen Raum erfassen.
 
-* Feature-Attribution – Eine Interpretierbarkeitsmethode, die Wichtigkeitsscores einzelnen Eingabemerkmalen zuweist und ihre Beiträge zu einer bestimmten Modellvorhersage angibt.
+* Einbettungsinversion - eine Angriffstechnik, die einen ungefähren Klartextinhalt aus Vektor-Einbettungen rekonstruiert und potenziell sensible Informationen offenlegt, die als durch die Einbettungstransformation geschützt angenommen wurden. Verwandt: MITRE ATLAS AML.T0024.001. Siehe auch: Modelleinsicht.
 
-* Federated Learning – ein maschinelles Lernverfahren, bei dem Modelle über mehrere dezentrale Geräte hinweg trainiert werden, die lokale Datensamples besitzen, ohne dass die Daten selbst ausgetauscht werden.
+* Exfiltration – die unbefugte Übertragung von Daten außerhalb eines Systems oder Sicherheitsbereichs. In KI-Systemen umfassen Exfiltrationspfade Modelloutputs, verdeckte Kanäle in generierten Inhalten, Nebeneffekte von Tools sowie Speicher- oder Einbettungs-Leckagen.
 
-* Feinabstimmung – der Prozess, bei dem ein vortrainiertes Modell auf einem kleineren, aufgabenbezogenen Datensatz weiter trainiert wird, um es für einen bestimmten Anwendungsfall anzupassen.
+* Erklärbarkeit – Die Fähigkeit eines KI-Systems, mithilfe von Techniken wie SHAP, LIME, Attention-Maps und kontrafaktischen Erklärungen menschenverständliche Gründe für seine Entscheidungen und Vorhersagen bereitzustellen. Wird auch als Explainable AI (XAI) bezeichnet.
 
-* FIPS 140-3 – ein US-Regierungsstandard, der Sicherheitsanforderungen für kryptografische Module definiert, wobei Level 3 einen physikalischen Manipulationsschutz und eine identitätsbasierte Authentifizierung erfordert.
+* Fail-Closed / Fail-Open – Fail-closed beschreibt ein System, das bei einem Fehler oder einem Ausfall einer Komponente standardmäßig in einem sicheren, gesperrten Zustand verbleibt und so eine unkontrollierte Ausführung verhindert. Fail-open beschreibt das Gegenteil: Der Betrieb läuft bei einem Fehler uneingeschränkt weiter. AISVS verlangt, dass AI-Komponenten mit Sicherheits- oder Autorisierungsverantwortung fail closed.
 
-* Schutzvorrichtungen - Einschränkungen, die implementiert wurden, um zu verhindern, dass KI-Systeme schädliche, voreingenommene oder anderweitig unerwünschte Ausgaben erzeugen.
+* Feature Attribution – Eine Interpretierbarkeitsmethode, die Wichtigkeitsscores für einzelne Eingabemerkmale zuweist und deren Beitrag zu einer bestimmten Modellvorhersage angibt.
 
-* Halluzination – Ein Phänomen, bei dem ein KI-Modell falsche oder irreführende Informationen erzeugt, die nicht durch seine Trainingsdaten, den abgerufenen Kontext oder die tatsächliche Realität gestützt sind.
+* Federated Learning – ein maschinelles Lernverfahren, bei dem Modelle über mehrere dezentrale Geräte hinweg trainiert werden, die lokale Datensamples halten, ohne dass die Daten selbst ausgetauscht werden.
 
-* Homoglyph – ein Zeichen, das visuell einem anderen Zeichen aus einem anderen Schriftsystem oder einer anderen Kodierung ähnelt (z.B. kyrillisches „а“ vs. lateinisches „a“), das in Angriffen ausgenutzt wird, um eine textbasierte Eingabevalidierung zu umgehen.
+* Feinabstimmung – Der Prozess, bei dem ein vortrainiertes Modell auf einem kleineren, aufgabenbezogenen Datensatz weitertrainiert wird, um es für einen bestimmten Anwendungsfall anzupassen.
 
-* HSM (Hardware-Sicherheitsmodul) – Ein dediziertes physisches Gerät, das kryptografische Schlüssel in einer manipulationssicheren Umgebung verwaltet, verarbeitet und speichert.
+* FIPS 140-3 – ein US-Regierungsstandard, der Sicherheitsanforderungen für kryptografische Module definiert, wobei Level 3 physische Manipulationssicherheit und identitätsbasiertes Authentifizieren erfordert.
 
-* Human-in-the-Loop (HITL) – Systeme, die so konzipiert sind, dass sie in entscheidenden Entscheidungspunkten eine menschliche Aufsicht, Verifizierung oder Intervention erfordern.
+* Schutzgeländer – Einschränkungen, die implementiert wurden, um zu verhindern, dass KI-Systeme schädliche, voreingenommene oder anderweitig unerwünschte Ausgaben erzeugen.
 
-* Infrastructure as Code (IaC) – Verwaltung und Bereitstellung von Infrastruktur per Code statt manueller Prozesse, wodurch Sicherheits-Scans und konsistente Deployments ermöglicht werden.
+* Halluzination – ein Phänomen, bei dem ein KI-Modell falsche oder irreführende Informationen erzeugt, die nicht in seinen Trainingsdaten, abgerufenen Kontexten oder der faktischen Realität verankert sind.
 
-* Intervall-Propagationsmethode (Interval-Bound Propagation) – Eine formale Verifikationstechnik, die Schranken durch neuronale Netzwerk-Schichten propagiert, um zu bescheinigen, dass Modellvorhersagen robust sind innerhalb festgelegter Bereiche für Eingabeperturbationen.
+* Homoglyph – ein Zeichen, das visuell einem anderen Zeichen aus einem anderen Schriftsystem oder einer anderen Kodierung ähnelt (z. B. kyrillisch „а“ vs. lateinisch „a“), ausgenutzt in Angriffen, um textbasierte Eingabevalidierung zu umgehen.
 
-* Jailbreak – Techniken zur Umgehung von Sicherheits-Schutzmaßnahmen in KI-Systemen, insbesondere in großen Sprachmodellen, um verbotene Inhalte zu erzeugen.
+* HSM (Hardware-Sicherheitsmodul) – ein dediziertes physisches Gerät, das kryptografische Schlüssel in einer manipulationssicheren Umgebung verwaltet, verarbeitet und speichert.
 
-* JWT (JSON Web Token) – Ein kompaktes, eigenständiges Token-Format zum sicheren Übertragen von Identitäts- und Autorisierungs-Claims zwischen Parteien, signiert, um die Integrität sicherzustellen.
+* Human-in-the-Loop (HITL) – Systeme, die so konzipiert sind, dass an entscheidenden Entscheidungspunkten eine menschliche Aufsicht, Verifizierung oder Intervention erforderlich ist.
 
-* k-Anonymität – Eine Datenschutz-Eigenschaft, bei der jeder Datensatz in einem Datensatz hinsichtlich bestimmter identifizierender Attribute von mindestens k-1 anderen Datensätzen nicht unterscheidbar ist.
+* Infrastructure as Code (IaC) – Verwaltung und Bereitstellung von Infrastruktur über Code statt manueller Prozesse, wodurch Security-Scans und konsistente Deployments ermöglicht werden.
 
-* KMS (Key Management Service) – Ein verwalteter Dienst zum Erstellen, Speichern, Rotieren und Verwalten des Zugriffs auf kryptografische Schlüssel, die zum Schutz von Daten und Artefakten verwendet werden.
+* Intervall-gebundene Propagation – eine formale Verifikationstechnik, die Schranken durch neuronale Netzwerk-Schichten propagiert, um zu bescheinigen, dass Modellvorhersagen robust gegenüber vorgegebenen Eingabestörungen innerhalb definierter zulässiger Perturbationsbereiche sind.
 
-* l-Diversität – eine Datenschutz-Eigenschaft, die k-Anonymität erweitert und erfordert, dass jede Äquivalenzklasse mindestens l unterschiedliche Werte für sensible Attribute enthält, um Attribut-Offenlegung zu verhindern.
+* Jailbreak – Techniken, die eingesetzt werden, um Sicherheits-Schutzvorrichtungen in KI-Systemen, insbesondere in großen Sprachmodellen, zu umgehen und verbotene Inhalte zu erzeugen.
 
-* Least Privilege – Das Sicherheitsprinzip, das nur die minimal erforderlichen Zugriffrechte für Benutzer und Prozesse gewährt.
+* JIT (Just-in-Time) Privileged Access – Eine Sicherheitsmaßnahme, bei der erhöhte Berechtigungen nur für ein kurzes, fest definiertes Zeitfenster gewährt werden, wenn sie für eine bestimmte Aufgabe erforderlich sind, und anschließend automatisch entzogen werden, wodurch die dauerhafte Berechtigungsfreigabe minimiert wird.
 
-* LIME (Local Interpretable Model-agnostic Explanations) – eine Methode, um die Vorhersagen eines beliebigen Machine-Learning-Klassifizierers zu erklären, indem er lokal durch ein interpretierbares Modell angenähert wird.
+* JWT (JSON Web Token) – Ein kompakter, eigenständiger Token-Formattyp zur sicheren Übertragung von Identitäts- und Autorisierungsansprüchen zwischen Parteien, signiert, um die Integrität sicherzustellen.
 
-* Verknüpfungsangriff – Ein Angriff, der quasi-identifizierende Merkmale über mehrere Datensätze kombiniert, um Personen erneut zu identifizieren, deren Daten angeblich anonymisiert wurden.
+* k-Anonymität – Eine Datenschutz-Eigenschaft, bei der jeder Datensatz in einem Datensatz gegenüber mindestens k-1 anderen Datensätzen bezüglich bestimmter identifizierender Attribute nicht unterscheidbar ist.
 
-* Maschinelles Unlearning – Techniken, um den Einfluss bestimmter Trainingsdaten aus einem trainierten Modell zu entfernen und Löschanfragen von betroffenen Datenobjekten sowie die Einhaltung regulatorischer Anforderungen zu unterstützen.
+* Kill-Switch – ein Mechanismus, um die Inferenz von KI-Modellen, die Ausführung von Agenten oder die Ausgabe des Systems auf Befehl oder als Reaktion auf einen Sicherheitsauslöser sofort zu stoppen. Kill-Switches für autonome Agenten müssen über einen Kanal bereitgestellt werden, auf den die Agenten-Laufzeitumgebung nicht zugreifen oder den sie nicht unterdrücken kann, sodass ein kompromittierter Agent seine eigene Abschaltung nicht blockieren kann. Siehe auch C14.1.
 
-* MCP (Model Context Protocol) – Ein Protokoll, das es KI-Modellen und Agenten ermöglicht, auf externe Tools, Datenquellen und Ressourcen zuzugreifen, indem strukturierte, typisierte Anfragen und Antworten über einen definierten Transport ausgetauscht werden.
+* KMS (Key Management Service) – Ein verwalteter Dienst zum Erstellen, Speichern, Rotieren und Steuern des Zugriffs auf kryptografische Schlüssel, die verwendet werden, um Daten und Artefakte zu schützen.
 
-* Membership Inference Attack – Ein Angriff, der darauf abzielt, festzustellen, ob ein bestimmter Datenpunkt für das Training eines Machine-Learning-Modells verwendet wurde.
+* l-Diversität – eine Datenschutz-Eigenschaft, die k-Anonymität erweitert und erfordert, dass jede Äquivalenzklasse mindestens l unterschiedliche Werte für sensible Attribute enthält, um eine Offenlegung von Attributen zu verhindern.
 
-* MIG (Multi-Instance GPU) – eine NVIDIA-Technologie, die eine einzelne GPU in mehrere isolierte Instanzen aufteilt, wobei jede Instanz über dedizierten Speicher und Rechenressourcen für sichere Multi-Tenant-Workloads verfügt.
+* Least Privilege – Das Sicherheitsprinzip, das nur die notwendigen Mindestzugriffsrechte für Benutzer und Prozesse gewährt.
 
-* MITRE ATLAS – Adversarial Threat Landscape für Künstliche-Intelligenz-Systeme; eine Wissensdatenbank mit adversarialen Taktiken und Techniken gegen Künstliche-Intelligenz-Systeme.
+* LIME (Local Interpretable Model-agnostic Explanations) – Eine Technik, um die Vorhersagen eines beliebigen Machine-Learning-Klassifikators zu erklären, indem er lokal durch ein interpretierbares Modell angenähert wird.
 
-* Model Card – Ein Dokument, das standardisierte Informationen über die Leistung, Einschränkungen, vorgesehenen Verwendungen und ethischen Überlegungen eines KI-Modells bereitstellt, um Transparenz und eine verantwortungsvolle KI-Entwicklung zu fördern.
+* Verknüpfungsangriff – Ein Angriff, der quasi-identifizierende Merkmale über mehrere Datensätze hinweg kombiniert, um Personen wiederzuerkennen, deren Daten angeblich anonymisiert wurden.
 
-* Modell-Extraktion – Ein Angriff, bei dem ein Gegner wiederholt ein Zielmodell abfragt, um eine funktional ähnliche Kopie ohne Autorisierung zu erstellen. Wird auch als Modellstehlen oder Modellraub bezeichnet.
+* Machine Unlearning – Techniken zum Entfernen des Einflusses spezifischer Trainingsdaten aus einem trainierten Modell, zur Unterstützung von Datenlöschungsanfragen von Betroffenen und zur Einhaltung regulatorischer Anforderungen.
 
-* Modellinversion – ein Angriff, der versucht, Trainingsdaten zu rekonstruieren, indem er Modellausgaben analysiert.
+* Many-Shot Jailbreaking – Eine Angriffstechnik, die eine große Anzahl gefälschter Benutzer-Modell-Austauschpaare in das Kontextfenster einbettet, um das scheinbare Verhaltensmuster des Modells zu verschieben und seine Sicherheits-Leitplanken durch kumulierte In-Context-Beispiele zu umgehen.
 
-* Model-Lifecycle-Management – Der Prozess der Überwachung aller Phasen der Existenz eines KI-Modells, einschließlich Design, Entwicklung, Bereitstellung, Monitoring, Wartung und der eventualen Außerbetriebnahme.
+* MCP (Model Context Protocol) – Ein Protokoll, das es KI-Modellen und Agenten ermöglicht, über einen definierten Transport durch den Austausch strukturierter, typisierter Anfragen und Antworten auf externe Tools, Datenquellen und Ressourcen zuzugreifen.
+
+* Mitgliedschafts-Inferrenzangriff – Ein Angriff, der darauf abzielt festzustellen, ob ein bestimmter Datenpunkt für das Training eines maschinellen Lernmodells verwendet wurde.
+
+* MIG (Multi-Instance GPU) – Eine NVIDIA-Technologie, die eine einzelne GPU in mehrere isolierte Instanzen aufteilt, jeweils mit dediziertem Speicher und Rechenressourcen für sichere Multi-Tenant-Workloads.
+
+* MITRE ATLAS – Adversarial Threat Landscape für Künstliche-Intelligenz-Systeme; eine Wissensdatenbank für Adversarial Taktiken und Techniken gegen KI-Systeme.
+
+* Modellkarte – Ein Dokument, das standardisierte Informationen über die Leistung, Einschränkungen, beabsichtigten Verwendungen und ethischen Überlegungen eines KI-Modells bereitstellt, um Transparenz und eine verantwortungsvolle KI-Entwicklung zu fördern.
+
+* Modell-Extraktion – Ein Angriff, bei dem ein Angreifer das Zielmodell wiederholt abfragt, um eine funktional ähnliche Kopie ohne Berechtigung zu erstellen. Wird auch als Modell-Diebstahl oder Modellraub bezeichnet.
+
+* Model-Inversion – ein Angriff, der versucht, Trainingsdaten durch die Analyse von Modell-Ausgaben zu rekonstruieren.
+
+* Model-Lifecycle-Management – Der Prozess, bei der alle Phasen der Existenz eines KI-Modells überwacht werden, einschließlich Design, Entwicklung, Deployment, Monitoring, Wartung und dem letztendlichen Rückzug.
 
 * Modellvergiftung – Das Einführen von Schwachstellen oder Hintertüren direkt in ein Modell während des Trainingsprozesses.
 
-* mTLS (gegenseitiges TLS) – Eine TLS-Konfiguration, bei der sich sowohl Client als auch Server gegenseitig mithilfe von Zertifikaten authentifizieren und so eine bidirektionale Identitätsprüfung für die Kommunikation von Dienst zu Dienst sicherstellen.
+* mTLS (gegenseitiges TLS) – eine TLS-Konfiguration, bei der sowohl Client als auch Server sich gegenseitig mithilfe von Zertifikaten authentifizieren und so eine bidirektionale Identitätsprüfung für die dienst-zu-dienst-Kommunikation sicherstellen.
 
-* Multi-Agenten-System – Ein System, das aus mehreren miteinander interagierenden KI-Agenten besteht, wobei jeder Agent möglicherweise über unterschiedliche Fähigkeiten und Ziele verfügt.
+* Multi-Agenten-System – Ein System, das aus mehreren interagierenden KI-Agents besteht, wobei jeder Agent möglicherweise unterschiedliche Fähigkeiten und Ziele hat.
 
-* NFC (Normalform zusammengesetzt) – Eine Unicode-Normalisierungsform, die Zeichen dekomponiert und dann zu einer kanonischen Darstellung wieder zusammensetzt, um Umgehungsangriffe auf Basis von Codierungen zu verhindern.
+* NFC (Normalform C) – eine Unicode-Normalisierungsform, die Zeichen zerlegt und anschließend zu einer kanonischen Darstellung wieder zusammensetzt, um Umgehungsangriffe aufgrund von Kodierungsunterschieden zu verhindern.
+
+* Nichtabstreitbarkeit – eine Sicherheitseigenschaft, die sicherstellt, dass eine Partei nicht glaubwürdig abstreiten kann, eine Aktion ausgeführt zu haben. In KI-Systemen wird dies durch kryptografische Signaturen von Agentenaktionen und Einträgen in Prüfprotokollen erreicht, wodurch die Zuordnung von Entscheidungen zu bestimmten Prinzipalen ermöglicht wird.
 
 * NVLink – Eine Hochbandbreiten-Interconnect-Technologie für die GPU-zu-GPU-Kommunikation, die in Multi-Tenant-AI-Umgebungen eine Authentifizierung und Verschlüsselung erfordert.
 
-* OAuth 2.1 – Ein Autorisierungs-Framework, das OAuth 2.0 Best Practices in einer einzigen Spezifikation zusammenführt und in AISVS als erforderlicher Authentifizierungsmechanismus für MCP-Clients und -Server verwendet wird.
+* OAuth 2.1 – Ein Autorisierungs-Framework, das OAuth 2.0-Best Practices in einer einzelnen Spezifikation bündelt, das in AISVS als erforderlicher Authentifizierungsmechanismus für MCP-Clients und -Server verwendet wird.
 
-* OIDC (OpenID Connect) – eine Identitätsebene, die auf OAuth 2.0 basiert und Clients ermöglicht, die Benutzeridentität anhand der Authentifizierung zu verifizieren, die von einem Autorisierungsserver durchgeführt wurde.
+* OIDC (OpenID Connect) – eine Identitätsschicht, die auf OAuth 2.0 aufbaut und Clients ermöglicht, die Benutzeridentität anhand der vom Autorisierungsserver durchgeführten Authentifizierung zu verifizieren.
 
-* OPA (Open Policy Agent) – Eine Open-Source, allgemeine Policy-Engine, die Autorisierungs- und Admission-Control-Richtlinien auswertet, die in Rego geschrieben sind, und eine einheitliche Policy-Durchsetzung über Anwendungen, APIs und Infrastruktur hinweg ermöglicht.
+* OPA (Open Policy Agent) – eine Open-Source-Policy-Engine für allgemeine Zwecke, die Autorisierungs- und Admission-Control-Richtlinien auswertet, die in Rego geschrieben sind, und die eine einheitliche Policy-Durchsetzung über Anwendungen, APIs und Infrastruktur hinweg ermöglicht.
 
-* PII (personenbezogene Daten) – alle Informationen, die verwendet werden können, um eine bestimmte Person zu identifizieren, zu kontaktieren oder ihren Aufenthaltsort zu bestimmen, entweder allein oder in Kombination mit anderen Daten.
+* PDP (Policy Decision Point) – eine Komponente in einer Policy-Durchsetzungsarchitektur, die Autorisierungsanfragen anhand definierter Policies bewertet und eine Erlaubnis- oder Verweigerungsentscheidung zurückgibt. In agentischen KI-Systemen ist das PDP von der Ausführungsumgebung des Agents isoliert, um zu verhindern, dass ein kompromittierter Agent seine eigenen Autorisierungsentscheidungen beeinflusst. Siehe auch C9.7, C5.5.
+
+* PII (Personenbezogene Daten) – Alle Informationen, die dazu verwendet werden können, eine bestimmte Person zu identifizieren, zu kontaktieren oder ihren Aufenthaltsort zu lokalisieren, entweder allein oder in Kombination mit anderen Daten.
 
 * Policy-as-Code – die Praxis, Sicherheits- und Compliance-Richtlinien in maschinenlesbarem Code zu definieren, der versionierbar, testbar und automatisch in CI/CD-Pipelines durchsetzbar ist.
 
-* Datenschutzfreundliches Machine Learning (PPML) – Techniken und Methoden, um ML-Modelle zu trainieren und bereitzustellen und dabei die Privatsphäre der Trainingsdaten zu schützen.
+* Privacy-Preserving Machine Learning (PPML) – Techniken und Methoden zum Trainieren und Bereitstellen von ML-Modellen unter Wahrung der Privatsphäre der Trainingsdaten.
 
-* Prompt-Injection – Ein Angriff, bei dem schädliche Anweisungen in Eingaben eingebettet werden, um das beabsichtigte Verhalten eines Modells zu überschreiben.
+* Prompt-Injection – ein Angriff, bei dem bösartige Anweisungen in Eingaben eingebettet werden, um das beabsichtigte Verhalten eines Modells zu überschreiben.
 
-* RAG (Retrieval-Augmented Generation) – Eine Technik, die große Sprachmodelle verbessert, indem vor der Generierung einer Antwort relevante Informationen aus externen Wissensquellen abgerufen werden.
+* Prompt-Vorlage – ein strukturiertes Textmuster, das verwendet wird, um Prompts zu erstellen, die an ein KI-Modell übermittelt werden; es enthält feste Anweisungen, variable Platzhalter für Benutzereingaben und Formatierungsanweisungen. Prompt-Vorlagen sind KI-spezifische Konfigurationsartefakte, die einer Versionsverwaltung, einem Schutz der Integrität und Zugriffskontrollen entsprechen müssen, wie sie für Quellcode gelten.
 
-* RBAC (rollenbasierte Zugriffskontrolle) – Ein Zugriffskontrollmodell, bei dem Berechtigungen Rollen zugewiesen werden, anstatt einzelnen Benutzern, und Benutzer Zugriff erhalten, indem sie den entsprechenden Rollen zugewiesen werden.
+* Quantisierung – eine Post-Training-Kompressionstechnik, die die Präzision der Modellgewichte reduziert (z.B. von 32-bit auf 8-bit oder 4-bit Integer), um den Speicherbedarf und die Inferenz-Latenz zu verringern. Die Quantisierung kann das Modellverhalten verändern, wodurch Sicherheits- und Robustheitseigenschaften nach der Anwendung erneut bewertet werden müssen.
 
-* Red-Teaming – Die Praxis, aktiv KI-Systeme zu testen, indem man Angriffe durch simulierte Angreiferstrategien nachbildet, um Schwachstellen zu identifizieren.
+* RAG (Retrieval-Augmented Generation) – Eine Technik, die große Sprachmodelle verbessert, indem sie relevante Informationen aus externen Wissensquellen abruft, bevor eine Antwort generiert wird.
 
-* Re-Identifikationsrisiko – Die Wahrscheinlichkeit, dass eine Person anhand eines angeblich anonymisierten Datensatzes identifiziert werden kann, gemessen anhand festgelegter Schwellenwerte.
+* RBAC (rollenbasierte Zugriffskontrolle) – Ein Zugriffssteuerungsmodell, bei dem Berechtigungen Rollen statt einzelnen Benutzern zugewiesen werden, und Benutzer Zugriff erhalten, indem ihnen die entsprechenden Rollen zugewiesen werden.
 
-* Remote-Atestation – Ein Mechanismus, bei dem eine vertrauenswürdige Ausführungsumgebung kryptografischen Nachweis gegenüber einer entfernten Partei liefert, dass spezifischer Code in einer echten, nicht veränderten TEE ausgeführt wird.
+* Red-Teaming – Die Praxis, KI-Systeme aktiv zu testen, indem man einschlägige Angriffe simuliert, um Schwachstellen zu identifizieren.
 
-* RLHF (Reinforcement Learning from Human Feedback) – Eine Trainingsmethode, bei der ein Modell mit menschlichen Präferenzurteilen als Belohnungssignal feinjustiert wird, um die Ausrichtung an menschlichen Werten und Sicherheitsanforderungen zu verbessern.
+* Re-Identifizierungsrisiko – Die Wahrscheinlichkeit, dass eine Person aus einem angeblich anonymisierten Datensatz identifiziert werden kann, gemessen anhand definierter Schwellenwerte.
 
-* SAML (Security Assertion Markup Language) – Ein XML-basiertes Standardformat zum Austausch von Authentifizierungs- und Autorisierungsdaten zwischen Identitätsanbietern und Dienstanbietern.
+* Remote Attestation – Ein Mechanismus, bei dem eine Trusted-Execution-Environment (TEE) einem entfernten Kommunikationspartner einen kryptografischen Nachweis bereitstellt, dass auf einem echten, unverändertem TEE spezifischer Code ausgeführt wird.
 
-* SBOM (Software Bill of Materials) – Ein formaler Datensatz, der die Details und Lieferketten-Beziehungen der Softwarekomponenten enthält, die zum Aufbau einer Anwendung verwendet werden. Siehe auch AI BOM für modell-spezifische Artefakte.
+* Reward Model – Ein Machine-Learning-Modell, das trainiert wurde, um menschliche Präferenzbewertungen für KI-Ausgaben vorherzusagen und als stellvertretendes Reward-Signal in RLHF-Trainingspipelines verwendet wird. Da Reward Models ML-Artefakte sind, sind sie anfällig für Data-Poisoning-Angriffe, die die Ergebnisse des Alignment-Trainings unterlaufen können.
 
-* Secure Boot - Eine Firmware-Sicherheitsfunktion, die die kryptografische Signatur jeder Komponente in der Boot-Kette vor der Ausführung überprüft und dadurch das Laden nicht autorisierter oder manipulierten Software verhindert.
+* RLHF (Reinforcement Learning from Human Feedback) – Eine Trainingsmethode, bei der ein Modell mithilfe menschlicher Präferenzbewertungen als Belohnungssignal feinjustiert wird, um die Ausrichtung an menschlichen Werten und Sicherheitsanforderungen zu verbessern.
 
-* Sichere Multi-Party-Berechnung (SMPC) – eine kryptografische Technik, die es mehreren Parteien ermöglicht, gemeinsam eine Funktion über ihren privaten Eingaben zu berechnen, ohne diese Eingaben einander offenzulegen.
+* SAML (Security Assertion Markup Language) – ein XML-basiertes Standardformat zum Austausch von Authentifizierungs- und Autorisierungsdaten zwischen Identitätsanbietern und Diensteanbietern.
 
-* seccomp (Secure Computing Mode) – Eine Linux-Kernel-Funktion, die die zulässigen Systemaufrufe eines Prozesses einschränkt, eingesetzt um KI-Workloads zu sandboxen und die Angriffsfläche zu verringern.
+* Sandboxing – Eine Isolierungstechnik, die einen Prozess oder eine Komponente in einer kontrollierten Umgebung einschränkt, mit eingeschränktem Dateisystemzugriff, eingeschränktem Netzwerk-Egress und Berechtigungen für Systemaufrufe. In KI-Systemen wird Sandboxing eingesetzt, um die Ausführung von Tools und Plugins, KI-Workloads und Inferenz von Drittanbieter-Modellen zu kapseln, um unautorisierten Host-Zugriff oder Kontamination zwischen Mandanten zu verhindern.
 
-* SELinux (Security-Enhanced Linux) – ein Linux-Kernel-Sicherheitsmodul, das obligatorische Zugriffskontrollen mithilfe von Sicherheitsrichtlinien bereitstellt und zur Durchsetzung einer fein abgestuften Prozessisolierung für KI-Workloads verwendet wird.
+* SBOM (Software Bill of Materials) – Eine formale Aufzeichnung, die die Details und Lieferkettenbeziehungen der Software-Komponenten enthält, die beim Aufbau einer Anwendung verwendet werden. Siehe auch AI BOM für modellbezogene Artefakte.
 
-* Schattenmodell – Ein von einem Angreifer trainiertes Modell, das das Verhalten eines Zielmodells nachahmen soll. Es wird in Membership-Inference-Angriffen eingesetzt und dient als Grundlage zur Bewertung der Wirksamkeit des maschinellen Vergessens.
+* SCVS (Software Component Verification Standard) – Ein OWASP-Framework zur Überprüfung der Sicherheits-Eigenschaften von Softwarekomponenten, das von AISVS als Referenz für Supply-Chain-Integritätskontrollen genutzt wird, die auf KI-Frameworks, -Bibliotheken und Modellabhängigkeiten anwendbar sind.
 
-* SHAP (SHapley Additive exPlanations) – Ein spieltheoretischer Ansatz zur Erklärung der Ausgabe jedes Machine-Learning-Modells, indem die Beiträge jedes Merkmals zur Vorhersage berechnet werden.
+* Secure Boot – eine Firmware-Sicherheitsfunktion, die die kryptografische Signatur jeder Komponente in der Boot-Kette vor der Ausführung überprüft und so verhindert, dass nicht autorisierte oder manipulierte Software geladen wird.
 
-* Seitenkanalangriff – Ein Angriff, der Informationen aus einem System durch indirekte Beobachtung physikalischer Eigenschaften wie Timing, Stromverbrauch, elektromagnetische Emissionen oder Cache-Verhalten extrahiert, statt Schwachstellen in Software auszunutzen.
+* Sichere Multi-Party-Berechnung (Secure Multi-Party Computation, SMPC) – eine kryptografische Technik, die es mehreren Parteien ermöglicht, gemeinsam eine Funktion über ihre privaten Eingaben zu berechnen, ohne diese Eingaben einander offenzulegen.
 
-* SIEM (Security Information and Event Management) – Eine Plattform, die Sicherheitsereignisdaten aus mehreren Quellen aggregiert, korreliert und analysiert, um Bedrohungen zu erkennen, Incident Response zu unterstützen und Compliance-Anforderungen zu erfüllen.
+* seccomp (Secure Computing Mode) – eine Funktion des Linux-Kernels, die die Systemaufrufe einschränkt, die ein Prozess ausführen kann, verwendet, um AI-Workloads zu sandboxen und die Angriffsfläche zu reduzieren.
 
-* SPDX (Software Package Data Exchange) – Ein offener Standard für die Kommunikation von Informationen zu Software- und AI-Komponenten-Bauteillisten, einschließlich Herkunft der Komponenten, Lizenzierung und Sicherheitsreferenzen.
+* SELinux (Security-Enhanced Linux) – ein Linux-Kernel-Sicherheitsmodul, das obligatorische Zugriffskontrollen mithilfe von Sicherheitsrichtlinien bereitstellt und zur Durchsetzung einer feingranularen Prozessisolation für AI-Workloads eingesetzt wird.
 
-* SSE (Server-Sent Events) – Eine Web-Technologie, die es einem Server ermöglicht, in Echtzeit-Updates an einen Client über eine HTTP-Verbindung zu übertragen, und die als Transportmechanismus in MCP verwendet wird.
+* Shadow Deployment – Ein Bereitstellungsmuster, bei dem eine neue Modellversion eine Kopie des Live-Produktionsverkehrs zusammen mit der aktuellen Version erhält, ohne Endbenutzern Antworten auszuliefern, wodurch ein Verhaltenvergleich und eine Sicherheitsvalidierung vor der Freigabe ermöglicht werden.
 
-* Steganografie – die Praxis, Daten in anderen Medien (Bildern, Audio, Video) zu verstecken, sodass dies für Beobachter nicht erkennbar ist. Wird als Angriffsmittel genutzt, um Payloads an Content-Filter vorbei zu schmuggeln.
+* Schattenmodell – ein Modell, das von einem Angreifer trainiert wird, um das Verhalten eines Zielmodells nachzuahmen; wird in Membership-Inference-Angriffen eingesetzt und als Referenz für die Bewertung der Wirksamkeit des Machine-Unlearning verwendet.
 
-* stdio (Standard Input/Output) – Ein Prozess-Kommunikationsmechanismus mit standardisierten Eingabe-, Ausgabe- und Fehler-Streams, der in MCP als lokaler Nur-Transport verwendet wird und auf die Kommunikation innerhalb eines einzelnen Prozesses auf demselben Rechner beschränkt ist.
+* SHAP (SHapley Additive exPlanations) – ein spieltheoretischer Ansatz, um die Ausgabe jedes Machine-Learning-Modells zu erklären, indem der Beitrag jedes Merkmals zur Vorhersage berechnet wird.
 
-* Starke Authentifizierung – Authentifizierung, die sich gegen das Ausspähen von Zugangsdaten und Replay-Angriffe wehrt, indem mindestens zwei Faktoren (Wissen, Besitz, Inhärenz) sowie phishingresistente Mechanismen wie FIDO2/WebAuthn, zustellungsbasierte Dienstauthentifizierung mit Zertifikaten oder kurzlebige Tokens erforderlich sind.
+* Seitenkanalangriff – Ein Angriff, der Informationen aus einem System durch indirekte Beobachtung physikalischer Eigenschaften wie Zeitverhalten, Leistungsaufnahme, elektromagnetische Ausstrahlungen oder Cache-Verhalten extrahiert, anstatt Software-Schwachstellen auszunutzen.
 
-* Supply-Chain-Angriff – Kompromittierung eines Systems durch das gezielte Angreifen weniger sicherer Elemente in seiner Lieferkette, wie z. B. Drittanbieter-Bibliotheken, Datensätze oder vortrainierte Modelle.
+* SIEM (Security Information and Event Management) – Eine Plattform, die Sicherheitsereignisdaten von mehreren Quellen aggregiert, korreliert und analysiert, um Bedrohungen zu erkennen, den Incident Response zu unterstützen und die Anforderungen an die Compliance zu erfüllen.
 
-* Synthetische Daten – künstlich erzeugte Daten, die die statistischen Eigenschaften echter Daten bewahren, aber keine tatsächlichen einzelnen Datensätze enthalten; sie werden verwendet, um den Datenschutz während des Modelltrainings und -tests zu schützen.
+* SLSA (Supply-chain Levels for Software Artifacts) – Ein Sicherheitsframework, das inkrementelle Stufen von Supply-Chain-Integritätsgarantien definiert, von grundlegender Dokumentation des Build-Prozesses bis hin zu vollständig reproduzierbaren, hermetisch abgedichteten Builds mit authentifizierter Artefakt-Provenienz. Wird von AISVS für Kontrollen zur AI-Modell- und Artefakt-Supply-Chain referenziert.
 
-* TEE (Trusted Execution Environment) – eine hardwareisolierte Verarbeitungumgebung, die Vertraulichkeit und Integritätsgarantien für Code und Daten bereitstellt und diese vor dem Host-Betriebssystem und anderen Mandanten schützt.
+* SOC (Security Operations Center) – Ein Team oder eine Einrichtung, das bzw. die für die Überwachung, Erkennung, Analyse und Reaktion auf Sicherheitsvorfälle zuständig ist. In AISVS verwenden SOC-Teams AI-Sicherheitsereignisprotokolle zur Korrelation, Triage und Incident Response.
 
-* Temperaturskalierung – Eine Post-hoc-Kalibrierungstechnik, die die Konfidenzwerte der Modellausgaben so anpasst, dass sie die wahren Vorhersagewahrscheinlichkeiten genauer widerspiegeln.
+* SPDX (Software Package Data Exchange) – ein offener Standard für die Kommunikation von Informationen zu Software- und KI-Komponenten-Bill-of-Materials, einschließlich Herkunft der Komponenten, Lizenzierung und Sicherheitsreferenzen.
 
-* TLS (Transport Layer Security) – Ein kryptografisches Protokoll, das Ende-zu-Ende-Verschlüsselung, Authentifizierung und Integrität für Daten bereitstellt, die über ein Netzwerk übertragen werden. AISVS erfordert TLS 1.3 oder höher.
+* SSE (Server-Sent Events) – Eine Web-Technologie, die es einem Server ermöglicht, Echtzeit-Updates an einen Client über eine HTTP-Verbindung zu übertragen, und die als Transportmechanismus in MCP verwendet wird.
 
-* Tokenizer – Eine Komponente, die Rohtext in eine Sequenz von Tokens (Subwords, Wörter oder Zeichen) umwandelt, die ein Sprachmodell als Eingabe verarbeiten kann.
+* Steganografie – die Praxis, Daten in anderen Medien (Bilder, Audio, Video) so zu verbergen, dass es für Beobachter nicht erkennbar ist, und die als Angriffsvektor verwendet wird, um Nutzdaten an Inhaltsfiltern vorbei zu schmuggeln.
+
+* stdio (Standard Input/Output) – ein Prozess-Kommunikationsmechanismus, der Standard-Eingabe, Standard-Ausgabe und Fehler-Streams verwendet. In MCP wird dies als lokal-only Transport eingesetzt, der auf die Kommunikation innerhalb eines einzelnen Prozesses auf demselben Rechner beschränkt ist.
+
+* Starke Authentifizierung – Authentifizierung, die sich gegen das Abgreifen von Zugangsdaten und Replay-Angriffe wappnet, indem mindestens zwei Faktoren (Wissen, Besitz, Inhärenz) erforderlich sind, sowie phishing-resistente Mechanismen wie FIDO2/WebAuthn, zuständigkeitsbasierte Dienstauthentifizierung mit Zertifikaten oder kurzlebige Tokens.
+
+* Supply-Chain-Angriff – Kompromittierung eines Systems, indem weniger sichere Elemente in seiner Lieferkette angegriffen werden, wie z. B. Drittanbieter-Bibliotheken, Datensätze oder vortrainierte Modelle.
+
+* Synthetische Daten – künstlich erzeugte Daten, die die statistischen Eigenschaften realer Daten beibehalten, aber keine tatsächlichen einzelnen Datensätze enthalten; werden zum Schutz der Privatsphäre während des Modelltrainings und -tests verwendet.
+
+* TEE (Trusted Execution Environment) – eine hardwareisolierte Verarbeitungumgebung, die Vertraulichkeit- und Integritätsgarantien für Code und Daten bereitstellt und diese vor dem Host-Betriebssystem und anderen Mandanten schützt.
+
+* Temperaturskalierung – eine Post-hoc-Kalibrierungstechnik, die die Konfidenzwerte der Modellausgaben so anpasst, dass sie die tatsächlichen Vorhersagewahrscheinlichkeiten besser widerspiegeln.
+
+* TLS (Transport Layer Security) – Ein kryptografisches Protokoll, das Ende-zu-Ende-Verschlüsselung, Authentifizierung und Integrität für über ein Netzwerk übertragene Daten bereitstellt. AISVS erfordert TLS 1.3 oder höher.
+
+* Tokenizer – Eine Komponente, die Rohtext in eine Folge von Tokens (Subwords, Wörter oder Zeichen) umwandelt, die ein Sprachmodell als Eingabe verarbeiten kann.
 
 * TPM (Trusted Platform Module) – Ein dedizierter Hardware-Chip, der kryptografische Funktionen bereitstellt, einschließlich sicherer Schlüsselgenerierung, -speicherung und Messung der Plattformintegrität.
 
-* Transfer Learning – Eine Technik, bei der ein für eine Aufgabe entwickeltes Modell als Ausgangspunkt für ein Modell für eine zweite Aufgabe wiederverwendet wird.
+* Transferlernen – Eine Technik, bei der ein für eine Aufgabe entwickeltes Modell als Ausgangspunkt wiederverwendet wird, um ein Modell für eine zweite Aufgabe zu trainieren.
 
-* Vektor-Datenbank – Eine spezialisierte Datenbank, die entwickelt wurde, um hochdimensionale Vektoren (Embeddings) zu speichern und effiziente Ähnlichkeitssuchen durchzuführen.
+* Vektor-Datenbank – Eine spezialisierte Datenbank zur Speicherung hochdimensionaler Vektoren (Embeddings) und zur Durchführung effizienter Ähnlichkeitssuchen.
 
-* VRAM (Video Random Access Memory) – Speicher auf einer GPU zum Speichern von Modellgewichten, Aktivierungen und Zwischenauswertungen während der AI-Inferenz und des Trainings, der zwischen Mandanten-Workloads zurückgesetzt werden muss.
+* VRAM (Video Random Access Memory) – Speicher auf einer GPU zum Speichern von Modellgewichten, Aktivierungen und Zwischenergebnissen während der KI-Inferenz und des Trainings, wobei zwischen den Mandanten-Workloads eine Rücksetzung auf Null erforderlich ist.
 
-* Sicherheitslücken-Scannen – Automatisierte Tools, die bekannte Sicherheitslücken in Softwarekomponenten identifizieren, einschließlich KI-Frameworks und Abhängigkeiten.
+* Schwachstellen-Scanning – Automatisierte Tools, die bekannte Sicherheitslücken in Softwarekomponenten identifizieren, einschließlich KI-Frameworks und Abhängigkeiten.
 
-* WASM (WebAssembly) – Ein portables Binär-Anweisungsformat, das die isolierte Ausführung von Code ermöglicht und als Isolationsmechanismus für KI-Tools und Plugins verwendet wird.
+* WASM (WebAssembly) – Ein portables binäres Instruktionsformat, das die Ausführung von Code in einer Sandbox ermöglicht und als Isolationsmechanismus für KI-Tools und Plugins eingesetzt wird.
 
-* Wasserzeichen – Techniken zum Einbetten unauffälliger Marker in KI-generierten Inhalten oder Modellgewichten, um die Herkunft nachzuverfolgen, nicht autorisierte Kopien zu erkennen oder KI-generierte Medien zu identifizieren.
+* Wasserzeichen – Techniken, um unauffällige Marker in KI-generierten Inhalten oder Modellgewichten einzubetten, um die Herkunft nachzuverfolgen, nicht autorisierte Kopien zu erkennen oder KI-generierte Medien zu identifizieren.
 
-* WORM (Write-Once-Read-Many) – eine Speichertechnologie, die die Änderung oder Löschung von Daten verhindert, nachdem sie geschrieben wurden, eingesetzt für manipulationssichere Audit-Logs und Backup-Schutz.
+* WORM (Write-Once-Read-Many) – eine Speichertechnologie, die die nachträgliche Änderung oder Löschung von Daten nach dem Schreiben verhindert und für manipulationssichere Audit-Logs sowie Schutz vor Backups verwendet wird.
 
-* Zero-Day-Schwachstelle – eine zuvor unbekannte Schwachstelle, die Angreifer ausnutzen können, bevor Entwickler einen Patch erstellen und bereitstellen.
+* Zero-Day-Schwachstelle – eine zuvor unbekannte Schwachstelle, die Angreifer ausnutzen können, bevor Entwickler eine Problembehebung erstellen und bereitstellen.
 
-* Zero-Trust – Ein Sicherheitsmodell, das keine implizite Vertrauenswürdigkeit für irgendeinen Benutzer, ein Gerät oder ein Netzwerk annimmt und eine kontinuierliche Verifizierung der Identität und Autorisierung für jede Zugriffsanfrage erfordert.
+* Zero-Trust – Ein Sicherheitsmodell, das für keinen Benutzer, kein Gerät und kein Netzwerk implizites Vertrauen voraussetzt und für jede Zugriffsanforderung eine kontinuierliche Überprüfung der Identität und Berechtigung erfordert.
 
