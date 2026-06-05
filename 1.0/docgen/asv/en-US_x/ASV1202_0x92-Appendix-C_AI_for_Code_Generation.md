@@ -1,0 +1,436 @@
+# Appendix C: AI-Assisted Secure Coding
+
+<!-- markdownlint-disable-next-line MD013 -->
+<!-- cspell:words SSDF SAMM CICD PBAC Pulumi Conftest tfsec KICS Allstar unreviewed weaponization stylometric -->
+
+## Objective
+
+This appendix lists organizational controls for using AI coding tools safely. The range spans from baseline to advanced. The scope includes coding, code review, and the rest of the SSDLC.
+
+Treat the AI coding agent as an actor in the supply chain, not as a passive helper. It has an identity, authority, and the ability to act on its own behalf or to be acted upon by an attacker.
+
+Two things follow from that framing.
+
+Your own agent can be turned against you. A code-review bot that reads a malicious pull request description can be prompt-injected into approving the same code it was intended to reject. The injection does not have to be subtle—it just has to reach the bot’s context window.
+
+Attackers run AI of their own, often at scale. Familiar patterns include automated fork-and-pull-request campaigns aimed at`pull_request_target`-class triggers, AI-generated payloads tailored to a specific target repository, and abuse of long-lived CI secrets harvested along the way.
+
+The appendix aligns with NIST SSDF (SP 800-218 and SP 800-218A), NIST SP 800-204D, the NIST AI RMF (AI 100-1), the NIST Generative AI Profile (AI 600-1), NIST SP 800-207 Zero Trust Architecture, SLSA v1.2 (Build and Source Tracks), OWASP ASVS v5, the OWASP Top 10 CI/CD Security Risks, the OWASP Top 10 for Large Language Model Applications (2025), the OWASP Top 10 for Agentic Applications (2026, ASI01-ASI10), ISO/IEC 42001:2023, and MITRE ATLAS and ATT&CK.
+
+>Scope note: Only the AI-specific delta is in scope here. Generic CI/CD pipeline security (branch protection, signed commits, runner hardening, secret scanning, dependency pinning) is already covered by OWASP ASVS v5, the OWASP Top 10 CI/CD Security Risks, NIST SP 800-204D, and SLSA v1.2. Those baselines must already be in place. The references to them in this appendix are reminders. AI augmentation must not weaken them. And the AI-specific threat classes (fork-PR trigger exploitation, prompt injection, adversaries running AI of their own) must be addressed as well.
+> 
+>Relationship to normative chapters: Several controls in this appendix are really applications of an AISVS chapter control to the secure-coding case. The chapters that come up most often are C2.1 (Prompt Input Validation), C9.3 (Tool Sandboxing), and C9.6 (Action Authorization). The family introduction calls this out where it applies. For assessors: count an Appendix C finding either as an additional gap that the upstream chapter verification did not close, or as already counted under the chapter. Not as both.
+
+---
+
+### Architectural Prerequisites
+
+Before you begin verifying against Appendix C, the hosting environment must meet this baseline:
+
+* OWASP ASVS v5 compliance. This appendix supplements the ASVS v5 requirements for coding quality and CI/CD deployment security (V10 above all). It does not replace them. Coverage of CI/CD pipeline security under ASVS v5 must be in place before Appendix C is verified. The same applies to coverage of the OWASP Top 10 CI/CD Security Risks.
+* SLSA implementation. On the core integration and delivery lines, implement SLSA Build Track Level 2 or higher, with provenance generated and verified for release artifacts. If production AI agents act on source repositories, also adopt the SLSA Source Track (v1.2) for authorship and review controls.
+* Platform control invariants. Branch protection or ruleset constraints on release paths. At a minimum: no unreviewed merges into default or release branches, signed commits where the platform supports them, required status checks, protected environments, and a trail for every human override.
+
+---
+
+## AC.1 AI-Assisted Secure-Coding Workflow
+
+AI tooling has to fit into the existing secure software development lifecycle (SSDLC) without weakening any of the security gates already in place. Equally important: document adversarial-AI threat scenarios that justify each guardrail. Doing this up front is much easier than reconstructing it after the fact.
+
+<!-- markdownlint-disable MD013 -->
+| #      | Description                                                                                                                                                                                                                                                                                                                | Level |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| AC.1.1 | Verify that the documented workflow specifies when AI tools may generate, refactor, or review code. The workflow names the approved tools, prohibited use cases, and the data classifications that are permitted as input.                                                                                                 | 1     |
+| AC.1.2 | Verify that the workflow covers every SSDLC phase, from design and implementation through code review, testing, deployment, and post-deployment monitoring, and that it names the security gates that remain mandatory regardless of whether AI was involved or not.                                                       | 2     |
+| AC.1.3 | Verify that the workflow names the adversarial-AI threat scenarios it is designed to mitigate. The list should cover prompt injection delivered through PR content, AI-generated supply-chain payloads, autonomous agents approving their own work, fork-PR secret exfiltration, and compromise of the model supply chain. | 2     |
+| AC.1.4 | Verify that metrics are collected for AI-produced and AI-mediated code, and that the results are compared against a human-only baseline. Vulnerability density, mean time to detect, AI-attributable defect rate, prompt-injection detection rate, and fork-PR rejection rate are all useful.                              | 3     |
+
+Mappings & References:
+
+* AC.1.1: NIST SSDF PO.1 (Define Security Requirements for Software Development); ISO/IEC 42001 Clauses 6, 8; OWASP SAMM Strategy & Metrics (SM), Policy & Compliance (PC).
+* AC.1.2: NIST SSDF PW.1, PW.7; OWASP SAMM Education & Guidance (EG); ISO/IEC 5338 Clause 6.
+* AC.1.3: MITRE ATLAS (Reconnaissance & Initial Access tactics); NIST AI 600-1 GOVERN; OWASP LLM Top 10 (2025) LLM03; OWASP Agentic Top 10 (2026) ASI04.
+* AC.1.4: NIST AI RMF measure; ISO/IEC 42001 Clause 9; OWASP SAMM strategy & metrics (SM).
+
+---
+
+## AC.2 AI Tool Qualification & Threat Modeling
+
+Do not adopt an AI coding tool until it has been evaluated. In particular, examine three areas: its security capabilities, its resistance to adversarial input, and the risk inherited from its supply chain.
+
+<!-- markdownlint-disable MD013 -->
+| #      | Description                                                                                                                                                                                                                                                                                                                         | Level |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| AC.2.1 | Verify that every AI tool, whether it is an assistant, a reviewer, an agent, or an MCP server, has a threat model. The threat model covers misuse, model inversion, training-data leakage, prompt injection from untrusted input, insecure output handling, excessive agency, and risk inherited from its dependency chain.         | 1     |
+| AC.2.2 | Verify that the evaluation of each tool covers the local components (static and dynamic analysis), the SaaS endpoints (TLS, AuthN/AuthZ, logging, data residency), and the vendor's model supply chain (training-data provenance, fine-tune history, RAG sources). Each of these is reviewed, and the review is documented.         | 2     |
+| AC.2.3 | Verify that each tool undergoes adversarial robustness testing before onboarding. The testing is repeated after any material change to the model or to the system prompts. Coverage includes automated prompt-injection probes, jailbreak suites, and indirect-injection corpora delivered through realistic PR and issue surfaces. | 2     |
+| AC.2.4 | Verify that evaluations follow a recognized framework, such as the NIST AI RMF, the NIST AI 600-1 Generative AI Profile, or ISO/IEC 42001. Perform evaluations again after a major version update, a vendor incident, or new threat intelligence that is relevant to the tool class.                                                | 3     |
+
+Mappings & References:
+
+* AC.2.1: OWASP LLM Top 10 (2025) LLM01, LLM06; OWASP Agentic Top 10 (2026) ASI01, ASI02, ASI03; AISVS C9; MITRE ATLAS (threat modeling).
+* AC.2.2: OWASP LLM Top 10 (2025) LLM03; OWASP Agentic Top 10 (2026) ASI04; NIST SSDF PO.1, PO.5; ISO/IEC 42001 Clause 8.
+* AC.2.3: MITRE ATLAS (Adversarial ML testing); AISVS C2.3; NIST AI 600-1 MEASURE.
+* AC.2.4: ISO/IEC 42001 Clause 9.2; NIST AI RMF GOVERN.
+
+---
+
+## AC.3 Secure Prompt & Context Management
+
+Two goals for this family. First: prevent secrets, proprietary code, and personal data from leaking into prompts. Second: treat any content sourced from the repository, a PR, or a third party as untrusted input. Any of it can carry a prompt-injection payload, and most of it usually does not—which is part of what makes the rare hostile case easy to miss.
+
+>Relationship to AISVS C2.1: AC.3.3, AC.3.4, and AC.3.5 apply AISVS C2.1 (Prompt Input Validation) to the secure-coding case. If a finding here is something that C2.1 verification did not already close, count it as an additional gap (specific to coding-tool prompt construction). If C2.1 already closed it, do not count it twice.
+
+<!-- markdownlint-disable MD013 -->
+| #      | Description                                                                                                                                                                                                                                                                                                                           | Level |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| AC.3.1 | Verify that the written guidance prohibits entering secrets, credentials, PII, or classified data into any prompt sent to an AI tool. The guidance is enforced via pre-commit hooks, IDE integrations, and CI.                                                                                                                        | 1     |
+| AC.3.2 | Verify that technical controls automatically remove sensitive material from any context window sent to an AI tool. Client-side redaction, approved context filters, and secret scanners with pre-prompt hooks all qualify.                                                                                                            | 1     |
+| AC.3.3 | Verify that any externally sourced context provided to an AI tool is treated as untrusted and is screened for prompt injection before it reaches the prompt. Sources to cover: PR descriptions and comments, fork-supplied diffs, issue bodies, commit messages, third-party documentation, web search results, and MCP tool outputs. | 1     |
+| AC.3.4 | Verify that the AI tool enforces an instruction hierarchy, with system and developer messages taking precedence over untrusted repository content. This hierarchy must hold across multi-turn conversations and tool-augmented workflows.                                                                                             | 1     |
+| AC.3.5 | Verify that input length controls prevent untrusted PR or repository content from crowding out system instructions or safety directives within the effective context window. Oversized inputs are rejected outright. Silent truncation is not acceptable.                                                                             | 2     |
+| AC.3.6 | Verify that prompts and AI responses are encrypted in transit and at rest, and retained according to the data-classification policy. Tenants and projects are cryptographically separated from each other.                                                                                                                            | 3     |
+
+Mappings & References:
+
+* AC.3.1: OWASP LLM Top 10 (2025) LLM02 (Sensitive Information Disclosure); OWASP ASVS v5 V14 (Data Protection); ISO/IEC 27001:2022 A.8.12 (Data Leakage Prevention).
+* AC.3.2: AISVS C2.4; OWASP LLM Top 10 (2025) LLM02; NIST SSDF PW.3.
+* AC.3.3: AISVS C2.1, C2.4; OWASP LLM Top 10 (2025) LLM01; OWASP Agentic Top 10 (2026) ASI06; MITRE ATLAS (Indirect prompt injection).
+* AC.3.4: AISVS C2.1.2; OWASP LLM Top 10 (2025) LLM01; CISA Secure by Design.
+* AC.3.5: OWASP LLM Top 10 (2025) LLM10; AISVS C2.1.4.
+* AC.3.6: OWASP ASVS v5 V6 (Cryptography), V14 (Data Protection); ISO/IEC 27001:2022 A.8.24 (Use of Cryptography).
+
+---
+
+## AC.4 Validation of AI-Generated Code
+
+Catch the vulnerabilities that AI output introduces. Fix them before the code reaches a merge or a deployment.
+
+<!-- markdownlint-disable MD013 -->
+| #      | Description                                                                                                                                                                                                                                                                                                                                                       | Level |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| AC.4.1 | Verify that AI-generated code always undergoes code review by a qualified human engineer. The reviewer must not be the same identity that requested the AI generation in the first place (segregation of duties). And the AI agent itself does not count as the human reviewer.                                                                                   | 1     |
+| AC.4.2 | Verify that automated security testing runs on every pull request that contains AI-generated code: SAST, IAST, DAST, secret scanning, IaC scanning, and SCA. Where the scanner supports them, AI-attribution-aware rules are enabled.                                                                                                                             | 2     |
+| AC.4.3 | Verify that pull requests containing AI-generated code are blocked from merging when an automated scan surfaces a critical security finding, defined as CVSS >= 9.0 or the equivalent threshold in the organization's vulnerability severity policy. Bypassing the block requires a written exception approved by an authorized human.                            | 2     |
+| AC.4.4 | Verify that security-critical files require an elevated review threshold when AI generated or modified: two-person review, security-team sign-off, or stricter. Security-critical files here include authentication, authorization, and cryptography code; IAM policy; CI/CD workflow definitions; deployment manifests; and sandbox or network policy artifacts. | 2     |
+| AC.4.5 | Verify that differential fuzz testing or property-based tests cover the security-critical behaviors of AI-generated code: input validation, authorization logic, and deserialization safety.                                                                                                                                                                      | 3     |
+
+Mappings & References:
+
+* AC.4.1: NIST SSDF PW.7; OWASP ASVS v5 V10 (Coding Quality); ISO/IEC 27001:2022 A.5.3 (Segregation of Duties).
+* AC.4.2: NIST SP 800-204D (Pipeline scanning controls); SLSA v1.2 Build Track L2; OWASP SAMM Security Testing (ST).
+* AC.4.3: OWASP CI/CD Top 10 CICD-SEC-04 (Poisoned Pipeline Execution); NIST SSDF PW.7, PW.8.
+* AC.4.4: NIST SSDF PW.4, PW.7; OWASP CI/CD Top 10 CICD-SEC-01 (Insufficient Flow Control); ISO/IEC 27001:2022 A.8.32 (Change Management).
+* AC.4.5: NIST SSDF PW.8; OWASP ASVS v5 V11 (Business Logic).
+
+---
+
+## AC.5 Explainability & Traceability of Code Suggestions
+
+Auditors, defenders, and the developers themselves need to be able to see why a given AI suggestion was made and how it ended up in a shipped artifact.
+
+<!-- markdownlint-disable MD013 -->
+| #      | Description                                                                                                                                                                                                       | Level |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| AC.5.1 | Verify that prompt-and-response pairs are logged with stable correlation identifiers so that an investigator can later replay the entire chain: prompt → response → commit → build → deployment.                  | 1     |
+| AC.5.2 | Verify that developers can access the citations (training snippets, retrieved documents, MCP tool outputs) that support a suggestion, and that the citation chain travels with the artifact.                      | 2     |
+| AC.5.3 | Verify that explainability reports, AI event logs, and citation records are stored in tamper-evident storage (append-only, WORM, or an immutable log store) and that they are referenced during security reviews. | 3     |
+
+Mappings & References:
+
+* AC.5.1: ISO/IEC 42001 Clause 7.5 (Documented Information); OWASP ASVS v5 V8 (Logging); NIST SP 800-218A (Generative AI logging guidance).
+* AC.5.2: NIST AI RMF MEASURE; OWASP LLM Top 10 (2025) LLM03.
+* AC.5.3: ISO/IEC 27001:2022 A.8.15 (Logging); NIST AI 600-1 MEASURE; ISO/IEC 42001 (traceability).
+
+---
+
+## AC.6 Continuous Feedback, Adversarial Testing & Model Fine-Tuning
+
+Improve model security over time. Monitor for negative drift. Continue red-teaming the AI tooling. The red-team scope in this family covers the AI tooling itself; the underlying systems and services the tooling depends on are handled by separate programs.
+
+<!-- markdownlint-disable MD013 -->
+| #      | Description                                                                                                                                                                                                                                                                                                                | Level |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| AC.6.1 | Verify that developers and reviewers can flag insecure or non-compliant suggestions, and that each flag is tracked to closure with links back to the originating prompt and response and forward to any downstream artifacts.                                                                                              | 1     |
+| AC.6.2 | Verify that aggregated feedback feeds into periodic system-prompt updates or retrieval-augmented generation against vetted secure-coding corpora (OWASP Cheat Sheets, internal coding standards). Where the organization controls model training infrastructure, fine-tuning on the same feedback corpus is also required. | 2     |
+| AC.6.3 | Verify that scheduled red-team exercises target the AI tooling itself. The exercises include direct and indirect prompt-injection probes delivered through realistic PR, issue, and comment surfaces, jailbreak corpora, and supply-chain payload generation. Findings are remediated under tracked severity SLAs.         | 2     |
+| AC.6.4 | Verify that a closed-loop evaluation harness runs regression tests after every fine-tune, system prompt change, or model upgrade. Security metrics must meet or exceed the prior baseline before deployment.                                                                                                               | 3     |
+
+Mappings & References:
+
+* AC.6.1: NIST AI RMF MANAGE; ISO/IEC 42001 Clause 10; OWASP SAMM Defect Management (DM).
+* AC.6.2: OWASP LLM Top 10 (2025) LLM03; NIST SSDF PO.3.
+* AC.6.3: MITRE ATLAS (Adversarial ML lifecycle); NIST AI 600-1 MEASURE 2.7; OWASP SAMM Security Testing (ST).
+* AC.6.4: ISO/IEC 42001 Clause 9.1; NIST AI RMF Measure.
+
+---
+
+## AC.7 AI-Generated Infrastructure & Pipeline Artifacts
+
+Infrastructure code, CI/CD workflow files, deployment manifests, and security policy artifacts all have an outsized impact when they are incorrect. When AI has generated them, validation must be correspondingly stricter than it is for ordinary application code.
+
+<!-- markdownlint-disable MD013 -->
+| #      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                       | Level |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| AC.7.1 | Verify that AI-generated or AI-modified artifacts are clearly labeled and tracked as such. Artifact classes in scope include infrastructure-as-code (Terraform, CloudFormation, Pulumi, Bicep), CI/CD workflow files (GitHub Actions, GitLab CI, Jenkinsfile, Argo Workflows, Tekton), container and orchestration manifests (Dockerfile, Kubernetes, Helm), and security policy artifacts (IAM, OPA/Rego, NetworkPolicy, admission controllers). | 1     |
+| AC.7.2 | Verify that AI-generated infrastructure and pipeline configurations require human review and approval before they run in any environment other than a hermetic sandbox.                                                                                                                                                                                                                                                                           | 2     |
+| AC.7.3 | Verify that AI-generated infrastructure and workflow changes pass policy-as-code enforcement (OPA, Conftest, Checkov, tfsec, KICS, kube-linter) at the same level as, or stricter than, human-authored changes. Policy violations block promotion.                                                                                                                                                                                                | 2     |
+| AC.7.4 | Verify that changes to high-impact pipeline trigger configurations require both dual control and a security-team review, regardless of who or what produced the change. The configurations in scope include GitHub Actions`pull_request_target`and`workflow_run`, self-hosted runner labels, workflow`permissions:`blocks, OIDC trust policies, and secret-environment mappings.                                                                  | 2     |
+| AC.7.5 | Verify that drift detection compares the deployed infrastructure and live workflow configurations against signed, AI-attributed baselines, and alerts on any unauthorized modification.                                                                                                                                                                                                                                                           | 3     |
+
+Mappings & References:
+
+* AC.7.1: OWASP CI/CD Top 10 CICD-SEC-05 (Insufficient PBAC); SLSA v1.2 Build Track provenance; NIST SSDF PW.1.
+* AC.7.2: NIST SP 800-204D (Approval gating); OWASP CI/CD Top 10 CICD-SEC-01; ISO/IEC 27001:2022 A.8.32 (Change Management).
+* AC.7.3: OWASP ASVS v5 V10 (CI/CD Deployment Security); OWASP CI/CD Top 10 CICD-SEC-07 (Insecure System Configuration); NIST SSDF PW.4.
+* AC.7.4: OWASP CI/CD Top 10 CICD-SEC-01, CICD-SEC-02; GitHub Security Lab "Preventing pwn requests" series; NIST SP 800-204D (Pipeline governance).
+* AC.7.5: NIST SP 800-204D (Continuous monitoring); ISO/IEC 27001:2022 A.8.19.
+
+---
+
+## AC.8 Autonomous Agent Change Control Constraints
+
+Autonomous AI agents that generate code or configuration receive the same separation-of-duties treatment as humans. They cannot approve, merge, or promote their own work. This applies at both the policy layer and the technical layer.
+
+<!-- markdownlint-disable MD013 -->
+| #      | Description                                                                                                                                                                                                                                                             | Level |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| AC.8.1 | Verify that autonomous agents cannot approve, merge, sign, or deploy artifacts that they themselves generated, and that this constraint is enforced by the source-control system, the CI system, and the artifact registry. Policy alone does not satisfy this control. | 1     |
+| AC.8.2 | Verify that AI systems run with scoped, non-human identities (service accounts, workload identities, OIDC-issued ephemeral tokens), and that those identities cannot be used to promote their own generated artifacts across environments.                              | 2     |
+| AC.8.3 | Verify that autonomous agents cannot bypass branch protection, required reviews, required status checks, signed-commit requirements, or merge queues. Any attempt by an agent to change these settings triggers a security alert.                                       | 2     |
+| AC.8.4 | Verify that separation of duties holds across the stages of an AI-generated change. Each stage (generation, review, approval, deployment) is performed by a distinct principal, whether human or system.                                                                | 3     |
+
+Mappings & References:
+
+* AC.8.1: OWASP Agentic Top 10 (2026) ASI03 (Identity and Privilege Abuse), ASI10 (Rogue Agents); OWASP ASVS v5 V10; NIST SP 800-53r5 AC-5 (Separation of Duties).
+* AC.8.2: NIST SP 800-207 (Zero Trust Architecture); OWASP CI/CD Top 10 CICD-SEC-02; ISO/IEC 27001:2022 A.5.15 (Access Control).
+* AC.8.3: OWASP CI/CD Top 10 CICD-SEC-01; GitHub Docs (Branch protection rules and rulesets); OWASP Agentic Top 10 (2026) ASI03.
+* AC.8.4: NIST SSDF PO.2; ISO/IEC 27001:2022 A.5.3; NIST SP 800-53r5 AC-5.
+
+---
+
+## AC.9 AI Artifact Origin Validation for Deployment
+
+Deployment and promotion pipelines must validate the cryptographic origin and generation history of AI-generated artifacts. They do this before allowing the artifact to proceed.
+
+<!-- markdownlint-disable MD013 -->
+| #      | Description                                                                                                                                                                                                                                                             | Level |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| AC.9.1 | Verify that AI-generated artifacts include signed origin and generation metadata (in-toto or SLSA provenance attestations, AI-BOM entries) identifying the AI system that produced them, the generation context, the humans involved, and the associated audit records. | 1     |
+| AC.9.2 | Verify that deployment pipelines check the presence, signature, and integrity of origin and generation metadata on AI-generated artifacts before promotion, using a trusted verifier (Sigstore/cosign, in-toto verification).                                           | 2     |
+| AC.9.3 | Verify that artifacts are rejected at deployment and quarantined for review when they are missing required origin and generation information, signed with untrusted keys, or produced by an unapproved AI system or environment.                                        | 3     |
+
+Mappings & References:
+
+* AC.9.1: SLSA v1.2 (Provenance attestations); CycloneDX ML-BOM; in-toto Attestation Framework.
+* AC.9.2: SLSA v1.2 (Verification Summary Attestations); Sigstore/cosign (Signature verification); OWASP SCVS.
+* AC.9.3: SLSA v1.2 (Verifier requirements); NIST SP 800-204D (Promotion gating).
+
+---
+
+## AC.10 Generation Audit Trail Completeness and Validation
+
+AI-generated artifacts need complete and consistent provenance and generation records, validated before integration or deployment. The reason matters. Policy-based enforcement of provenance tracking only works if the recorded information is itself complete and consistent. When records are missing fields, or when the fields they do have contradict each other, detections get missed and enforcement leaves gaps. So provenance tracking is treated as a first-class requirement here and validated before an artifact is accepted.
+
+<!-- markdownlint-disable MD013 -->
+| #       | Description                                                                                                                                                                                                                                                                                                                                                 | Level |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| AC.10.1 | Verify that AI-generated artifacts include the required origin and generation fields: model identity and version, tool or agent identity, generation context, prompt hash, human involvement, session identifiers, and correlation IDs.                                                                                                                     | 1     |
+| AC.10.2 | Verify that the origin and generation metadata are checked for completeness and consistency: no missing or ambiguous fields, values normalized to a single representation, and a signature chain that validates back to a trusted root.                                                                                                                     | 2     |
+| AC.10.3 | Verify that artifacts with incomplete, inconsistent, or unverifiable origin and generation metadata are rejected before merge or deployment, and that the rejection event is logged so trends can be tracked. Rejection occurs on the verifier side, against the attestation or proof model defined in SLSA and the verification criteria in ISO/IEC 42001. | 3     |
+
+Mappings & References:
+
+* AC.10.1: CycloneDX ML-BOM schema; NIST SP 800-218A (Generative AI provenance); ISO/IEC 42001 Clause 7.5.
+* AC.10.2: OWASP SCVS (Provenance and Pedigree); SLSA v1.2 VSA verification.
+* AC.10.3: SLSA v1.2 (Verifier-side enforcement); ISO/IEC 42001 Clause 9.
+
+---
+
+## AC.11 AI Code Review & Assistant Bot Hardening
+
+AI code-review bots, PR-comment bots, MCP-driven assistants (Model Context Protocol), and IDE copilots are all reachable through untrusted repository content. The reachable surfaces include PR diffs, descriptions, comments, issues, and any workflow files supplied from a fork. This category covers the case where an attacker uses one of those surfaces to push a defender’s own AI agent into approving, ignoring, or actively assisting a supply-chain attack.
+
+>Relationship to AISVS C2.1, C9.3, and C9.6: AC.11.1 through AC.11.5 are applications of three AISVS chapter controls to the specific case of AI code-review and assistant bots operating over untrusted PR content. The three chapter controls are C2.1 (Prompt Input Validation), C9.3 (Tool Sandboxing), and C9.6 (Action Authorization). The appendix restates each one with bot-specific guidance. The counting rule is the same as elsewhere: a finding here is either an additional gap that the upstream chapter did not address, or it is already counted under the chapter. Not both.
+
+<!-- markdownlint-disable MD013 -->
+| #       | Description                                                                                                                                                                                                                                                                                                                                     | Level |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| AC.11.1 | Verify that AI review and assistant bots treat every piece of PR-supplied content (diff, title, description, comments, file contents, commit messages, linked external URLs) as untrusted input, and apply the AISVS C2.1 prompt-injection defenses: instruction-hierarchy enforcement, content sanitization, and indirect-injection detection. | 1     |
+| AC.11.2 | Verify that the AI review and assistant bot system prompts and policy configurations are integrity-checked at load time (signed, hash-pinned), and that nothing in the repository, in the branch contents, in PR-sourced environment variables, or in any other user-controllable input can modify them.                                        | 1     |
+| AC.11.3 | Verify that AI review and assistant bots emit only structured, schema-validated output (JSON with an allowlist of fields and actions). Any free-form output is treated as untrusted and is never executed as a command, a query, a shell snippet, or a workflow step.                                                                           | 1     |
+| AC.11.4 | Verify that AI review and assistant bots run in network-isolated, least-privilege sandboxes: a dedicated namespace, default-deny egress with an allowlist to approved APIs only, no mounted repository secrets, and ephemeral credentials only.                                                                                                 | 2     |
+| AC.11.5 | Verify that any privileged action a bot can take (approving a PR, merging, labeling, dismissing reviews, posting comments outside its sandbox, invoking external tools) goes through a separate, audited authorization path. That path is adjudicated by a policy engine, not by the LLM.                                                       | 2     |
+| AC.11.6 | Verify that AI review and assistant bots log all prompts (including externally sourced context), tool calls, and outputs to tamper-evident storage. Egress patterns (URLs, IPs, DNS, and payload sizes) are continuously monitored for exfiltration indicators, with alerting tuned for webhook, paste-site, and bin-service destinations.      | 2     |
+| AC.11.7 | Verify that AI review bots run in a zero-privilege, read-only shadow mode for untrusted fork PRs. In shadow mode, inline code-generation commentary is restricted, and privileged workflow interaction is forbidden until a repository maintainer has cleared an initial first-time-contributor verification gate.                              | 2     |
+| AC.11.8 | Verify that AI review and assistant bots are subject to continuous adversarial testing: indirect prompt injection corpora are replayed against the bot through simulated PRs, issues, and comments. Detection effectiveness is tracked over time, and a regression blocks the model or prompt update that caused it.                            | 3     |
+
+Mappings & References:
+
+* AC.11.1: AISVS C2.1, C2.4; OWASP LLM Top 10 (2025) LLM01; OWASP Agentic Top 10 (2026) ASI01, ASI06.
+* AC.11.2: AISVS C9.7; OWASP LLM Top 10 (2025) LLM01; OWASP Agentic Top 10 (2026) ASI01.
+* AC.11.3: AISVS C9.6.4; OWASP LLM Top 10 (2025) LLM05; OWASP Agentic Top 10 (2026) ASI02, ASI05.
+* AC.11.4: AISVS C9.3; OWASP Agentic Top 10 (2026) ASI02, ASI03, ASI05; NIST SP 800-204D (Workload Isolation).
+* AC.11.5: AISVS C9.6.4; OWASP ASVS v5 V4 (Access Control); OWASP Agentic Top 10 (2026) ASI02, ASI03.
+* AC.11.6: OWASP ASVS v5 V8 (Logging & Error Handling); OWASP LLM Top 10 (2025) LLM02; ISO/IEC 27001:2022 A.8.15, A.8.16.
+* AC.11.7: GitHub Security Lab "Preventing pwn requests" series (Parts 1-4); OWASP Agentic Top 10 (2026) ASI01, ASI03, ASI09; OWASP CI/CD Top 10 CICD-SEC-01.
+* AC.11.8: MITRE ATLAS (Indirect prompt injection); AISVS C2.3; OWASP SAMM Security Testing (ST).
+
+---
+
+## AC.12 Hardening AI Augmentation-Specific CI/CD Pipelines
+
+Two kinds of CI/CD pipeline controls are in scope for this family: those that AI augmentation_newly requires_, and those that AI augmentation_breaks_. Generic CI/CD hygiene is not in scope here; it is covered elsewhere. Short-lived credentials, immutable action pinning, branch protection, SLSA Build Track L3 provenance, and multi-party production approval are all addressed by OWASP ASVS v5 V10, the OWASP Top 10 CI/CD Security Risks (CICD-SEC-01 through CICD-SEC-10), NIST SP 800-204D, and SLSA v1.2. Adopters implement those baselines and verify them against the originating standards. We do not repeat that assessment here.
+
+<!-- markdownlint-disable MD013 -->
+| #       | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Level |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| AC.12.1 | Verify that workflows triggered by untrusted contributions (GitHub Actions`pull_request_target`, `workflow_run`, and equivalent fork-aware triggers in other CI systems) never checks out, builds, tests, or otherwise executes untrusted code in a context that has repository write permissions or access to repository, organization, package-registry, cloud, or deployment secrets. When a privileged follow-up step is needed, the untrusted contribution is first processed in an unprivileged`pull_request`workflow, and only validated passive artifacts are passed forward to a separate privileged workflow. | 1     |
+| AC.12.2 | Verify that secrets, credentials, and pipeline job tokens are not persisted into workspaces that process AI-touched or fork-originated untrusted code. For example, set `persist-credentials: false`on checkout where the platform supports it, and scrub CI runners of cached credentials before AI tooling runs.                                                                                                                                                                                                                                                                                                      | 1     |
+| AC.12.3 | Verify that secrets are not exposed to workflows that run code from forks or first-time contributors. Environment-protection rules (or the platform equivalent, such as protected variables and deployment approvals) require a manual approval before any secret-bearing job can run for those contributions. This control works with AC.11.7 and AC.13.2. Bot-level enforcement under AC.11.7 does not replace the platform-level enforcement required here.                                                                                                                                                          | 1     |
+| AC.12.4 | Verify that self-hosted or persistent runners used by AI tooling are ephemeral (destroyed after each job), network-segmented, and isolated from production credentials. Persistent or long-lived runners must not process fork PRs or AI-generated untrusted artifacts under any circumstances.                                                                                                                                                                                                                                                                                                                         | 2     |
+| AC.12.5 | Verify that changes to workflow definition files (`.github/workflows/*`, `.gitlab-ci.yml`, `Jenkinsfile`, Argo, Tekton, and equivalents) are detected on every PR and routed through an elevated review path that includes a security reviewer, regardless of who the contributor is or whether AI was involved. AI agents must not be granted bypass authority over this review path.                                                                                                                                                                                                                                  | 2     |
+| AC.12.6 | Verify that pipeline audit logs (workflow runs, secret access, runner registration, permission grants, OIDC token issuance) are streamed in real time to centralized security monitoring. Detection rules are tuned for AI-augmented threat patterns: bulk PR creation from new accounts, workflow-file modifications in fork PRs, unexpected secret access from AI-runner pools, and unusual egress (webhooks, paste sites, bin services) from AI workloads.                                                                                                                                                           | 2     |
+| AC.12.7 | Verify that artifacts produced by untrusted PR workflows are treated as untrusted passive data when a privileged follow-up workflow consumes them. The privileged workflow never executes binaries, scripts, packages, caches, or generated workflow fragments that originated in an untrusted contribution.                                                                                                                                                                                                                                                                                                            | 2     |
+| AC.12.8 | Verify that the remediation of a vulnerable workflow includes invalidating or revalidating any PR that was opened before the fix was released. Without this step, a later commit to the same PR can pick up the stale workflow definition and bypass the fix.                                                                                                                                                                                                                                                                                                                                                           | 2     |
+
+Mappings & References:
+
+* AC.12.1: OWASP CI/CD Top 10 CICD-SEC-01, CICD-SEC-04; GitHub Security Lab "Preventing pwn requests" series; NIST SP 800-204D (Pipeline isolation).
+* AC.12.2: OWASP CI/CD Top 10 CICD-SEC-02, CICD-SEC-06; GitHub Docs (Automatic token authentication and permissions); NIST SP 800-53r5 AC-6 (Least Privilege).
+* AC.12.3: OWASP CI/CD Top 10 CICD-SEC-01; GitHub Docs (Approving workflow runs from public forks; Protected environments); GitLab Docs (Protected variables).
+* AC.12.4: OWASP CI/CD Top 10 CICD-SEC-06; NIST SP 800-204D (Runner isolation); ISO/IEC 27001:2022 A.8.22 (Segregation of Networks).
+* AC.12.5: OWASP CI/CD Top 10 CICD-SEC-01; NIST SSDF PW.7; ISO/IEC 27001:2022 A.8.32.
+* AC.12.6: OWASP ASVS v5 V8 (Logging); OWASP CI/CD Top 10 CICD-SEC-10 (Insufficient Logging and Visibility); ISO/IEC 27001:2022 A.8.16.
+* AC.12.7: GitHub Security Lab "Preventing pwn requests" series; OWASP CI/CD Top 10 CICD-SEC-01; NIST SP 800-204D (Cross-workflow trust boundaries).
+* AC.12.8: GitHub Security Lab "Preventing pwn requests" Part 4 (Alvaro Munoz, 2025); OWASP CI/CD Top 10 CICD-SEC-01; NIST SSDF RV.1.
+
+---
+
+## AC.13 Adversarial AI Detection in Inbound Contributions
+
+The previous families focused on defending your own AI from misuse. This one flips the perspective. Here, the AI is on the attacker’s side, and you’re trying to spot the signal in incoming contributions and content. The scenario worth defending against is one where an attacker uses AI to run fork-and-PR campaigns at scale, with malicious payloads tailored to the target repository.
+
+<!-- markdownlint-disable MD013 -->
+| #       | Description                                                                                                                                                                                                                                                                                                                                                                                                                     | Level |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| AC.13.1 | Verify that contribution-velocity and contributor-reputation analytics flag anomalies: bulk PR creation from newly created accounts, coordinated fork waves immediately preceding PRs, PR volumes that are inconsistent with human authorship, and reuse of payload patterns across unrelated repositories.                                                                                                                     | 1     |
+| AC.13.2 | Verify that pull requests (PRs) from first-time or low-reputation contributors require maintainer approval before any privileged workflow processes them. Privileged workflows here include AI review bots, secret-bearing jobs, and external-integration calls.                                                                                                                                                                | 1     |
+| AC.13.3 | Verify that automated PR pipeline gates detect known indicators of LLM-generated or LLM-assisted malicious payload patterns: registry-confusable or typosquatted dependency names, package references that do not resolve to any published version, and dependencies whose creation, first-publication, or maintainer-change timestamps appear anomalous relative to the PR.                                                    | 2     |
+| AC.13.4 | Verify that the detection rules are mapped to MITRE ATT&CK (T1195 Supply Chain Compromise and CI/CD-relevant sub-techniques) and to MITRE ATLAS techniques, maintained for the inbound contribution analysis use case, and reviewed against current threat intelligence.                                                                                                                                                        | 2     |
+| AC.13.5 | Verify that confirmed or high-confidence adversarial contributions trigger automated containment: block the PR, quarantine the fork, suspend the contributor, notify maintainers, and freeze affected workflow files. Triage decisions feed back into detection tuning.                                                                                                                                                         | 3     |
+| AC.13.6 | Verify that PR analytics include structural AST profiling and stylometric or entropy-based heuristics tuned to identify LLM-generated code patterns. Detection in this category is still maturing, so compensating controls are accepted in place of high-precision automated detection: mandatory human review for flagged PRs, sandboxed execution of suspect payloads, and a deferred merge until additional signals accrue. | 3     |
+
+Mappings & References:
+
+* AC.13.1: OWASP CI/CD Top 10 CICD-SEC-01; NIST AI RMF MANAGE; MITRE ATLAS (Reconnaissance).
+* AC.13.2: GitHub Docs (Approving workflow runs from public forks); OWASP CI/CD Top 10 CICD-SEC-01; NIST SSDF PW.4.
+* AC.13.3: OWASP LLM Top 10 (2025) LLM03; OWASP CI/CD Top 10 CICD-SEC-03 (Dependency Chain Abuse); NIST SSDF PW.4.
+* AC.13.4: MITRE ATT&CK T1195; MITRE ATLAS (technique catalog); OWASP SAMM Threat Assessment (TA).
+* AC.13.5: NIST AI RMF MANAGE; ISO/IEC 27001:2022 A.5.25 (Assessment of Information Security Events); OWASP SAMM Incident Management (IM).
+* AC.13.6: MITRE ATLAS (Adversarial ML output detection, research-edge); OWASP LLM Top 10 (2025) LLM03; NIST SSDF PW.8.
+
+---
+
+## AC.14 Compromise Containment & Automated Remediation
+
+Things go wrong eventually. When an AI-adjacent compromise (a prompt-injected bot, a leaked CI secret, or a malicious AI-generated artifact in a build) is suspected or confirmed, the goal is to contain the damage and shorten recovery time.
+
+<!-- markdownlint-disable MD013 -->
+| #       | Description                                                                                                                                                                                                                                                                                                                                                                            | Level |
+| ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
+| AC.14.1 | Verify that an incident-response playbook exists for AI-in-pipeline compromise. At minimum, it covers: revoking AI-agent credentials, rotating every secret that touched the compromised workflow run, quarantining the compromised artifacts, notifying downstream consumers, notifying regulators where applicable, and preserving prompts, responses, and audit logs for forensics. | 1     |
+| AC.14.2 | Verify that any secret that was used in a workflow run associated with a suspicious PR, a prompt-injection event, or an AI-agent anomaly is automatically rotated, and that downstream issuers (cloud IAM, package registries, and signing-key custodians) are notified of the rotation.                                                                                               | 1     |
+| AC.14.3 | Verify that AI agent identities (keys, tokens, OIDC trust grants) can be rapidly revoked and quarantined, with a written target time-to-revoke that is tested at least once per year.                                                                                                                                                                                                  | 2     |
+| AC.14.4 | Verify that build provenance and AI-BOM records are used during incident response to identify every downstream artifact produced under the suspect AI agent or the compromised pipeline run, so that recall, rebuild, or quarantine can be targeted.                                                                                                                                   | 2     |
+| AC.14.5 | Verify that automated remediation is tested in tabletop or live-fire exercises at least once per year. The scenarios include a prompt-injected reviewer bot, fork-PR secret exfiltration, and an AI-generated malicious workflow file.                                                                                                                                                 | 3     |
+
+Mappings & References:
+
+* AC.14.1: ISO/IEC 27001:2022 A.5.24, A.5.26; NIST AI RMF MANAGE; OWASP SAMM Incident Management (IM).
+* AC.14.2: OWASP ASVS v5 V6 (Cryptography), V14; OWASP CI/CD Top 10 CICD-SEC-06; NIST SSDF RV.2.
+* AC.14.3: AISVS C9.4 (Identity Handling for AI/LLM Services); NIST SP 800-207 (Zero Trust Architecture); ISO/IEC 27001:2022 A.5.18 (Access Rights).
+* AC.14.4: OWASP SCVS (bill-of-materials analysis); CycloneDX ML-BOM tracing; NIST SSDF RV.1.
+* AC.14.5: NIST SSDF RV.1; ISO/IEC 27001:2022 A.5.28 (Collection of Evidence); OWASP SAMM Incident Management (IM).
+
+---
+
+## References
+
+### NIST
+
+* NIST Special Publication 800-218: Secure Software Development Framework (SSDF)
+v1.1
+* NIST Special Publication 800-218A: Secure Software Development Practices for
+  Generative AI and Dual-Use Foundation Models
+* NIST Special Publication 800-204D: Strategies for Integrating Software
+  Supply Chain Security in DevSecOps CI/CD Pipelines
+* NIST Special Publication 800-207: Zero Trust Architecture
+* NIST Special Publication 800-53 Rev. 5: Security and Privacy Controls for
+  Information Systems and Organizations
+* NIST AI 100-1: Artificial Intelligence Risk Management Framework (AI RMF 1.0)
+* NIST AI 600-1: AI RMF Generative AI Profile
+
+### OWASP
+
+* OWASP Application Security Verification Standard (ASVS) v5
+* OWASP Software Component Verification Standard (SCVS)
+* OWASP Top 10 CI/CD Security Risks (10 risks): (1) CICD-SEC-01 Insufficient
+  Flow Control Mechanisms, (2) CICD-SEC-02 Insufficient Identity and Access
+  Management, (3) CICD-SEC-03 Dependency Chain Abuse, (4) CICD-SEC-04 Poisoned
+  Pipeline Execution, (5) CICD-SEC-05 Insufficient PBAC (Pipeline-Based Access
+  Controls), (6) CICD-SEC-06 Insufficient Credential Hygiene, (7) CICD-SEC-07
+  Insecure System Configuration, (8) CICD-SEC-08 Ungoverned Use of Third-Party
+  Services, (9) CICD-SEC-09 Improper Artifact Integrity Validation, (10)
+  CICD-SEC-10 Insufficient Logging and Visibility
+* OWASP Top 10 for Large Language Model Applications (2025): LLM01 Prompt
+  Injection, LLM02 Sensitive Information Disclosure, LLM03 Supply Chain, LLM05
+  Improper output handling, LLM06 excessive agency, LLM10 unbounded consumption
+* OWASP Top 10 for Agentic Applications (2026): ASI01 Agent Goal Hijacking,
+  ASI02 Tool Misuse and Exploitation, ASI03 Identity and Privilege Abuse, ASI04
+  Agentic Supply Chain Compromise, ASI05 Unexpected Code Execution, ASI06 Memory
+  and Context Poisoning, ASI07 Insecure Inter-Agent Communication, ASI08
+  Cascading Failures, ASI09 Human-Agent Trust Exploitation, ASI10 Rogue Agents
+* OWASP LLM Prompt Injection Prevention Cheat Sheet
+* OWASP Secure Coding Practices Quick Reference Guide
+* OWASP Software Assurance Maturity Model (SAMM) v2
+
+### Supply Chain & Provenance
+
+* SLSA (Supply-chain Levels for Software Artifacts) v1.2, Build Track and Source
+  Track (Current Approved Specification)
+* in-toto: A Framework for Software Supply Chain Integrity
+* Sigstore and cosign: Software Artifact Signing and Verification
+* CycloneDX Software Bill of Materials and CycloneDX ML-BOM (Machine Learning
+  Bill of Materials)
+* SPDX Software Package Data Exchange
+* CISA Software Bill of Materials (SBOM) Overview
+* OpenSSF Best Practices Badge, OpenSSF Scorecard, OpenSSF Allstar
+
+### Adversarial AI & Threat Intelligence
+
+* MITRE ATLAS: Adversarial Threat Landscape for Artificial Intelligence Systems
+* MITRE ATT&CK (Enterprise), including T1195 Supply Chain Compromise and
+  CI/CD-relevant techniques
+
+### ISO/IEC and CISA
+
+* ISO/IEC 42001:2023: Artificial Intelligence Management System Requirements
+* ISO/IEC 27001:2022 and ISO/IEC 27002:2022: Information Security Management
+* ISO/IEC 5338:2023: Artificial Intelligence System Life Cycle Processes
+* CISA Secure-by-Design and Secure-by-Default Principles
+
+### Platform-Specific Hardening Guidance
+
+* GitHub Security Lab: "Keeping your GitHub Actions and workflows secure:"
+  Preventing pwn requests" (Parts 1-4, including Alvaro Munoz, 2025), the
+  canonical reference on fork-PR trigger exploitation patterns, colloquially
+  known as "pwn requests"
+* GitHub Docs: Security hardening for GitHub Actions; Approving workflow runs
+  from public forks; Automatic token authentication and permissions; Branch
+  protection rules and rule sets
+* GitLab Docs: CI/CD security best practices; protected variables and
+  environments
+* Equivalent vendor guidance for Jenkins, Argo Workflows, Tekton, CircleCI, and
+  Azure DevOps Pipelines
+

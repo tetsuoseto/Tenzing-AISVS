@@ -1,0 +1,154 @@
+# C11 Adversarial Robustness & Attack Resistance
+
+## Control Objective
+
+Ensure that AI systems remain reliable, privacy-preserving, and abuse-resistant when faced with evasion, inference, extraction, or poisoning attacks. These controls cover model alignment testing, adversarial hardening, resistance to privacy attacks, deterrence of model theft, and security adaptation for autonomous agents.
+
+---
+
+## C11.1 Model Alignment & Safety
+
+Guard against harmful or policy-breaking outputs through systematic testing and safeguards.
+
+|   #    | Description                                                                                                                                                                                                                   | Level |
+| :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
+| 11.1.1 | Verify that refusal and safe-completion guardrails are enforced to prevent the model from generating disallowed content categories.                                                                                           |   1   |
+| 11.1.2 | Verify that an alignment test suite, including red-team prompts, jailbreak probes, disallowed-content checks, and multilingual or code-switching abuse cases, is version-controlled and run on every model update or release. |   1   |
+| 11.1.3 | Verify that an automated evaluator measures the harmful-content rate and flags regressions beyond a defined threshold.                                                                                                        |   2   |
+| 11.1.4 | Verify that alignment and safety training procedures (e.g., RLHF, constitutional AI, or equivalent) are documented and reproducible.                                                                                          |   2   |
+| 11.1.5 | Verify that alignment evaluation includes assessments for evaluation awareness, where the model may behave differently when it detects that it is being tested versus deployed.                                               |   3   |
+
+---
+
+## C11.2 Adversarial-Example Hardening
+
+Increase resilience to manipulated inputs designed to cause misclassification or bypass policy controls. Adversarial testing and robustness benchmarking are the current best practices.
+
+|   #    | Description                                                                                                                                                                                                                                                                               | Level |
+| :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
+| 11.2.1 | Verify that models serving high-risk functions are evaluated against known adversarial attack techniques relevant to their modality (e.g., perturbation attacks for vision, token-manipulation attacks for text, trigger-based or instruction-injection backdoors where applicable).      |   1   |
+| 11.2.2 | Verify that adversarial-example detection triggers alerts in production pipelines, with blocking or degraded-capability responses for high-risk endpoints or use cases.                                                                                                                   |   2   |
+| 11.2.3 | Verify that models serving high-risk functions are hardened against adversarial inputs using one or more techniques, such as adversarial training, randomized smoothing, defensive distillation, or input transformation.                                                                 |   2   |
+| 11.2.4 | Verify that certified robustness metrics (e.g., certified radius, verified robust accuracy at defined perturbation bounds) are tracked and recorded per model version, and that degradation beyond defined thresholds triggers re-evaluation before deployment.                           |   2   |
+| 11.2.5 | Verify that adversarial hardening configurations and procedures are documented and reproducible.                                                                                                                                                                                          |   2   |
+| 11.2.6 | Verify that robustness evaluations use adaptive attacks (attacks specifically designed to defeat the deployed defenses) to confirm no measurable robustness loss across releases.                                                                                                         |   3   |
+| 11.2.7 | Verify that formal robustness verification methods (e.g., certified bounds, interval-bound propagation) are applied to safety-critical model components where the model architecture supports them.                                                                                       |   3   |
+| 11.2.8 | Verify that robustness certification or empirical robustness audits are repeated after all post-training transformations (fine-tuning, distillation, quantization, adapter merging) that use the same base model.                                                                         |   3   |
+| 11.2.9 | Verify that post-training model integrity verification techniques (e.g., activation clustering, spectral signature analysis, neural cleanse) are applied to detect potential backdoors or poisoning-induced behavioral anomalies, where such techniques exist for the model architecture. |   3   |
+
+---
+
+## C11.3 Membership-Inference Mitigation
+
+Limit the ability to determine whether a specific record was in the training data. Differential privacy and output calibration are the most effective known defenses.
+
+|   #    | Description                                                                                                                                                                                                | Level |
+| :----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
+| 11.3.1 | Verify that model outputs are calibrated (e.g., via temperature scaling or output perturbation) to reduce overconfident predictions that facilitate membership-inference attacks.                          |   2   |
+| 11.3.2 | Verify that training on sensitive datasets uses differentially private optimization (e.g., DP-SGD) with a documented privacy budget (epsilon).                                                             |   2   |
+| 11.3.3 | Verify that membership-inference attack simulations (e.g., shadow-model, likelihood-ratio, or label-only attacks) show that attack accuracy does not meaningfully exceed random guessing on held-out data. |   3   |
+
+---
+
+## C11.4 Model-Inversion Resistance
+
+Prevent reconstruction of private training data or sensitive attributes from model outputs.
+
+|   #    | Description                                                                                                                                                                                                                                                                                       | Level |
+| :----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
+| 11.4.1 | Verify that model-inferred sensitive attributes are not directly returned in outputs; when such attributes must be exposed, they are returned as generalized categories (e.g., ranges, buckets) or one-way transforms to limit reconstruction of underlying training records.                     |   1   |
+| 11.4.2 | Verify that query-rate limits throttle repeated adaptive queries from the same principal at thresholds calibrated to the inversion threat model (e.g., the number of queries required to reconstruct training data or sensitive attributes), and not solely as a generic anti-automation control. |   1   |
+
+---
+
+## C11.5 Model-Extraction Defense
+
+Detect and deter unauthorized model cloning through API abuse. Rate limiting, query-pattern analysis, and watermarking are recommended defenses.
+
+|   #    | Description                                                                                                                                                                                                                                                    | Level |
+| :----: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
+| 11.5.1 | Verify that inference endpoints enforce per-principal and global rate limits sized to the extraction threat model, and not only as a generic API throttle.                                                                                                     |   1   |
+| 11.5.2 | Verify that extraction-alert events include the offending query metadata (e.g., source principal, query volume, input distribution statistics) to support investigation.                                                                                       |   2   |
+| 11.5.3 | Verify that query-pattern analysis (e.g., query diversity, input distribution anomalies, output-space coverage anomalies) feeds an automated extraction-attempt detector.                                                                                      |   2   |
+| 11.5.4 | Verify that raw model outputs (e.g., full posterior distributions, output vectors) are not directly exposed beyond the application backend, and that externally visible responses minimize output informativeness in alignment with the extraction risk level. |   2   |
+| 11.5.5 | Verify that model watermarking or fingerprinting techniques are applied so that unauthorized copies can be identified.                                                                                                                                         |   3   |
+| 11.5.6 | Verify that detection of suspected data exfiltration activity triggers adaptive response measures proportional to the estimated data exfiltration risk.                                                                                                        |   3   |
+
+---
+
+## C11.6 Runtime Context Contamination Detection
+
+Identify and neutralize manipulated, backdoored, or adversarial data that enters the model context at inference time via external sources (e.g., RAG retrieval, tool outputs, MCP server responses, grounding pipelines).
+
+|   #    | Description                                                                                                                                                             | Level |
+| :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
+| 11.6.1 | Verify that inputs from external or untrusted sources pass through anomaly detection (e.g., statistical outlier detection, consistency scoring) before model inference. |   2   |
+| 11.6.2 | Verify that anomaly-detection thresholds are tuned on representative clean and adversarial validation sets.                                                             |   2   |
+| 11.6.3 | Verify that inputs flagged as anomalous trigger gating actions (blocking, capability degradation, or human review).                                                     |   2   |
+| 11.6.4 | Verify that the false-positive rate of anomaly detection is measured on representative data and documented for each model version.                                      |   2   |
+
+---
+
+## C11.7 Security Policy Adaptation
+
+Maintain the ability to rapidly update AI safety and guardrail policies in response to threat intelligence and behavioral analysis.
+
+|   #    | Description                                                                                                                                                                                     | Level |
+| :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
+| 11.7.1 | Verify that security policies (e.g., content filters, rate-limit thresholds, guardrail configurations) can be updated without a full system redeployment, and that policy versions are tracked. |   1   |
+| 11.7.2 | Verify that policy updates are authorized, integrity-protected (e.g., cryptographically signed), and validated before deployment.                                                               |   2   |
+| 11.7.3 | Verify that rollback procedures exist for policy changes and are tested to confirm they restore the previous policy state.                                                                      |   2   |
+| 11.7.4 | Verify that threat-detection sensitivity can be adjusted based on the risk context (e.g., an elevated threat level, incident response).                                                         |   3   |
+
+---
+
+## C11.8 Agent Security Self-Assessment
+
+For agentic AI systems, supplement deterministic policy gates (C9.2, C9.7) with AI-augmented review of proposed actions, and protect that review mechanism from adversarial bypass.
+
+|   #    | Description                                                                                                                                                                                                                                                                                   | Level |
+| :----: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
+| 11.8.1 | Verify that agentic systems include an AI-augmented review of planned high-risk actions before execution (e.g., a secondary model, a structured self-review step, or an ensemble-of-judges check) that operates in addition to, and not in place of, the deterministic policy gate in C9.7.1. |   2   |
+| 11.8.2 | Verify that the AI-augmented review mechanism in 11.8.1 is protected against manipulation by adversarial inputs, so that the review step cannot be overridden or bypassed through prompt injection or instruction smuggling in the agent context.                                             |   2   |
+
+---
+
+## C11.9 Self-Modification & Autonomous Update Security
+
+Security controls for systems in which the AI can modify its own configuration, prompts, tool access, or learned behaviors.
+
+|   #    | Description                                                                                                                                                                                                                                                                                                               | Level |
+| :----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
+| 11.9.1 | Verify that any self-modification capability (e.g., prompt rewriting, tool-list changes, parameter updates) is restricted to explicitly designated areas with enforced boundaries.                                                                                                                                        |   2   |
+| 11.9.2 | Verify that proposed self-modifications undergo a security impact assessment or policy validation before taking effect.                                                                                                                                                                                                   |   2   |
+| 11.9.3 | Verify that self-modifications are explicitly classified as security-relevant events and logged with sufficient detail to reconstruct what changed, when, by which agent or principal, and under what authorization, regardless of whether self-modification is otherwise documented as a logged event.                   |   2   |
+| 11.9.4 | Verify that self-modifications are reversible and subject to integrity verification, so that a rollback to a known-good state is possible and can be confirmed.                                                                                                                                                           |   2   |
+| 11.9.5 | Verify that the self-modification scope is bounded (e.g., maximum change magnitude, rate limits on updates, and prohibited modification targets) to prevent runaway or adversarially induced changes.                                                                                                                     |   3   |
+| 11.9.6 | Verify that when safety-violation data (blocked inputs, filtered outputs, flagged hallucinations) is used as a training signal to improve the model, the feedback pipeline includes integrity verification, poisoning detection, and human review gates to prevent adversarial manipulation of the improvement mechanism. |   3   |
+
+## C11.10 Adversarial Bias Exploitation Defense
+
+Protect security-relevant classifiers against adversaries who systematically probe for exploitable bias patterns and weaponize discovered disparities as an evasion vector.
+
+|    #    | Description                                                                                                                                                                                                                                                                                                                                                                         | Level |
+| :-----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---: |
+| 11.10.1 | Verify that adversarial robustness evaluations for security-relevant classifiers are stratified by meaningful input subgroups (e.g., language register, content category). Measure and flag per-subgroup false-negative rates under adversarial conditions when they deviate from the aggregate rates by more than a defined threshold.                                             |   2   |
+| 11.10.2 | Verify that inference endpoints for security-relevant classifiers (e.g., abuse detection, fraud scoring) include monitoring that accounts for query patterns indicative of bias probing, such as systematic variation along a single input dimension (e.g., demographic, linguistic, stylistic) while other dimensions remain constant, and alerts when such patterns are detected. |   3   |
+| 11.10.3 | Verify that when bias-based evasion is identified as a material threat, adversarial hardening (e.g., adversarial training with per-subgroup loss constraints, ensemble diversity across training distributions) includes explicit subgroup robustness requirements, and that per-subgroup robustness metrics are verified to not regress across model releases.                     |   3   |
+
+---
+
+## References
+
+* [OWASP LLM02:2025 Sensitive Information Disclosure](https://genai.owasp.org/llmrisk/llm022025-sensitive-information-disclosure/)
+* [OWASP LLM04:2025 Data and Model Poisoning](https://genai.owasp.org/llmrisk/llm042025-data-and-model-poisoning/)
+* [OWASP LLM10:2025 Unbounded Consumption](https://genai.owasp.org/llmrisk/llm102025-unbounded-consumption/)
+* [MITRE ATLAS: Infer Training Data Membership](https://atlas.mitre.org/techniques/AML.T0024.000)
+* [MITRE ATLAS: Invert ML Model](https://atlas.mitre.org/techniques/AML.T0024.001)
+* [MITRE ATLAS: Extract ML Model](https://atlas.mitre.org/techniques/AML.T0024.002)
+* [MITRE ATLAS: Backdoor ML Model](https://atlas.mitre.org/techniques/AML.T0018)
+* [NIST AI 100-2e2023 Adversarial Machine Learning: A Taxonomy and Terminology of Attacks and Mitigations](https://csrc.nist.gov/pubs/ai/100/2/e2023/final)
+* [MITRE ATLAS: Active Scanning (AML.T0006)](https://atlas.mitre.org/techniques/AML.T0006)
+* [MITRE ATLAS: Evade ML Model (AML.T0015)](https://atlas.mitre.org/techniques/AML.T0015)
+* [MITRE ATLAS Case Study: Bypass Cylance's AI Malware Detection (AML.CS0003)](https://atlas.mitre.org/studies/AML.CS0003)
+
