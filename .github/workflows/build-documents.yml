@@ -144,12 +144,12 @@ jobs:
       - name: Define target branch name with MT_X
         if: ${{ env.LANG != '' && env.MT_X != '' }}
         run: |
-          MAIN_SHA="PDF_${{ env.LANG }}_${{ env.MT_X }}_${{ github.sha }}"
+          MAIN_SHA="TZ5_${{ env.LANG }}_${{ env.MT_X }}_${{ github.sha }}"
           echo "TARGET_BRANCH_NAME=$MAIN_SHA" >> $GITHUB_ENV
       - name: Define target branch name without MT_X
         if: ${{ env.LANG != '' && env.MT_X == '' }}
         run: |
-          MAIN_SHA="PDF_${{ env.LANG }}_${{ github.sha }}"
+          MAIN_SHA="TZ5_${{ env.LANG }}_${{ github.sha }}"
           echo "TARGET_BRANCH_NAME=$MAIN_SHA" >> $GITHUB_ENV
 
       # STEP 5: Check if the target branch exists
@@ -198,6 +198,8 @@ jobs:
         run: |
           cd ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
           ./tenzing -f -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }} --hdr '${{ github.sha }}'
+          CLH="WIP PDF created"
+          echo "COMMIT_LOG_HEADER=$CLH" >> $GITHUB_ENV
       - name: Call ./tenzing with ${{ env.LANG }} and 'mt'
         env:
           TRANSLATE_ACCESS_KEY: ${{ secrets.TRANSLATE_ACCESS_KEY }}
@@ -205,11 +207,15 @@ jobs:
         run: |
           cd ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
           ./tenzing -f --mt gpt-5.4-nano -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }} --hdr '${{ github.sha }} MACHINE TRANSLATED'
+          CLH="Machine translated"
+          echo "COMMIT_LOG_HEADER=$CLH" >> $GITHUB_ENV
       - name: Call ./tenzing with ${{ env.LANG }} and 'x'
         if: ${{ env.LANG != '' && env.BRANCH_EXISTS == 'no' && env.MT_X == 'x' }}
         run: |
           cd ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
           ./tenzing -f -x -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }} --hdr '${{ github.sha }} MACHINE TRANSLATED'
+          CLH="WIP PDF from X created"
+          echo "COMMIT_LOG_HEADER=$CLH" >> $GITHUB_ENV
       - name: Call ./tenzing with ${{ env.LANG }} and 'b'
         env:
           WATERMARK_SECRET_KEY: ${{ secrets.WATERMARK_SECRET_KEY }}
@@ -217,6 +223,8 @@ jobs:
         run: |
           cd ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
           ./tenzing -f -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }}
+          CLH="PDF without WIP created"
+          echo "COMMIT_LOG_HEADER=$CLH" >> $GITHUB_ENV
 
       # STEP 8: Clean up
       - name: Clean up
@@ -243,7 +251,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -b '${{ env.TARGET_BRANCH_NAME }}'
           git add .
-          git commit -m "PDF created for ${{ env.LANG }} with the commit ${{ github.sha }}"
+          git commit -m "${{ env.COMMIT_LOG_HEADER }} for ${{ env.LANG }} with the commit ${{ github.sha }}"
           git push --set-upstream origin '${{ env.TARGET_BRANCH_NAME }}'
       - name: Create Pull Request
         if: ${{ env.LANG != '' && env.BRANCH_EXISTS == 'no' }}
