@@ -2,11 +2,13 @@
 
 ## Control Objective
 
-AI systems introduce access control challenges beyond traditional application security: classification labels must follow data through AI-specific transformations (embeddings, caches, model outputs), multi-tenant inference infrastructure creates novel side channels, and retrieval-augmented pipelines must enforce caller entitlements at every stage. This chapter addresses AI-specific access control and identity concerns, including runtime isolation of the policy decision point from agent execution and authorization-aware output filtering where entitlements vary per caller.
+This chapter addresses access control challenges that AI systems introduce beyond traditional application security.
 
 ---
 
 ## C5.1 Authentication
+
+AI agents and human users accessing resources must be properly authenticated and authorized for their level of access.
 
 | # | Description | Level |
 | :--------: | --------------------------------------------------------------------------------------------- | :---: |
@@ -17,14 +19,14 @@ AI systems introduce access control challenges beyond traditional application se
 
 ## C5.2 AI Resource Authorization & Classification
 
-Enforce the caller's authorization context through AI-specific query pipelines (RAG retrieval, embedding lookups, inference chains) so that the AI system does not return data that the caller is not entitled to access.
+The caller's authorization context must be enforced through AI-specific query pipelines (RAG retrieval, embedding lookups, inference chains) so the system does not return data the caller is not entitled to access.
 
 | # | Description | Level |
 | :--------: | --------------------------------------------------------------------------------------------- | :---: |
 | **5.2.1** | **Verify that** every AI resource (datasets, endpoints, vector collections, embedding indices, compute instances) enforces access controls with explicit allow-lists and default-deny policies. | 2 |
 | **5.2.2** | **Verify that** retrieval pipelines (e.g., RAG queries, embedding lookups) enforce the end-user's authorization context at each retrieval and assembly stage, rather than relying solely on the service account's permissions. | 2 |
 | **5.2.3** | **Verify that** sensitive data is retrieved via retrieval pipelines (e.g., RAG queries, embedding lookups) to prevent permanent storage in models. | 2 |
-| **5.2.4** | **Verify that** post-inference filtering mechanisms prevent responses from including data that the requestor is not authorized to receive. | 2 |
+| **5.2.4** | **Verify that** post-inference filtering mechanisms prevent responses from including data that the requester is not authorized to receive. | 2 |
 | **5.2.5** | **Verify that** the policy decision point for agent authorization is isolated from the agent's execution environment. | 2 |
 | **5.2.6** | **Verify that** privileged access to model weights, training pipelines, and production AI configuration is granted just in time, with a defined maximum session duration and automatic expiry. Zero Standing Privilege (ZSP) to these resources is encouraged. | 3 |
 | **5.2.7** | **Verify that** data classification labels propagate to downstream resources (embeddings, prompt caches, model outputs). | 3 |
@@ -33,7 +35,7 @@ Enforce the caller's authorization context through AI-specific query pipelines (
 
 ## C5.3 Multi-Tenant Isolation
 
-Prevent cross-tenant information leakage through AI-specific shared infrastructure components such as inference caches and shared model state.
+Cross-tenant information leakage through AI-specific shared infrastructure, such as inference caches and shared model state, must be prevented.
 
 | # | Description | Level |
 | :--------: | --------------------------------------------------------------------------------------------- | :---: |
@@ -46,4 +48,6 @@ Prevent cross-tenant information leakage through AI-specific shared infrastructu
 
 * [NIST SP 800-207: Zero Trust Architecture](https://csrc.nist.gov/pubs/sp/800/207/final)
 * [NIST SP 800-63-3: Digital Identity Guidelines](https://csrc.nist.gov/pubs/sp/800/63/3/final)
+* [OAuth 2.1 (IETF Draft)](https://datatracker.ietf.org/doc/html/draft-ietf-oauth-v2-1-11)
+* [OpenID Connect Core 1.0](https://openid.net/specs/openid-connect-core-1_0.html)
 * [I Know What You Asked: Prompt Leakage via KV-Cache Sharing in Multi-Tenant LLM Serving (NDSS 2025)](https://www.ndss-symposium.org/ndss-paper/i-know-what-you-asked-prompt-leakage-via-kv-cache-sharing-in-multi-tenant-llm-serving/)
