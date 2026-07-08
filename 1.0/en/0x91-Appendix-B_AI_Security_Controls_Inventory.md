@@ -8,7 +8,7 @@ This inventory is non-normative. It reorganizes existing requirements for ease o
 
 ---
 
-## AD.1 Authentication & Identity
+## AB.1 Authentication & Identity
 
 Verify the identity of users, agents, services, edge devices, and MCP clients/servers before granting access.
 
@@ -30,7 +30,7 @@ Verify the identity of users, agents, services, edge devices, and MCP clients/se
 
 ---
 
-## AD.2 Authorization & Access Control
+## AB.2 Authorization & Access Control
 
 Enforce access decisions across users, agents, tools, and resources using policy that the model cannot override.
 
@@ -53,7 +53,7 @@ Enforce access decisions across users, agents, tools, and resources using policy
 
 ---
 
-## AD.3 Data Classification & Tenant Isolation
+## AB.3 Data Classification & Tenant Isolation
 
 Keep data within its authorization and tenancy boundaries as it flows through AI-specific transformations and shared infrastructure.
 
@@ -68,7 +68,7 @@ Keep data within its authorization and tenancy boundaries as it flows through AI
 
 ---
 
-## AD.4 Encryption & Data Protection
+## AB.4 Encryption & Data Protection
 
 Protect data and secrets at rest, in transit, and in the model's observable context.
 
@@ -84,7 +84,7 @@ Protect data and secrets at rest, in transit, and in the model's observable cont
 
 ---
 
-## AD.5 Integrity, Signing & Provenance
+## AB.5 Integrity, Signing & Provenance
 
 Verify authenticity and detect tampering of models, artifacts, messages, tool definitions, and generated media.
 
@@ -105,7 +105,7 @@ Verify authenticity and detect tampering of models, artifacts, messages, tool de
 
 ---
 
-## AD.6 Input Validation & Sanitization
+## AB.6 Input Validation & Sanitization
 
 Validate, normalize, and constrain all inputs (including tool, MCP, and retrieved content) before they reach the model or downstream systems.
 
@@ -135,7 +135,7 @@ Validate, normalize, and constrain all inputs (including tool, MCP, and retrieve
 
 ---
 
-## AD.7 Inbound Content & Policy Screening
+## AB.7 Inbound Content & Policy Screening
 
 Screen prompts and training content against policy before they reach the model or the training pipeline.
 
@@ -149,7 +149,7 @@ Screen prompts and training content against policy before they reach the model o
 
 ---
 
-## AD.8 Output Handling & Safety
+## AB.8 Output Handling & Safety
 
 Constrain, filter, and validate model outputs before they reach users or downstream systems.
 
@@ -169,7 +169,7 @@ Constrain, filter, and validate model outputs before they reach users or downstr
 
 ---
 
-## AD.9 Rate Limiting, Budgets & Resource Control
+## AB.9 Rate Limiting, Budgets & Resource Control
 
 Bound consumption to prevent abuse, runaway execution, denial of service, and model extraction.
 
@@ -183,7 +183,7 @@ Bound consumption to prevent abuse, runaway execution, denial of service, and mo
 
 ---
 
-## AD.10 Sandboxing & Workload Isolation
+## AB.10 Sandboxing & Workload Isolation
 
 Isolate models, tools, agents, and hardware workloads to contain failures and prevent lateral movement.
 
@@ -211,7 +211,7 @@ Isolate models, tools, agents, and hardware workloads to contain failures and pr
 
 ---
 
-## AD.11 Network & Egress Control
+## AB.11 Network & Egress Control
 
 Control network boundaries, transport security, and traffic flow for AI workloads and MCP integrations.
 
@@ -227,7 +227,7 @@ Control network boundaries, transport security, and traffic flow for AI workload
 
 ---
 
-## AD.12 Supply Chain & Artifact Integrity
+## AB.12 Supply Chain & Artifact Integrity
 
 Verify origin and authenticity of models, datasets, frameworks, and MCP components, and maintain an AI bill of materials.
 
@@ -248,7 +248,7 @@ Verify origin and authenticity of models, datasets, frameworks, and MCP componen
 
 ---
 
-## AD.13 Model Lifecycle, Deployment & Rollback
+## AB.13 Model Lifecycle, Deployment & Rollback
 
 Manage model validation, deployment, rollback, and fine-tuning pipeline integrity.
 
@@ -269,7 +269,7 @@ Manage model validation, deployment, rollback, and fine-tuning pipeline integrit
 
 ---
 
-## AD.14 Training Data Integrity & Governance
+## AB.14 Training Data Integrity & Governance
 
 Source, vet, and document training data so tampering, poisoning, and corruption can be detected and traced.
 
@@ -291,7 +291,7 @@ Source, vet, and document training data so tampering, poisoning, and corruption 
 
 ---
 
-## AD.15 Memory, Embeddings & RAG Security
+## AB.15 Memory, Embeddings & RAG Security
 
 Harden vector stores, memory pipelines, and retrieval-augmented generation against leakage, poisoning, and fabricated provenance.
 
@@ -316,7 +316,7 @@ Harden vector stores, memory pipelines, and retrieval-augmented generation again
 
 ---
 
-## AD.16 Adversarial Robustness & Privacy Defense
+## AB.16 Adversarial Robustness & Privacy Defense
 
 Test for and defend against evasion, membership inference, model inversion, extraction, and poisoning of the improvement loop.
 
@@ -339,7 +339,7 @@ Test for and defend against evasion, membership inference, model inversion, extr
 
 ---
 
-## AD.17 Logging & Audit
+## AB.17 Logging & Audit
 
 Capture security-relevant events with sufficient context and integrity for forensic reconstruction and accountability.
 
@@ -357,7 +357,7 @@ Capture security-relevant events with sufficient context and integrity for foren
 
 ---
 
-## AD.18 Monitoring, Detection & Incident Response
+## AB.18 Monitoring, Detection & Incident Response
 
 Detect AI-specific abuse, drift, and anomalies, and respond to incidents.
 
@@ -382,7 +382,7 @@ Detect AI-specific abuse, drift, and anomalies, and respond to incidents.
 
 ---
 
-## AD.19 Human Oversight & Shutdown Control
+## AB.19 Human Oversight & Shutdown Control
 
 Require human approval for high-impact actions and provide reliable, exercised shutdown and graceful-degradation paths under human control.
 
