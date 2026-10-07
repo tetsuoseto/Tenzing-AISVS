@@ -206,7 +206,7 @@ jobs:
         if: ${{ env.LANG != '' && env.BRANCH_EXISTS == 'no' && env.MT_X == 'mt' }}
         run: |
           cd ${{ github.workspace }}/${{ env.ROOT_DIR }}/${{ env.BUILD_DIR }}
-          ./tenzing -f --mt gpt-5.4-nano -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }} --hdr '${{ github.sha }} MACHINE TRANSLATED'
+          ./tenzing -f --mt gpt-6-luna -y -l ${{ env.PROJ_CODE }}_${{ env.LANG }} --hdr '${{ github.sha }} MACHINE TRANSLATED'
           CLH="Machine translated"
           echo "COMMIT_LOG_HEADER=$CLH" >> $GITHUB_ENV
       - name: Call ./tenzing with ${{ env.LANG }} and 'x'
